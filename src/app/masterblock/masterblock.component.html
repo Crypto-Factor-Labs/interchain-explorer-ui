@@ -1,4 +1,57 @@
-<div class="masterblock">
-  <h2>MasterBlock Information</h2>
-  <p>Block details will appear here.</p>
+<!--
+<div *ngIf="masterBlock; else loading">
+  <h2>Latest Master Block</h2>
+  <p><span class="label">ID:</span> <strong>{{ masterBlock.id }}</strong></p>
+  <p><span class="label">Height:</span> <strong>{{ masterBlock.height }}</strong></p>
+  <p><span class="label">Timestamp:</span> <strong>{{ masterBlock.timestamp }}</strong></p>
+  <p><span class="label">Merkle Root:</span> <strong>{{ masterBlock.merkle_root }}</strong></p>
+  <p><span class="label">Block Hash:</span> <strong>{{ masterBlock.block_hash }}</strong></p>
+  <p><span class="label">Block Mint Transaction:</span> <strong>{{ masterBlock.block_mint_transaction }}</strong></p>
+  <p><span class="label">Date Indexed:</span> <strong>{{ masterBlock.date_indexed }}</strong></p>
+</div>
+-->
+
+<!-- masterblock.component.html -->
+<div *ngIf="masterBlock; else loading">
+  <div class="table-container">
+    <h2>&nbsp; Master Block</h2>
+    <table>
+      <tr>
+        <td class="label">ID</td>
+        <td>{{ masterBlock.id }}</td>
+      </tr>
+      <tr>
+        <td class="label">Height</td>
+        <td>{{ masterBlock.height }}</td>
+      </tr>
+      <tr>
+        <td class="label">Timestamp</td>
+        <td>{{ masterBlock.timestamp }}</td>
+      </tr>
+      <tr>
+        <td class="label">Merkle Root</td>
+        <td>{{ masterBlock.merkle_root }}</td>
+      </tr>
+      <tr>
+        <td class="label">Block Hash</td>
+        <td>{{ masterBlock.block_hash }}</td>
+      </tr>
+      <tr>
+        <td class="label">Block Mint Transaction</td>
+        <td>{{ masterBlock.block_mint_transaction }}</td>
+      </tr>
+      <tr>
+        <td class="label">Date Indexed</td>
+        <td>{{ masterBlock.date_indexed }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading latest block data...</p>
+</ng-template>
+
+<div *ngIf="errMsg" class="error">
+  <p>Error: {{ errMsg }}</p>
 </div>

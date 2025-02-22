@@ -1,0 +1,24 @@
+.table-container {
+  margin: 0 auto;
+  width: max-content;
+  /* Ensures the container only takes up as much space as needed */
+}
+
+table {
+  border-collapse: collapse;
+  margin: 20px auto;
+  /* Centers the table horizontally */
+}
+
+td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+.label {
+  text-align: right;
+  padding-right: 10px;
+  font-weight: bold;
+  background-color: #f4f4f4;
+}
