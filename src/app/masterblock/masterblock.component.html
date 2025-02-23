@@ -1,38 +1,42 @@
 <div *ngIf="masterBlock; else loading">
   <div class="table-container">
-    <h2>&nbsp; Master Block</h2>
+    <h2><span class="gradient-text">&nbsp;Master Block</span></h2>
     <table>
       <tr>
         <td class="label">ID</td>
-        <td>{{ masterBlock.id }}</td>
+        <td><span class="gradient-text">{{ masterBlock.id }}</span></td>
       </tr>
       <tr>
         <td class="label">Height</td>
-        <td>{{ masterBlock.height }}</td>
+        <td><span class="gradient-text">{{ masterBlock.height }}</span></td>
       </tr>
       <tr>
         <td class="label">Timestamp</td>
-        <td>{{ masterBlock.timestamp }}</td>
+        <td><span class="gradient-text">{{ masterBlock.timestamp }}</span></td>
       </tr>
       <tr>
         <td class="label">Merkle Root</td>
-        <td>{{ masterBlock.merkle_root }}</td>
+        <td><span class="gradient-text">{{ masterBlock.merkle_root }}</span></td>
       </tr>
       <tr>
         <td class="label">Block Hash</td>
-        <td>{{ masterBlock.block_hash }}</td>
+        <td><span class="gradient-text">{{ masterBlock.block_hash }}</span></td>
       </tr>
       <tr>
         <td class="label">Block Mint Transaction</td>
-        <td>{{ masterBlock.block_mint_transaction }}</td>
+        <td><span class="gradient-text">{{ masterBlock.block_mint_transaction }}</span></td>
       </tr>
       <tr>
         <td class="label">Date Indexed</td>
-        <td>{{ masterBlock.date_indexed }}</td>
+        <td><span class="gradient-text">{{ masterBlock.date_indexed }}</span></td>
       </tr>
     </table>
     <!-- Back Button -->
-    <a class="back-btn" routerLink="/masterblocks">Back</a>
+    <a class="back-btn" routerLink="/masterblocks">
+      <span class="btn-content">
+        <span class="arrow">&#8592;</span> Back
+      </span>
+    </a>
   </div>
 </div>
 
