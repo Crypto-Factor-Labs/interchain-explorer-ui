@@ -1,6 +1,6 @@
 :host {
   display: block;
-  background-color: #f5f5f5;
+  background-color: #b4b4b4;
   /* Overall light background */
   color: #333;
   /* Dark text for general content outside the container */
@@ -21,8 +21,7 @@
 }
 
 h2 {
-  color: #ffffff;
-  /* Bright heading for contrast */
+  color: #435bc7;
   font-size: 28px;
   /* Increased font size for prominence */
   font-weight: 600;
@@ -48,19 +47,24 @@ td {
   word-wrap: break-word;
 }
 
+/* Labels have grey text on a dark background */
 .label {
   text-align: right;
   padding-right: 10px;
-  font-weight: bold;
-  background-color: #333;
+  color: #475268;
+}
+
+/* All td cells that are not labels display blue text */
+.table-container table td:not(.label) {
+  color: #435bc7;
 }
 
 /* Back Button Styling */
 .back-btn {
   display: inline-block;
-  border: 1px solid #007bff;
+  border: 1px solid #435bc7;
   /* Blue border */
-  color: #ffffff;
+  color: #f0f4fa;
   /* White text */
   background-color: transparent;
   padding: 6px 12px;
@@ -80,6 +84,6 @@ td {
 }
 
 .back-btn:hover {
-  background-color: #007bff;
+  background-color: #435bc7;
   /* Blue background on hover */
 }
