@@ -1,11 +1,11 @@
 <div class="blocks-page">
   <h2>Latest Master Blocks</h2>
   <div class="blocks-list">
-    <div class="block-item" *ngFor="let block of blocks">
+    <div class="block-item" *ngFor="let block of masterBlocks">
       <div class="block-info">
         <div class="block-heigth">Block Heigth: <span class="gradient-text">{{ block.height }}</span></div>
         <div class="block-timestamp">Timestamp: <span class="gradient-text">{{ block.timestamp }}</span></div>
-        <div class="block-hash">Hash: <span class="gradient-text">{{ block.hash }}</span></div>
+        <div class="block-hash">Hash: <span class="gradient-text">{{ block.block_hash }}</span></div>
       </div>
       <a class="detail-btn" [routerLink]="['/masterblock', block.heigth]">
         <span class="btn-content">Detail</span>

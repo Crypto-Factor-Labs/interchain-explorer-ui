@@ -31,13 +31,11 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1e1e1e;
-  /* Dark card background */
+  color: #475268; // Text color
+  background-color: #000;
   padding: 12px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  color: #e0e0e0;
-  /* Light text inside the card */
 }
 
 /* Block information styling */

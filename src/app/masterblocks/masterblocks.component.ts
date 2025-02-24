@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';  // To access ngIf etc in HTML
 import { RouterModule } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { BackendService } from '../backend.service';
 
 @Component({
   selector: 'app-masterblocks',
@@ -10,17 +13,23 @@ import { RouterModule } from '@angular/router';
   styleUrl: './masterblocks.component.scss'
 })
 export class MasterBlocksComponent implements OnInit {
-  blocks: any[] = [
-    { height: '68249864', timestamp: '12 seconds ago', hash: '0xABC123...' },
-    { height: '68249865', timestamp: '15 seconds ago', hash: '0xDEF456...' },
-    { height: '68249866', timestamp: '18 seconds ago', hash: '0xGHI789...' },
-    { height: '68249867', timestamp: '21 seconds ago', hash: '0xJKL012...' },
-    { height: '68249868', timestamp: '24 seconds ago', hash: '0xMNO345...' }
-  ];
+  masterBlocks!: any[];
+  errMsg: string = '';  // For displaying error messages if the data retrieval fails
 
-  constructor() { }
+  constructor(private backendService: BackendService) { }
 
   ngOnInit(): void {
-    // Optionally, fetch real block data here.
+    // Retrieve MasterBlock data on component load
+    this.backendService.getMasterBlocks(5).pipe(
+      catchError((error) => {
+        this.errMsg = 'Failed to load MasterBlocks';
+        console.error('Error loading MasterBlock data:', error);
+        return of(null);  // Return a null observable to continue the execution
+      })
+    ).subscribe((data: any) => {
+      if (data) {
+        this.masterBlocks = data;
+      }
+    });
   }
 }
