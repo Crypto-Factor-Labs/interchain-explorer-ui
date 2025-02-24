@@ -45,9 +45,20 @@ h2 {
   gap: 4px;
 }
 
-.block-id,
-.block-timestamp,
-.block-validator {
+/* Container for each field (label and value) */
+.field {
+  margin-bottom: 10px;
+}
+
+/* Label styling: adjust font size and color as needed */
+.label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #475268;
+}
+
+/* Value styling can remain as before or be adjusted */
+.value {
   font-size: 16px;
 }
 
