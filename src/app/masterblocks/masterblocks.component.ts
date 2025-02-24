@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { BackendService } from '../backend.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'app-masterblocks',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, SharedModule],
   templateUrl: './masterblocks.component.html',
   styleUrl: './masterblocks.component.scss'
 })
