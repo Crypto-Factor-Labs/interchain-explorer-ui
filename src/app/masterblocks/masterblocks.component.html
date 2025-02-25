@@ -13,7 +13,7 @@
         </div>
         <div class="field">
           <div class="label">Hash</div>
-          <div class="value"><span class="gradient-text">{{ block.block_hash }}</span></div>
+          <div class="value"><span class="gradient-text">{{ block.block_hash | truncateMiddle : 4}}</span></div>
         </div>
       </div>
       <a class="detail-btn" [routerLink]="['/masterblock', block.heigth]">
