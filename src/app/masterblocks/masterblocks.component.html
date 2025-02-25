@@ -1,24 +1,69 @@
 <div class="blocks-page">
-  <h2>Latest Master Blocks</h2>
-  <div class="blocks-list">
-    <div class="block-item" *ngFor="let block of masterBlocks">
-      <div class="block-info">
-        <div class="field">
-          <div class="label">Height</div>
-          <div class="value"><span class="gradient-text">{{ block.height }}</span></div>
-        </div>
-        <div class="field">
-          <div class="label">Timestamp</div>
-          <div class="value"><span class="gradient-text">{{ block.timestamp | timeAgo }}</span></div>
-        </div>
-        <div class="field">
-          <div class="label">Hash</div>
-          <div class="value"><span class="gradient-text">{{ block.block_hash | truncateMiddle : 4}}</span></div>
+  <div class="panels-container">
+    <!-- Left Panel: Master Blocks List -->
+    <div class="panel panel-left">
+      <h2>Latest Master Blocks</h2>
+      <div class="blocks-list">
+        <div class="block-item" *ngFor="let block of masterBlocks">
+          <div class="block-columns">
+            <!-- Left Column: Height and Duration -->
+            <div class="column column-left">
+              <div class="field">
+                <div class="label">Height</div>
+                <div class="value">
+                  <span class="gradient-text">{{ block.height }}</span>
+                </div>
+              </div>
+              <div class="field">
+                <div class="label">Duration</div>
+                <div class="value">
+                  <span class="gradient-text">{{ block.timestamp | timeAgo }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- Right Column: Hash -->
+            <div class="column column-right">
+              <div class="field">
+                <div class="label">Hash</div>
+                <div class="value">
+                  <span class="gradient-text">{{ block.block_hash | truncateMiddle: 8 }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Detail button now as a sibling in the same row -->
+          <a class="detail-btn" [routerLink]="['/masterblock', block.height]">
+            <span class="btn-content">Detail</span>
+          </a>
         </div>
       </div>
-      <a class="detail-btn" [routerLink]="['/masterblock', block.heigth]">
-        <span class="btn-content">Detail</span>
-      </a>
+    </div>
+
+    <!-- Right Panel: Dummy Transactions List -->
+    <div class="panel panel-right">
+      <h2>Transactions</h2>
+      <div class="transactions-list">
+        <div class="transaction-item" *ngFor="let tx of dummyTransactions">
+          <div class="field">
+            <div class="label">Tx ID</div>
+            <div class="value">
+              <span class="gradient-text">{{ tx.id | truncateMiddle: 4 }}</span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">Amount</div>
+            <div class="value">
+              <span class="gradient-text">{{ tx.amount }}</span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">Status</div>
+            <div class="value">
+              <span class="gradient-text">{{ tx.status }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

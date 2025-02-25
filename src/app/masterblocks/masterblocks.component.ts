@@ -15,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
 })
 export class MasterBlocksComponent implements OnInit {
   masterBlocks!: any[];
+  dummyTransactions: any[] = [];
   errMsg: string = '';  // For displaying error messages if the data retrieval fails
 
   constructor(private backendService: BackendService) { }
