@@ -1,7 +1,7 @@
 /* Overall page container */
 .blocks-page {
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #475268;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -30,6 +30,7 @@
   margin-top: 0px;
   margin-bottom: 0px;
   border-bottom: 2px solid #444;
+  padding-left: 8px;
   padding-bottom: 10px;
 }
 
@@ -66,6 +67,12 @@
 .column-left {
   flex: 1;
   margin-right: 20px;
+}
+
+/* Container for the left column content */
+.left-column-content {
+  display: flex;
+  align-items: center;
 }
 
 /* Reduced spacing for the first field (Height) */
@@ -125,6 +132,25 @@
 .detail-btn .btn-content:hover {
   background-color: #435bc7;
 }
+
+/* Image styling */
+.block-image {
+  margin-right: 10px;
+  /* Adjust spacing between image and text */
+
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+  }
+}
+
+/* Optional: for tweaking spacing for the block info */
+.block-info {
+  display: flex;
+  flex-direction: column;
+}
+
 
 /* ----- Right Panel: Transactions List ----- */
 .transactions-list {
