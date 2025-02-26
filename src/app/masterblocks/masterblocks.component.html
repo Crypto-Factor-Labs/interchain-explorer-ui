@@ -6,18 +6,17 @@
       <div class="blocks-list">
         <div class="block-item" *ngFor="let block of masterBlocks">
           <div class="block-columns">
-            <!-- Left Column: Height and Duration -->
+            <!-- Left Column: Height and Timestamp -->
             <div class="column column-left">
               <div class="field">
-                <div class="label">Height</div>
                 <div class="value">
                   <span class="gradient-text">{{ block.height }}</span>
                 </div>
               </div>
               <div class="field">
-                <div class="label">Duration</div>
-                <div class="value">
-                  <span class="gradient-text">{{ block.timestamp | timeAgo }}</span>
+                <!-- Timestamp, styled like a label -->
+                <div class="label">
+                  {{ block.timestamp | timeAgo }}
                 </div>
               </div>
             </div>
@@ -31,7 +30,7 @@
               </div>
             </div>
           </div>
-          <!-- Detail button now as a sibling in the same row -->
+          <!-- Detail button remains as before -->
           <a class="detail-btn" [routerLink]="['/masterblock', block.height]">
             <span class="btn-content">Detail</span>
           </a>
