@@ -37,7 +37,7 @@
             </div>
           </div>
           <!-- Detail button -->
-          <a class="detail-btn" [routerLink]="['/masterblock', block.height]">
+          <a class="detail-btn" (click)="goToMasterBlock(block)">
             <span class="btn-content">Detail</span>
           </a>
         </div>
@@ -46,7 +46,7 @@
 
     <!-- Right Panel: Dummy Transactions List -->
     <div class="panel panel-right">
-      <h2>Transactions</h2>
+      <h2>Latest Transactions</h2>
       <div class="transactions-list">
         <div class="transaction-item" *ngFor="let tx of dummyTransactions">
           <div class="field">

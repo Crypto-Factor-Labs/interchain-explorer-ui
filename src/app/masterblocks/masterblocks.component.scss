@@ -112,6 +112,7 @@
 /* Detail button with gradient border */
 .detail-btn {
   display: inline-block;
+  cursor: pointer;
   padding: 1px; // Determines the width of the border
   border-radius: 4px;
   background: linear-gradient(90deg, #8EB6F6, #435bc7);

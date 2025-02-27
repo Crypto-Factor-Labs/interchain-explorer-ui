@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';  // To access ngIf etc in HTML
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { BackendService } from '../backend.service';
@@ -18,7 +18,10 @@ export class MasterBlocksComponent implements OnInit {
   dummyTransactions: any[] = [];
   errMsg: string = '';  // For displaying error messages if the data retrieval fails
 
-  constructor(private backendService: BackendService) { }
+  constructor(
+    private router: Router,
+    private backendService: BackendService
+  ) { }
 
   ngOnInit(): void {
     // Retrieve MasterBlock data on component load
@@ -33,5 +36,10 @@ export class MasterBlocksComponent implements OnInit {
         this.masterBlocks = data;
       }
     });
+  }
+
+  // Open the page that shows the data of a MasterBlock
+  goToMasterBlock(block: any): void {
+    this.router.navigate(['/masterblock'], { state: { block } });
   }
 }
