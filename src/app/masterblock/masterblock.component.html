@@ -1,36 +1,42 @@
 <div *ngIf="masterBlock; else loading">
-  <div class="table-container">
-    <h2><span class="gradient-text">&nbsp;Master Block</span></h2>
-    <table>
-      <tr>
-        <td class="label">ID</td>
-        <td><span class="gradient-text">{{ masterBlock.id }}</span></td>
-      </tr>
-      <tr>
-        <td class="label">Height</td>
-        <td><span class="gradient-text">{{ masterBlock.height }}</span></td>
-      </tr>
-      <tr>
-        <td class="label">Timestamp</td>
-        <td><span class="gradient-text">{{ masterBlock.timestamp }}</span></td>
-      </tr>
-      <tr>
-        <td class="label">Merkle Root</td>
-        <td><span class="gradient-text">{{ masterBlock.merkle_root }}</span></td>
-      </tr>
-      <tr>
-        <td class="label">Block Hash</td>
-        <td><span class="gradient-text">{{ masterBlock.block_hash }}</span></td>
-      </tr>
-      <tr>
-        <td class="label">Block Mint Transaction</td>
-        <td><span class="gradient-text">{{ masterBlock.block_mint_transaction }}</span></td>
-      </tr>
-      <tr>
-        <td class="label">Date Indexed</td>
-        <td><span class="gradient-text">{{ masterBlock.date_indexed }}</span></td>
-      </tr>
-    </table>
+  <div class="panel">
+    <h2>Master Block</h2>
+    <div class="fields-container">
+      <div class="field">
+        <div class="label">Height</div>
+        <div class="value">
+          <span class="gradient-text">{{ masterBlock.height }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Hash</div>
+        <div class="value">
+          <span class="gradient-text">{{ masterBlock.block_hash }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Timestamp</div>
+        <div class="value">
+          <span class="gradient-text">{{ masterBlock.timestamp }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Merkle Root</div>
+        <div class="value">
+          <span class="gradient-text">{{ masterBlock.merkle_root }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Mint Transaction</div>
+        <div class="value">
+          <span class="gradient-text">{{ masterBlock.block_mint_transaction }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separator line -->
+    <div class="separator"></div>
+
     <!-- Back Button -->
     <a class="back-btn" (click)="goBack()">
       <span class="btn-content">

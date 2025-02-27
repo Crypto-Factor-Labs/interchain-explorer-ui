@@ -1,94 +1,41 @@
+@import '../../styles.scss';
+
 :host {
   display: block;
-  background-color: #b4b4b4;
-  /* Overall light background */
+  background-color: #475268;
   color: #333;
-  /* Dark text for general content outside the container */
   font-family: 'Roboto', sans-serif;
   padding: 20px;
 }
 
-.table-container {
-  margin: 0 auto;
+// Make the panel as wide as necessary and center it
+:host .panel {
   width: max-content;
-  background-color: #1e1e1e;
-  /* Dark container to stand out */
-  color: #e0e0e0;
-  /* Light text inside the container */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-h2 {
-  font-size: 28px;
-  font-weight: 600;
-  border-bottom: 2px solid #444;
-  /* Full-width border */
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
-
-.gradient-text {
-  display: inline-block;
-  /* Shrink to text for the gradient */
-  background: linear-gradient(90deg, #435bc7, #120a8f);
-  /* Gradient from light to dark blue */
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-table {
-  border-collapse: collapse;
   margin: 0 auto;
-  font-size: 16px;
-  /* Larger text for clarity */
-  line-height: 1.5;
 }
 
-td {
-  padding: 14px 10px;
-  /* Increased padding for better spacing */
-  border: 1px solid #444;
-  word-wrap: break-word;
-}
-
-/* Labels have grey text on a dark background */
-.label {
-  text-align: right;
-  padding-right: 10px;
-  color: #475268;
-}
-
-/* All td cells that are not labels display blue text */
-.table-container table td:not(.label) {
-  color: #435bc7;
+:host .panel h2 {
+  margin-bottom: 15px
 }
 
 /* Back Button Styling */
 .back-btn {
   display: inline-block;
   cursor: pointer;
-  padding: 2px;
-  /* This determines the border thickness */
+  padding: 2px; // Determines the border thickness
   border-radius: 8px;
-  /* Outer container with rounded corners */
   background: linear-gradient(90deg, #435bc7, #120a8f);
-  /* Gradient border */
   text-decoration: none;
-  margin-top: 20px;
+  margin-left: 10px
 }
 
 .btn-content {
   display: inline-flex;
   align-items: center;
-  border-radius: 6px;
-  /* Slightly smaller to reveal the border */
+  border-radius: 6px; // Slightly smaller to reveal the gradient border
   padding: 6px 12px;
   color: #f0f4fa;
   background-color: #1e1e1e;
-  /* Black inner background */
   font-size: 14px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }

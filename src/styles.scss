@@ -1,1 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
+/* shared-styles.scss */
+
+/* Panel style: black background, rounded corners, and shadow */
+.panel {
+  flex: 1;
+  background-color: #000;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #475268;
+}
+
+/* Panel header styling */
+.panel h2 {
+  font-size: 20px;
+  font-weight: normal;
+  color: #435bc7;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #444;
+  padding-left: 8px;
+  padding-bottom: 10px;
+}
+
+/* Container that holds a list of fields */
+.fields-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+  padding-right: 15px;
+  gap: 10px; // Space between each field
+}
+
+/* Each field: a vertical stack of label and value */
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label styling: for the field title */
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #475268;
+  margin-bottom: 4px; // Spacing between label and value
+}
+
+/* Value styling: for the actual content */
+.value {
+  font-size: 16px;
+  color: #435bc7;
+}
+
+/* Separator line */
+.separator {
+  border-top: 2px solid #444;
+  margin: 15px 0; // Space above and below the line
+}
+
+/* Gradient text effect */
+.gradient-text {
+  display: inline-block;
+  background: linear-gradient(90deg, #435bc7, #120a8f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
