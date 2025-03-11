@@ -40,10 +40,10 @@
                 </div>
               </div>
             </div>
-            <!-- Third Column: Detail Button -->
+            <!-- Third Column: Expand Button -->
             <div class="column column-button">
               <a class="detail-btn" (click)="togglePartialBlocks(idx)">
-                <span class="btn-content">Details</span>
+                <span class="btn-content">Expand</span>
               </a>
             </div>
           </div>
@@ -67,7 +67,8 @@
                 <div class="field">
                   <div class="label" style="text-align: left">Block Hash</div>
                   <div class="value">
-                    <span class="gradient-text clickable">{{ partialBlock.block_hash | truncateMiddle: 8 }}</span>
+                    <span class="gradient-text clickable" (click)="goToPartialBlock(partialBlock)">
+                      {{ partialBlock.block_hash | truncateMiddle: 8 }}</span>
                   </div>
                 </div>
               </div>

@@ -67,6 +67,36 @@
   -webkit-text-fill-color: transparent;
 }
 
+/* Back Button Styling */
+.back-btn {
+  display: inline-block;
+  cursor: pointer;
+  padding: 2px; // Determines the border thickness
+  border-radius: 8px;
+  background: linear-gradient(90deg, #435bc7, #120a8f);
+  text-decoration: none;
+  margin-left: 10px
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 6px; // Slightly smaller to reveal the gradient border
+  padding: 6px 12px;
+  color: #f0f4fa;
+  background-color: #1e1e1e;
+  font-size: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-content:hover {
+  background-color: #435bc7;
+}
+
+.arrow {
+  margin-right: 8px; // Spacing between arrow and text
+}
+
 /* Clickable values */
 .clickable {
   cursor: pointer;
@@ -84,4 +114,11 @@
   bottom: 0;
   height: 1px;
   background-color: #435bc7;
+}
+
+/* General error-style */
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
 }

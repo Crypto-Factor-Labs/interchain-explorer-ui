@@ -40,13 +40,19 @@ export class MasterBlocksComponent implements OnInit {
     });
   }
 
-  // Open the page that shows the data of a MasterBlock
-  goToMasterBlock(block: any): void {
-    this.router.navigate(['/masterblock'], { state: { block } });
-  }
-
+  // Toggle visibility of PartialBlocks for the clicked MasterBlock
   togglePartialBlocks(idx: number): void {
-    // Toggle visibility of PartialBlocks for the clicked MasterBlock
     this.blockIsExpanded[idx] = !this.blockIsExpanded[idx];
   }
+
+  // Open the page that shows the data of a MasterBlock
+  goToMasterBlock(masterBlock: any): void {
+    this.router.navigate(['/masterblock'], { state: { masterBlock } });
+  }
+
+  // Open the page that shows the data of a PartialBlock
+  goToPartialBlock(partialBlock: any): void {
+    this.router.navigate(['/partialblock'], { state: { partialBlock } });
+  }
+
 }

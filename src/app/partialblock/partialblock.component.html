@@ -1,0 +1,91 @@
+<div *ngIf="partialBlock">
+  <div class="panel">
+    <h2>Partial Block</h2>
+    <div class="fields-container">
+      <div class="field">
+        <div class="label">Chain ID</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.chain_id }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Height</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.height }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Hash</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.block_hash }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Master Block Hash</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.master_block_hash }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Mempool Epoch</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.mempool_epoch }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Txn Root</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.txn_root }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Source Txn Hash</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.source_txn_hash }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Commit Txn Hash</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.commit_txn_hash }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Commit Proof</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.commit_proof }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Confirmed</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.confirmed }}</span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="label">Created At</div>
+        <div class="value">
+          <span class="gradient-text">{{ partialBlock.created_at }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Separator line -->
+    <div class="separator"></div>
+
+    <!-- Back Button -->
+    <a class="back-btn" (click)="goBack()">
+      <span class="btn-content">
+        <span class="arrow">&#8592;</span> Back
+      </span>
+    </a>
+  </div>
+</div>
+
+<ng-template #noInput>
+  <p>No input provided. Please supply the PartialBlock data.</p>
+</ng-template>
+
+<div *ngIf="errMsg" class="error">
+  <p>Error: {{ errMsg }}</p>
+</div>
