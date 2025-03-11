@@ -66,3 +66,22 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* Clickable values */
+.clickable {
+  cursor: pointer;
+  position: relative; // Needed for positioning the bottom border
+  display: inline-block; // Ensure it's inline and takes the correct width
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Mimic the underline using a bottom border */
+.clickable:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: #435bc7;
+}

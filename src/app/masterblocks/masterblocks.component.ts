@@ -15,8 +15,9 @@ import { SharedModule } from '../shared/shared.module';
 })
 export class MasterBlocksComponent implements OnInit {
   masterBlocks!: any[];
-  dummyTransactions: any[] = [];
-  errMsg: string = '';  // For displaying error messages if the data retrieval fails
+  blockIsExpanded!: boolean[]  // For tracking for which MasterBlock the PartialBlocks are shown
+  dummyTransactions!: any[];
+  errMsg: string = '';         // For displaying error messages if the data retrieval fails
 
   constructor(
     private router: Router,
@@ -24,16 +25,17 @@ export class MasterBlocksComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Retrieve MasterBlock data on component load
-    this.backendService.getMasterBlocks(5).pipe(
+    // Retrieve MasterBlock data (including the related PartialBlocks) on component load
+    this.backendService.getMasterBlocks(5, 0, true).pipe(
       catchError((error) => {
         this.errMsg = 'Failed to load MasterBlocks';
         console.error('Error loading MasterBlock data:', error);
         return of(null);  // Return a null observable to continue the execution
       })
-    ).subscribe((data: any) => {
-      if (data) {
-        this.masterBlocks = data;
+    ).subscribe((blocks: any) => {
+      if (blocks) {
+        this.masterBlocks = blocks;
+        this.blockIsExpanded = new Array(blocks.length).fill(false);
       }
     });
   }
@@ -41,5 +43,10 @@ export class MasterBlocksComponent implements OnInit {
   // Open the page that shows the data of a MasterBlock
   goToMasterBlock(block: any): void {
     this.router.navigate(['/masterblock'], { state: { block } });
+  }
+
+  togglePartialBlocks(idx: number): void {
+    // Toggle visibility of PartialBlocks for the clicked MasterBlock
+    this.blockIsExpanded[idx] = !this.blockIsExpanded[idx];
   }
 }

@@ -1,0 +1,26 @@
+// src/app/models/master-chain.interface.ts
+
+export interface MasterChainBlock {
+  block_hash: string;
+  height: number;
+  timestamp: string;
+  merkle_root: string;
+  block_mint_transaction: string;
+  created_at: string;
+  partialBlocks: PartialChainBlock[];  // Array of PartialChainBlock data
+  showPartialBlocks?: boolean;  // Flag for controlling the visibility of PartialBlocks
+}
+
+export interface PartialChainBlock {
+  chain_id: number;
+  height: number;
+  block_hash: string;
+  master_block_hash: string;
+  mempool_epoch: number;
+  txn_root: string;
+  source_txn_hash: string;
+  commit_txn_hash: string;
+  commit_proof: string;
+  confirmed: boolean;
+  created_at: string;
+}

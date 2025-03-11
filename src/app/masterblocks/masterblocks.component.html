@@ -4,7 +4,7 @@
     <div class="panel panel-left">
       <h2>Latest Master Blocks</h2>
       <div class="blocks-list">
-        <div class="block-item" *ngFor="let block of masterBlocks">
+        <div class="block-item" *ngFor="let block of masterBlocks; let idx = index">
           <div class="block-columns">
             <!-- Left Column: Image + Text (Height and Duration) -->
             <div class="column column-left">
@@ -15,7 +15,9 @@
                 <div class="block-info">
                   <div class="field">
                     <div class="value">
-                      <span class="gradient-text">{{ block.height }}</span>
+                      <span class="gradient-text clickable" (click)="goToMasterBlock(block)">
+                        {{ block.height }}
+                      </span>
                     </div>
                   </div>
                   <div class="field">
@@ -31,15 +33,46 @@
               <div class="field">
                 <div class="label">Hash</div>
                 <div class="value">
-                  <span class="gradient-text">{{ block.block_hash | truncateMiddle: 8 }}</span>
+                  <!-- Clicking the block hash triggers the page navigation -->
+                  <span class="gradient-text clickable" (click)="goToMasterBlock(block)">
+                    {{ block.block_hash | truncateMiddle: 8 }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- Third Column: Detail Button -->
+            <div class="column column-button">
+              <a class="detail-btn" (click)="togglePartialBlocks(idx)">
+                <span class="btn-content">Details</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- PartialBlocks section that is conditionally displayed below the block-columns -->
+          <div *ngIf="blockIsExpanded[idx]" class="partial-blocks-section">
+            <div *ngFor="let partialBlock of block.partialBlocks">
+              <div class="partial-block-info">
+                <div class="field">
+                  <div class="label">Chain ID</div>
+                  <div class="value">
+                    <span class="gradient-text">{{ partialBlock.chain_id }}</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="label">Height</div>
+                  <div class="value">
+                    <span class="gradient-text">{{ partialBlock.height }}</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="label" style="text-align: left">Block Hash</div>
+                  <div class="value">
+                    <span class="gradient-text clickable">{{ partialBlock.block_hash | truncateMiddle: 8 }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Detail button -->
-          <a class="detail-btn" (click)="goToMasterBlock(block)">
-            <span class="btn-content">Detail</span>
-          </a>
         </div>
       </div>
     </div>

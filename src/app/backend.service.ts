@@ -15,11 +15,23 @@ export class BackendService {
     return this.http.get(`${this.apiUrl}/masterchain/latest-block`);
   }
 
-  getMasterBlocks(nr: number, skip?: number): Observable<any> {
+  getMasterBlocks(nr: number, skip?: number, includePartialBlocks?: boolean): Observable<any> {
+
     let params = new HttpParams().set('nr', nr.toString());
+
+    // If `skip` is provided, add it to the params
     if (skip !== undefined) {
       params = params.set('skip', skip.toString());
     }
+
+    console.log(`includePartialBlocks = ${includePartialBlocks}`);
+
+    // If `includePartialBlocks` is provided, add it to the params
+    if (includePartialBlocks !== undefined) {
+      params = params.set('includePartialBlocks', includePartialBlocks.toString());
+    }
+
+    // Make the GET request with the modified params
     return this.http.get(`${this.apiUrl}/masterchain/blocks`, { params });
   }
 
