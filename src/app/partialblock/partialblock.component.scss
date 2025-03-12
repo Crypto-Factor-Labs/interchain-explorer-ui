@@ -10,10 +10,32 @@
 
 // Make the panel as wide as necessary and center it
 :host .panel {
+  flex: 0 0 auto;
   width: max-content;
   margin: 0 auto;
 }
 
 :host .panel h2 {
   margin-bottom: 15px
+}
+
+/* Override the .field style to display as a row for two-column layout */
+.field {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Adjust the label for a fixed width and right alignment */
+.label {
+  flex: 1;
+  min-width: 130px;
+  text-align: right;
+  margin-bottom: 0; // remove bottom margin from global vertical style
+  padding-right: 1rem; // add spacing between label and value
+}
+
+/* Adjust the value to take up remaining space */
+.value {
+  flex: 5; // occupies twice as much space as the label
+  text-align: left;
 }
