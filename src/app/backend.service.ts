@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'  // Makes the BackendService available throughout the application,
 })                    // no need to specify it explicitly as provider in other modules.
 export class BackendService {
-  private apiUrl = 'http://localhost:3000/api';  // URL to the API of the InterChain-Backend
+  private apiUrl = 'http://192.168.9.100:3000/api';  // URL to the API of the InterChain-Backend
 
   constructor(private http: HttpClient) { }
 
