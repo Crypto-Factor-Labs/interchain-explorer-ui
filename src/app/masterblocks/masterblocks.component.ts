@@ -55,4 +55,15 @@ export class MasterBlocksComponent implements OnInit {
     this.router.navigate(['/partialblock'], { state: { partialBlock } });
   }
 
+  getChainImage(chainId: number): string {
+    switch (chainId) {
+      case 1130:
+      case 1131:
+        return 'assets/images/defichain.png';
+      case 18500:
+        return 'assets/images/partisia.png';
+      default:
+        return 'assets/images/interchain.png';
+    }
+  }
 }

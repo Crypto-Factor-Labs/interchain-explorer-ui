@@ -10,13 +10,14 @@
             <div class="column column-left">
               <div class="left-column-content">
                 <div class="block-image">
-                  <img src="assets/images/block.png" alt="Block Image" />
+                  <img src="assets/images/interchain.png" alt="Interchain Image" />
                 </div>
                 <div class="block-info">
                   <div class="field">
                     <div class="value">
+                      <!-- Prepend the height with "M-" -->
                       <span class="gradient-text clickable" (click)="goToMasterBlock(block)">
-                        {{ block.height }}
+                        M-{{ block.height }}
                       </span>
                     </div>
                   </div>
@@ -56,16 +57,12 @@
           <div *ngIf="blockIsExpanded[idx]" class="partial-blocks-section">
             <div *ngFor="let partialBlock of block.partialBlocks">
               <div class="partial-block-info">
-                <div class="field">
-                  <div class="label">Chain ID</div>
-                  <div class="value">
-                    <span class="gradient-text">{{ partialBlock.chain_id }}</span>
-                  </div>
-                </div>
+                <!--
                 <div class="field">
                   <div class="label">Height</div>
                   <div class="value">
-                    <span class="gradient-text">{{ partialBlock.height }}</span>
+                    <!-- Prepend the height with "Z-" and append the chain_id --
+                    <span class="gradient-text">Z-{{ partialBlock.height }}-{{ partialBlock.chain_id }}</span>
                   </div>
                 </div>
                 <div class="field">
@@ -73,6 +70,53 @@
                   <div class="value">
                     <span class="gradient-text clickable" (click)="goToPartialBlock(partialBlock)">
                       {{ partialBlock.block_hash | truncateMiddle: 8 }}</span>
+                  </div>
+                </div>
+                -->
+                <div class="block-columns">
+                  <!-- Left Column: Image + Text (Height and Duration) -->
+                  <div class="column column-left">
+                    <div class="left-column-content">
+                      <div class="block-image">
+                        <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Image" />
+                      </div>
+                      <div class="block-info">
+                        <div class="field">
+                          <div class="value">
+                            <!-- Prepend the height with "Z-" and append the chain_id -->
+                            <span class="gradient-text clickable" (click)="goToPartialBlock(partialBlock)">
+                              Z-{{ partialBlock.height }}-{{ partialBlock.chain_id}}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="field">
+                          <!-- PartialBlock does not have a timestamp, use the one from the MasterBlock -->
+                          <div class="label">
+                            {{ block.timestamp | timeAgo }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Right Column: Hash -->
+                  <div class="column column-right">
+                    <div class="field">
+                      <div class="label">Hash</div>
+                      <div class="value">
+                        <!-- Clicking the block hash triggers the page navigation -->
+                        <span class="gradient-text clickable" (click)="goToPartialBlock(partialBlock)">
+                          {{ partialBlock.block_hash | truncateMiddle: 8 }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="label" style="margin-right: 10px;">Confirmed</div>
+                    <div class="value">
+                      <span class="gradient-text">
+                        {{ partialBlock.confirmed }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -83,7 +127,7 @@
     </div>
 
     <!-- Right Panel: Dummy Transactions List -->
-    <div class="panel panel-right">
+    <div class=" panel panel-right">
       <h2>Latest Transactions</h2>
       <div class="transactions-list">
         <div class="transaction-item" *ngFor="let tx of dummyTransactions">
