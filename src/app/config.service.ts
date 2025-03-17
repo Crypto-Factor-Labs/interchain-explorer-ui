@@ -1,0 +1,41 @@
+import { Injectable } from '@angular/core';
+import * as Joi from 'joi-browser';
+import { environment } from '../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ConfigService {
+  private config = environment;
+
+  constructor() {
+    this.validateConfig();
+  }
+
+  private validateConfig(): void {
+    // Define a Joi schema for the environment variables
+    const schema = Joi.object({
+      APP_IP: Joi.string().ip().required(),
+      APP_PORT: Joi.number().min(1).max(65535).default(3000),
+    }).unknown();  // Also allow other variables
+
+    // Validate the config object against the schema
+    const { error, value } = schema.validate(this.config);
+
+    if (error) {
+      throw new Error(`🛑 Invalid environment configuration: ${error.message}`);
+    } else {
+      console.log('✅ Environment configuration validated successfully.');
+      this.config = value;  // Update the config with any defaults/transformed values from Joi
+    }
+  }
+
+  // Getters for the configuration properties
+  get appIp(): string {
+    return this.config.APP_IP;
+  }
+
+  get appPort(): number {
+    return this.config.APP_PORT;
+  }
+}
