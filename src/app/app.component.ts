@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ConfigService } from './config.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,7 @@ import { RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'INTERCHAIN Explorer';
+
+  // The constructor of ConfigService will run, which validates the configuration
+  constructor(private config: ConfigService) { }
 }

@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'  // Makes the BackendService available throughout the application,
 })                    // no need to specify it explicitly as provider in other modules.
 export class BackendService {
-  private apiUrl = 'http://192.168.9.100:3000/api';  // URL to the API of the InterChain-Backend
+  private apiUrl: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService
+  ) {
+    // URL to the API of the InterChain-Backend
+    this.apiUrl = `http://${this.config.appIp}:${this.config.appPort}/api`;
+  }
 
   // Methods to retrieve indexed MasterBlocks (i.e. blocks from the MasterChain)
   getLatestMasterBlock(): Observable<any> {
@@ -23,8 +30,6 @@ export class BackendService {
     if (skip !== undefined) {
       params = params.set('skip', skip.toString());
     }
-
-    console.log(`includePartialBlocks = ${includePartialBlocks}`);
 
     // If `includePartialBlocks` is provided, add it to the params
     if (includePartialBlocks !== undefined) {
