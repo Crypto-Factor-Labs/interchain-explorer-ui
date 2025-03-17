@@ -6,7 +6,7 @@ export interface MasterChainBlock {
   timestamp: string;
   merkle_root: string;
   block_mint_transaction: string;
-  created_at: string;
+  indexed_at: string;
   partialBlocks: PartialChainBlock[];  // Array of PartialChainBlock data
   showPartialBlocks?: boolean;  // Flag for controlling the visibility of PartialBlocks
 }
@@ -22,5 +22,5 @@ export interface PartialChainBlock {
   commit_txn_hash: string;
   commit_proof: string;
   confirmed: boolean;
-  created_at: string;
+  indexed_at: string;
 }
