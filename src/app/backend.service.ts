@@ -14,7 +14,7 @@ export class BackendService {
     private config: ConfigService
   ) {
     // URL to the API of the InterChain-Backend
-    this.apiUrl = `http://${this.config.appIp}:${this.config.appPort}/api`;
+    this.apiUrl = `${this.config.appBaseUrl}/api`;
   }
 
   // Methods to retrieve indexed MasterBlocks (i.e. blocks from the MasterChain)

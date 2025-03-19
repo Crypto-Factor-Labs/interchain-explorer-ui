@@ -15,8 +15,7 @@ export class ConfigService {
   private validateConfig(): void {
     // Define a Joi schema for the environment variables
     const schema = Joi.object({
-      APP_IP: Joi.string().ip().required(),
-      APP_PORT: Joi.number().min(1).max(65535).default(3000),
+      APP_BASE_URL: Joi.string().uri().required(),
     }).unknown();  // Also allow other variables
 
     // Validate the config object against the schema
@@ -31,11 +30,7 @@ export class ConfigService {
   }
 
   // Getters for the configuration properties
-  get appIp(): string {
-    return this.config.APP_IP;
-  }
-
-  get appPort(): number {
-    return this.config.APP_PORT;
+  get appBaseUrl(): string {
+    return this.config.APP_BASE_URL;
   }
 }
