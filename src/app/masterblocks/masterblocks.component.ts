@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';  // To access ngIf etc in HTML
 import { Router, RouterModule } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { BackendService } from '../backend.service';
 import { SharedModule } from '../shared/shared.module';
+import { BackendService } from '../backend.service';
 
 @Component({
   selector: 'app-masterblocks',

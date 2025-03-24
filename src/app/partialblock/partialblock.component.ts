@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';  // CommonModule to access ngIf etc in HTML
+import { SharedModule } from '../shared/shared.module';
 import { PartialChainBlock } from '../shared/master-chain.interface';
 
 @Component({
   selector: 'app-partialblock',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './partialblock.component.html',
   styleUrls: ['./partialblock.component.scss']
 })

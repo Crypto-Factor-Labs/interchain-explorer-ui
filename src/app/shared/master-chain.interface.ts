@@ -1,8 +1,8 @@
-// src/app/models/master-chain.interface.ts
+import BN from 'bn.js'
 
 export interface MasterChainBlock {
   block_hash: string;
-  height: number;
+  height: BN;
   timestamp: string;
   merkle_root: string;
   block_mint_transaction: string;
@@ -13,7 +13,7 @@ export interface MasterChainBlock {
 
 export interface PartialChainBlock {
   chain_id: number;
-  height: number;
+  height: BN;
   block_hash: string;
   master_block_hash: string;
   mempool_epoch: number;
