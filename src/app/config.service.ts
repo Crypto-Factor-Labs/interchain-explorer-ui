@@ -16,6 +16,7 @@ export class ConfigService {
     // Define a Joi schema for the environment variables
     const schema = Joi.object({
       APP_BASE_URL: Joi.string().uri().required(),
+      APP_POLL_FREQ: Joi.number().min(0).default(60000),
     }).unknown();  // Also allow other variables
 
     // Validate the config object against the schema
@@ -32,5 +33,9 @@ export class ConfigService {
   // Getters for the configuration properties
   get appBaseUrl(): string {
     return this.config.APP_BASE_URL;
+  }
+
+  get appPollFreq(): number {
+    return this.config.APP_POLL_FREQ;
   }
 }

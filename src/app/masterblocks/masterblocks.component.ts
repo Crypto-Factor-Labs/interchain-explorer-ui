@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';  // To access ngIf etc in HTML
 import { Router, RouterModule } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ConfigService } from '../config.service';
 import { SharedModule } from '../shared/shared.module';
 import { BackendService } from '../backend.service';
 
@@ -18,26 +19,42 @@ export class MasterBlocksComponent implements OnInit {
   blockIsExpanded!: boolean[]  // For tracking for which MasterBlock the PartialBlocks are shown
   dummyTransactions!: any[];
   errMsg: string = '';         // For displaying error messages if the data retrieval fails
+  private pollingFreq: number = this.config.appPollFreq;  // In milliseconds
+  private pollingTimeout: any;
 
   constructor(
     private router: Router,
-    private backendService: BackendService
+    private config: ConfigService,
+    private backendService: BackendService,
   ) { }
 
   ngOnInit(): void {
-    // Retrieve MasterBlock data (including the related PartialBlocks) on component load
+    this.refreshData();
+  }
+
+  refreshData(): void {
+    // Fetch MasterBlock data (including the related PartialBlocks)
+    //console.log(">>> refreshData");
     this.backendService.getMasterBlocks(5, 0, true).pipe(
       catchError((error) => {
         this.errMsg = 'Failed to load MasterBlocks';
         console.error('Error loading MasterBlock data:', error);
+        this.pollingTimeout = setTimeout(() => this.refreshData(), this.pollingFreq);  // Schedule the next refresh
         return of(null);  // Return a null observable to continue the execution
       })
     ).subscribe((blocks: any) => {
       if (blocks) {
         this.masterBlocks = blocks;
         this.blockIsExpanded = new Array(blocks.length).fill(false);
+        this.pollingTimeout = setTimeout(() => this.refreshData(), this.pollingFreq);  // Schedule the next refresh
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.pollingTimeout) {
+      clearTimeout(this.pollingTimeout);
+    }
   }
 
   // Toggle visibility of PartialBlocks for the clicked MasterBlock
