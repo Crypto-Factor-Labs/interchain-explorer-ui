@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { SharedModule } from '../shared/shared.module';
 import { BackendService } from '../backend.service';
+import { MasterChainBlock } from '../shared/master-chain.interface'
 
 @Component({
   selector: 'app-masterblocks',
@@ -16,9 +17,9 @@ import { BackendService } from '../backend.service';
 })
 export class MasterBlocksComponent implements OnInit {
   masterBlocks!: any[];
-  blockIsExpanded!: boolean[]  // For tracking for which MasterBlock the PartialBlocks are shown
+  expandedBlocks: { [id: string]: boolean } = {}; // For tracking for which MasterBlock the PartialBlocks are shown
   dummyTransactions!: any[];
-  errMsg: string = '';         // For displaying error messages if the data retrieval fails
+  errMsg: string = '';  // For displaying error messages if the data retrieval fails
   private pollingFreq: number = this.config.appPollFreq;  // In milliseconds
   private pollingTimeout: any;
 
@@ -45,7 +46,6 @@ export class MasterBlocksComponent implements OnInit {
     ).subscribe((blocks: any) => {
       if (blocks) {
         this.masterBlocks = blocks;
-        this.blockIsExpanded = new Array(blocks.length).fill(false);
         this.pollingTimeout = setTimeout(() => this.refreshData(), this.pollingFreq);  // Schedule the next refresh
       }
     });
@@ -58,8 +58,13 @@ export class MasterBlocksComponent implements OnInit {
   }
 
   // Toggle visibility of PartialBlocks for the clicked MasterBlock
-  togglePartialBlocks(idx: number): void {
-    this.blockIsExpanded[idx] = !this.blockIsExpanded[idx];
+  togglePartialBlocks(blockHash: string): void {
+    this.expandedBlocks[blockHash] = !this.expandedBlocks[blockHash];
+  }
+
+  // Tracking function used by ngFor to see if a MasterBlock is expanded
+  trackByBlockHash(index: number, block: MasterChainBlock): string {
+    return block.block_hash;
   }
 
   // Open the page that shows the data of a MasterBlock

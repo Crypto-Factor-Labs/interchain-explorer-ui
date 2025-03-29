@@ -4,7 +4,8 @@
     <div class="panel panel-left">
       <h2>Latest Master Blocks</h2>
       <div class="blocks-list">
-        <div class="block-item" *ngFor="let block of masterBlocks; let idx = index">
+        <!-- Track which MasterBlocks are expanded -->
+        <div class="block-item" *ngFor="let block of masterBlocks; trackBy: trackByBlockHash">
           <div class="block-columns">
             <!-- Left Column: Logo + Text (Height and Duration) -->
             <div class="column column-left">
@@ -44,7 +45,7 @@
             </div>
             <!-- Third Column: Expand Button -->
             <div class="column column-button">
-              <a class="expand-btn" (click)="togglePartialBlocks(idx)">
+              <a class="expand-btn" (click)="togglePartialBlocks(block.block_hash)">
                 <span class="btn-content">
                   <!-- Icon before the text -->
                   <i class="fa fa-expand" style="margin-right: 5px;"></i>
@@ -54,8 +55,8 @@
             </div>
           </div>
 
-          <!-- PartialBlocks section that is conditionally displayed below the block-columns -->
-          <div *ngIf="blockIsExpanded[idx]" class="partial-blocks-section">
+          <!-- PartialBlocks section that is conditionally displayed below the MasterBlock-columns -->
+          <div *ngIf="expandedBlocks[block.block_hash]" class="partial-blocks-section">
             <div *ngFor="let partialBlock of block.partialBlocks">
               <div class="partial-block-info">
                 <div class="block-columns">
