@@ -32,7 +32,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #000;
-  padding: 15px 10px 5px 10px; // top, right, bottom, left
+  padding: 10px 10px 0px 10px; // top, right, bottom, left
   color: #475268;
   border-bottom: 1px solid #444;
 }
@@ -75,8 +75,14 @@
   flex: 1;
 }
 
+/* Additional spacing for the first field (Hash) */
+.column-right .field:first-of-type {
+  margin-top: 8px;
+}
+
 /* Field styling */
 .field {
+  margin-top: 3px;
   margin-bottom: 10px;
 }
 
@@ -99,16 +105,17 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Detail button with gradient border */
-.detail-btn {
+/* Expand button with gradient border */
+.expand-btn {
   display: inline-block;
   cursor: pointer;
+  margin-top: 5px;
   padding: 1px; // Determines the width of the border
   border-radius: 4px;
   background: linear-gradient(90deg, #8EB6F6, #435bc7);
 }
 
-.detail-btn .btn-content {
+.expand-btn .btn-content {
   display: inline-flex;
   align-items: center;
   border-radius: 4px;
@@ -120,26 +127,38 @@
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.detail-btn .btn-content:hover {
+.expand-btn .btn-content:hover {
   background-color: #435bc7;
 }
 
-/* Image styling */
-.block-image {
+/* Logo styling */
+.logo-pane {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(to right, #1D273A, #081021);
+  position: relative; // To position the logo inside it
+  border-radius: 8px;
   margin-top: -10px;
   margin-right: 10px;
-
-  img {
-    width: 48px;
-    height: 48px;
-    object-fit: cover;
-  }
 }
 
-/* Optional: for tweaking spacing for the block info */
+.logo-pane-blue {
+  background: linear-gradient(to right, #3399FF, #3333CC);
+}
+
+/* Note: width and height must be set in-line in the HTML */
+.logo-img {
+  // Center the image
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .block-info {
   display: flex;
   flex-direction: column;
+  margin-top: 5px;
 }
 
 .partial-blocks-section {

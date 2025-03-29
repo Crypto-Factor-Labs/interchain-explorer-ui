@@ -76,11 +76,11 @@ export class MasterBlocksComponent implements OnInit {
     switch (chainId) {
       case 1130:
       case 1131:
-        return 'assets/images/defichain.png';
+        return 'assets/images/defichain_logo.png';
       case 18500:
-        return 'assets/images/partisia.png';
+        return 'assets/images/partisia_logo.png';
       default:
-        return 'assets/images/interchain.png';
+        return 'assets/images/interchain_logo.png';
     }
   }
 }

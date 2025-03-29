@@ -6,11 +6,12 @@
       <div class="blocks-list">
         <div class="block-item" *ngFor="let block of masterBlocks; let idx = index">
           <div class="block-columns">
-            <!-- Left Column: Image + Text (Height and Duration) -->
+            <!-- Left Column: Logo + Text (Height and Duration) -->
             <div class="column column-left">
               <div class="left-column-content">
-                <div class="block-image">
-                  <img src="assets/images/interchain.png" alt="Interchain Image" />
+                <div class="logo-pane">
+                  <img src="assets/images/interchain_logo.png" alt="Interchain Logo" class="logo-img"
+                    style="width: 48px; height: 48px;" />
                 </div>
                 <div class="block-info">
                   <div class="field">
@@ -43,7 +44,7 @@
             </div>
             <!-- Third Column: Expand Button -->
             <div class="column column-button">
-              <a class="detail-btn" (click)="togglePartialBlocks(idx)">
+              <a class="expand-btn" (click)="togglePartialBlocks(idx)">
                 <span class="btn-content">
                   <!-- Icon before the text -->
                   <i class="fa fa-expand" style="margin-right: 5px;"></i>
@@ -61,8 +62,11 @@
                   <!-- Left Column: Image + Text (Height and Duration) -->
                   <div class="column column-left">
                     <div class="left-column-content">
-                      <div class="block-image">
-                        <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Image" />
+                      <div class="chain-logo">
+                        <div class="logo-pane">
+                          <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Logo" class="logo-img"
+                            style="width: 32px; height: 32px;" />
+                        </div>
                       </div>
                       <div class="block-info">
                         <div class="field">
