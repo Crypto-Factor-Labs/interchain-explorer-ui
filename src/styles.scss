@@ -1,7 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
-/* shared-styles.scss */
-/* For Angular */
 @import "font-awesome/css/font-awesome.min.css";
+
+body {
+  background-color: #475268;
+}
 
 /* Panel style: black background, rounded corners, and shadow */
 .panel {

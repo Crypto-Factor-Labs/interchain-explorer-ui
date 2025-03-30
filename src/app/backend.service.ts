@@ -13,7 +13,7 @@ export class BackendService {
     private http: HttpClient,
     private config: ConfigService
   ) {
-    // URL to the API of the InterChain-Backend
+    // URL to the API of the INTERCHAIN Explorer backend
     this.apiUrl = `${this.config.appBaseUrl}/api`;
   }
 
@@ -40,5 +40,8 @@ export class BackendService {
     return this.http.get(`${this.apiUrl}/masterchain/blocks`, { params });
   }
 
-  // Add more methods to interact with other API endpoints as needed
+  getStatistics(): Observable<any> {
+    console.log(">>> getStatistics")
+    return this.http.get(`${this.apiUrl}/statistics`);
+  }
 }

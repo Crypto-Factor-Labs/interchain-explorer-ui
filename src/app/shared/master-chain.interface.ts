@@ -8,7 +8,6 @@ export interface MasterChainBlock {
   block_mint_transaction: string;
   indexed_at: string;
   partialBlocks: PartialChainBlock[];  // Array of PartialChainBlock data
-  showPartialBlocks?: boolean;  // Flag for controlling the visibility of PartialBlocks
 }
 
 export interface PartialChainBlock {
@@ -23,4 +22,8 @@ export interface PartialChainBlock {
   commit_proof: string;
   confirmed: boolean;
   indexed_at: string;
+}
+
+export interface Statistics {
+  avgBlockSpeed_24hr: string;
 }

@@ -1,9 +1,6 @@
-<!-- This is where the routed component will be displayed -->
-<router-outlet></router-outlet>
+<!-- Always show the Statistics-->
+<app-statistics></app-statistics>
 
-<!-- Optional: Add a navigation link -->
-<div style="margin-top: 20px;">
-  <nav>
-    <a routerLink="/masterblock">Show latest MasterBlock</a>
-  </nav>
+<div class="content-area">
+  <router-outlet></router-outlet>
 </div>

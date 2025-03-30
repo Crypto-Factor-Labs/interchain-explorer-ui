@@ -17,7 +17,7 @@ import { MasterChainBlock } from '../shared/master-chain.interface'
 })
 export class MasterBlocksComponent implements OnInit {
   masterBlocks!: any[];
-  expandedBlocks: { [id: string]: boolean } = {}; // For tracking for which MasterBlock the PartialBlocks are shown
+  expandedBlocks: { [id: string]: boolean } = {}; // For tracking for which MasterBlocks the PartialBlocks are shown
   dummyTransactions!: any[];
   errMsg: string = '';  // For displaying error messages if the data retrieval fails
   private pollingFreq: number = this.config.appPollFreq;  // In milliseconds
