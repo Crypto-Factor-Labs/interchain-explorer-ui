@@ -3,3 +3,84 @@
   margin: 20px 20px 0px 20px;
   height: 100px;
 }
+
+.stats-panel {
+  width: 100%;
+  box-sizing: border-box;
+
+  .stats-columns {
+    display: flex; // Each column will naturally divide the width equally
+  }
+
+  .column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #444; // Vertical separator
+
+    // Remove the right border on the last column
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .cell {
+    position: relative; // Needed for positioning the pseudo-element
+    padding: 10px;
+    font-size: 14px;
+
+    .cell-content {
+      display: flex;
+      align-items: center; // vertically center image and text
+    }
+
+    .cell-image {
+      max-width: 40px;
+      margin-left: 5px;
+      margin-right: 15px;
+    }
+
+    .cell-heading {
+      color: #435bc7;
+      font-size: 12px;
+      font-weight: bold;
+      padding-bottom: 7px;
+    }
+
+    .cell-info-as-row {
+      display: flex; // Arrange items in a row
+      align-items: center; // Vertically center the items
+
+      .info-pair {
+        display: flex; // Ensure each pair is also inline
+        align-items: center;
+        margin-right: 20px; // Space between each pair
+
+        .info-label {
+          color: #475268;
+          font-weight: bold;
+          margin-right: 0.5rem; // Space between label and value
+        }
+      }
+    }
+  }
+
+  // For cells that aren’t the last cell in the column, add a pseudo-element as border
+  .cell:not(:last-child)::after {
+    content: ''; // Make sure that the pseudo-element is displayed
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    width: calc(100% - 20px); // Leave space to the left and right
+    border-bottom: 1px solid #444;
+  }
+
+
+
+  /* Override the .field style to display as a row for two-column layout *
+.field {
+  flex-direction: row;
+  //justify-content: space-between;
+}
+  */
+}

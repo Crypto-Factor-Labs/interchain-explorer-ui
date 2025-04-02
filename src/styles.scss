@@ -2,28 +2,29 @@
 
 body {
   background-color: #475268;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Panel style: black background, rounded corners, and shadow */
 .panel {
   flex: 1;
-  background-color: #000;
+  background-color: black;
+  color: white;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  color: #475268;
 }
 
 /* Panel header styling */
 .panel h2 {
   font-size: 20px;
   font-weight: normal;
-  color: #435bc7;
   margin-top: 0px;
   margin-bottom: 10px;
   border-bottom: 2px solid #444;
   padding-left: 8px;
   padding-bottom: 10px;
+  color: #435bc7;
 }
 
 /* Container that holds a list of fields */
@@ -49,10 +50,9 @@ body {
   margin-bottom: 4px; // Spacing between label and value
 }
 
-/* Value styling: for the actual content */
+/* Value styling: for the actual content *
 .value {
-  font-size: 16px;
-  color: #435bc7;
+  font-size: 20px;
 }
 
 /* Separator line */

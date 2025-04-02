@@ -1,3 +1,60 @@
 <div class="panel">
-  <div><strong>AvgBlockSpeed_24hr:</strong> {{ statistics.avgBlockSpeed_24hr }}</div>
+  <div class="stats-panel">
+    <div class="stats-columns">
+      <div class="column">
+        <div class="cell">
+          <div class="cell-content">
+            <img class="cell-image" src="..\assets\images\CFR_token.png" alt="CFR-token" />
+            <div class="cell-info">
+              <div class="cell-heading">CFR PRICE</div>
+              <span class="info-value">{{ statistics.avgBlockSpeed_24hr }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell-heading">CRYPTO FACTOR MARKET CAP ON ALL CHAINS</div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="cell">
+          <div class="cell-heading">TRANSACTIONS</div>
+        </div>
+        <div class="cell">
+          <div class="cell-heading">BLOCK SPEED</div>
+          <div class="cell-info-as-row">
+            <div class="info-pair">
+              <span class="info-label">Last 24 hours:</span>
+              <span class="info-value">{{ statistics.avgBlockSpeed_24hr }}</span>
+            </div>
+            <div class="info-pair">
+              <span class="info-label">Last 30 days:</span>
+              <span class="info-value">{{ statistics.avgBlockSpeed_24hr }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="cell">
+          <div class="cell-heading">STATISTIC 5</div>
+        </div>
+        <div class="cell">
+          <div class="cell-heading">STATISTIC 6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  <h3>Average Block Speed</h3>
+  <div class="fields-container">
+    <div class="field">
+      <div class="label">Last 24 hours</div>
+      <div class="value">{{ statistics.avgBlockSpeed_24hr }}</div>
+    </div>
+    <div class="field">
+      <div class="label">Last 30 days</div>
+      <div class="value">{{ statistics.avgBlockSpeed_24hr }}</div>
+    </div>
+  </div>
+-->
 </div>
