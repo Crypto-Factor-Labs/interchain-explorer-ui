@@ -26,5 +26,6 @@ export interface PartialChainBlock {
 
 export interface Statistics {
   cfrPriceUSD: string;
+  cfrTvlUSD: string;
   avgBlockSpeed_24hr: string;
 }

@@ -27,6 +27,7 @@
   .cell {
     position: relative; // Needed for positioning the pseudo-element
     padding: 10px;
+    padding-left: 20px;
     font-size: 14px;
 
     .cell-content {
@@ -41,10 +42,21 @@
     }
 
     .cell-heading {
+      display: flex;
+      align-items: center; // Align the icon and the text
       color: #435bc7;
       font-size: 12px;
       font-weight: bold;
       padding-bottom: 7px;
+
+      .icon-heading {
+        font-size: 20px;
+        margin-right: 8px;
+      }
+    }
+
+    .cell-value {
+      margin-left: 28px;
     }
 
     .cell-info-as-row {
