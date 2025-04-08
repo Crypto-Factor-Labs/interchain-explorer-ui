@@ -28,4 +28,5 @@ export interface Statistics {
   cfrPriceUSD: string;
   cfrTvlUSD: string;
   avgBlockSpeed_24hr: string;
+  avgBlockSpeed_30d: string;
 }

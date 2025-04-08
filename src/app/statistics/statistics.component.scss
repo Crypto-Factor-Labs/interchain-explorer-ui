@@ -1,7 +1,8 @@
 // Make the panel as wide as necessary and center it
 :host .panel {
   margin: 20px 20px 0px 20px;
-  height: 100px;
+  padding: 10px 5px;
+  height: 130px;
 }
 
 .stats-panel {
@@ -86,13 +87,4 @@
     width: calc(100% - 20px); // Leave space to the left and right
     border-bottom: 1px solid #444;
   }
-
-
-
-  /* Override the .field style to display as a row for two-column layout *
-.field {
-  flex-direction: row;
-  //justify-content: space-between;
-}
-  */
 }
