@@ -1,3 +1,5 @@
+@import '../../cf_color_palette';
+
 /* Overall page container */
 .blocks-page {
   display: flex;
@@ -29,9 +31,9 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background-color: #000;
+  background-color: black;
   padding: 10px 10px 0px 10px; // top, right, bottom, left
-  color: #475268;
+  color: $charcoal;
   border-bottom: 1px solid #444;
 }
 
@@ -84,12 +86,6 @@
   margin-bottom: 10px;
 }
 
-.label {
-  font-size: 14px;
-  margin-bottom: 4px;
-  color: #475268;
-}
-
 .value {
   font-size: 16px;
 }
@@ -97,7 +93,7 @@
 /* Reusable gradient text */
 .gradient-text {
   display: inline-block;
-  background: linear-gradient(90deg, #8EB6F6, #435bc7);
+  background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -110,7 +106,7 @@
   margin-top: 5px;
   padding: 1px; // Determines the width of the border
   border-radius: 4px;
-  background: linear-gradient(90deg, #8EB6F6, #435bc7);
+  background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
 }
 
 .expand-btn .btn-content {
@@ -118,30 +114,26 @@
   align-items: center;
   border-radius: 4px;
   padding: 5px 12px;
-  color: #f0f4fa;
+  color: $alice-blue;
   font-weight: lighter;
-  background-color: #000;
+  background-color: black;
   font-size: 13px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .expand-btn .btn-content:hover {
-  background-color: #435bc7;
+  background-color: $byzantine-blue;
 }
 
 /* Logo styling */
 .logo-pane {
   width: 48px;
   height: 48px;
-  background: linear-gradient(to right, #1D273A, #081021);
+  background: linear-gradient(to right, $oxford-blue, $rich-black);
   position: relative; // To position the logo inside it
   border-radius: 8px;
   margin-top: -10px;
   margin-right: 10px;
-}
-
-.logo-pane-blue {
-  background: linear-gradient(to right, #3399FF, #3333CC);
 }
 
 /* Note: width and height must be set in-line in the HTML */
@@ -187,7 +179,7 @@
 .transaction-item {
   background-color: #000;
   padding: 12px 20px;
-  color: #475268;
+  color: $charcoal;
   border-bottom: 1px solid #444;
 }
 

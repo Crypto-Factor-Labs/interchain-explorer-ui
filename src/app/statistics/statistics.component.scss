@@ -1,3 +1,5 @@
+@import '../../cf_color_palette';
+
 // Make the panel as wide as necessary and center it
 :host .panel {
   margin: 20px 20px 0px 20px;
@@ -45,7 +47,7 @@
     .cell-heading {
       display: flex;
       align-items: center; // Align the icon and the text
-      color: #435bc7;
+      color: $byzantine-blue;
       font-size: 12px;
       font-weight: bold;
       padding-bottom: 7px;
@@ -70,7 +72,7 @@
         margin-right: 20px; // Space between each pair
 
         .info-label {
-          color: #475268;
+          color: $charcoal;
           font-weight: bold;
           margin-right: 0.5rem; // Space between label and value
         }
