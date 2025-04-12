@@ -7,6 +7,7 @@ import { ConfigService } from '../config.service';
 import { SharedModule } from '../shared/shared.module';
 import { BackendService } from '../backend.service';
 import { MasterChainBlock } from '../shared/master-chain.interface'
+import { getChainImage } from '../shared/utils';
 
 @Component({
   selector: 'app-masterblocks',
@@ -78,14 +79,6 @@ export class MasterBlocksComponent implements OnInit {
   }
 
   getChainImage(chainId: number): string {
-    switch (chainId) {
-      case 1130:
-      case 1131:
-        return 'assets/images/defichain_logo.png';
-      case 18500:
-        return 'assets/images/partisia_logo.png';
-      default:
-        return 'assets/images/interchain_logo.png';
-    }
+    return getChainImage(chainId);  // Call the imported function
   }
 }

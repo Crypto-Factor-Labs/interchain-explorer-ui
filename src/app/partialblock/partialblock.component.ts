@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';  // CommonModule to access ngIf etc in HTML
 import { SharedModule } from '../shared/shared.module';
 import { PartialChainBlock } from '../shared/master-chain.interface';
-
+import { getChainImage } from '../shared/utils';
 @Component({
   selector: 'app-partialblock',
   standalone: true,
@@ -31,19 +31,8 @@ export class PartialBlockComponent {
   goBack(): void {
     window.history.back();
   }
+
+  getChainImage(chainId: number): string {
+    return getChainImage(chainId);  // Call the imported function
+  }
 }
-
-/*
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-partialblock',
-  standalone: true,
-  imports: [],
-  templateUrl: './partialblock.component.html',
-  styleUrl: './partialblock.component.scss'
-})
-export class PartialblockComponent {
-
-}
-*/

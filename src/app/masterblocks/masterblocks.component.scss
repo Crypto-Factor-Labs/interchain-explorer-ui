@@ -125,26 +125,6 @@
   background-color: $byzantine-blue;
 }
 
-/* Logo styling */
-.logo-pane {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(to right, $oxford-blue, $rich-black);
-  position: relative; // To position the logo inside it
-  border-radius: 8px;
-  margin-top: -10px;
-  margin-right: 10px;
-}
-
-/* Note: width and height must be set in-line in the HTML */
-.logo-img {
-  // Center the image
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .block-info {
   display: flex;
   flex-direction: column;
