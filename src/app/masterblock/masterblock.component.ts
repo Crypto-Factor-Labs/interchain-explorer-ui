@@ -1,6 +1,7 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';  // CommonModule to access ngIf etc in HTML
 import { SharedModule } from '../shared/shared.module';
+import { MasterChainBlock } from '../shared/master-chain.interface';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 /* Angular Material is used to show the MasterBlock-data in a dialog that overlays the rest of the page */
@@ -16,7 +17,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class MasterBlockComponent {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public masterBlock: any,
+    @Inject(MAT_DIALOG_DATA) public masterBlock: MasterChainBlock,
     public dialogRef: MatDialogRef<MasterBlockComponent>
   ) { }
 

@@ -1,35 +1,27 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';  // CommonModule to access ngIf etc in HTML
 import { SharedModule } from '../shared/shared.module';
 import { PartialChainBlock } from '../shared/master-chain.interface';
 import { getChainImage } from '../shared/utils';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-partialblock',
   standalone: true,
   imports: [CommonModule, SharedModule],
   templateUrl: './partialblock.component.html',
-  styleUrls: ['./partialblock.component.scss']
+  styleUrls: ['./partialblock.component.scss'],
+  encapsulation: ViewEncapsulation.None,  // In order to let the dialog be positioned
 })
 export class PartialBlockComponent {
-  @Input() partialBlock: PartialChainBlock | null = null;
-  errMsg: string = '';  // For displaying error messages if the data fetch fails
 
-  ngOnInit(): void {
-    if (history.state.partialBlock) {
-      this.partialBlock = history.state.partialBlock;
-    } else {
-      // Handle the error when no block is passed.
-      this.errMsg = 'No PartialBlock data was provided.';
-      console.error('No block data was passed to PartialBlockComponent.');
-      // Optionally, navigate back to the MasterBlocks list after a delay:
-      //setTimeout(() => {
-      //  this.router.navigate(['/masterblocks']);
-      //}, 3000);
-    }
-  }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public partialBlock: PartialChainBlock,
+    public dialogRef: MatDialogRef<PartialBlockComponent>
+  ) { }
 
-  goBack(): void {
-    window.history.back();
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 
   getChainImage(chainId: number): string {

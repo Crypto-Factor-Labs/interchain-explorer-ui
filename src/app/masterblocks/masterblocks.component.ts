@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';  // To access ngIf etc in HTML
-import { Router, RouterModule } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { SharedModule } from '../shared/shared.module';
 import { BackendService } from '../backend.service';
+import { MasterBlockComponent } from '../masterblock/masterblock.component';
 import { MasterChainBlock } from '../shared/master-chain.interface'
+import { PartialBlockComponent } from '../partialblock/partialblock.component';
+import { PartialChainBlock } from '../shared/master-chain.interface';
 import { getChainImage } from '../shared/utils';
 import { MatDialog } from '@angular/material/dialog';
-import { MasterBlockComponent } from '../masterblock/masterblock.component';
 
 @Component({
   selector: 'app-masterblocks',
   standalone: true,
-  imports: [CommonModule, RouterModule, SharedModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './masterblocks.component.html',
   styleUrl: './masterblocks.component.scss'
 })
@@ -27,7 +28,6 @@ export class MasterBlocksComponent implements OnInit {
   private pollingTimeout: any;
 
   constructor(
-    private router: Router,
     private config: ConfigService,
     private backendService: BackendService,
     private dialog: MatDialog,
@@ -73,19 +73,24 @@ export class MasterBlocksComponent implements OnInit {
 
   // Show the data of a MasterBlock in a dialog on top of the current page
   // (so no routing to a new page!)
-  showMasterBlockData(masterBlock: any): void {
-    this.dialog.open(MasterBlockComponent, {
-      data: masterBlock,
+  showMasterBlockData(block: MasterChainBlock): void {
+    this.openDialog(MasterBlockComponent, block);
+  }
+
+  // Show the data of a PartialBlock in a dialog on top of the current page
+  // (so no routing to a new page!)
+  showPartialBlockData(block: PartialChainBlock): void {
+    this.openDialog(PartialBlockComponent, block);
+  }
+
+  openDialog(component: any, data: any): void {
+    this.dialog.open(component, {
+      data: data,
       width: 'auto',
       panelClass: 'custom-dialog',
       backdropClass: 'custom-light-backdrop',
       disableClose: true  // 🔒 prevents backdrop click & ESC-key from closing
     });
-  }
-
-  // Open the page that shows the data of a PartialBlock
-  goToPartialBlock(partialBlock: any): void {
-    this.router.navigate(['/partialblock'], { state: { partialBlock } });
   }
 
   getChainImage(chainId: number): string {

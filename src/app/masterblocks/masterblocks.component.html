@@ -3,6 +3,10 @@
     <!-- Left Panel: Master Blocks List -->
     <div class="panel panel-left">
       <h2>Latest Master Blocks</h2>
+
+      <!-- Separator line -->
+      <div class="separator"></div>
+
       <div class="blocks-list">
         <!-- Track which MasterBlocks are expanded -->
         <div class="block-item" *ngFor="let block of masterBlocks; trackBy: trackByBlockHash">
@@ -73,8 +77,9 @@
                       <div class="block-info">
                         <div class="field">
                           <div class="value">
-                            <!-- Prepend the height with "Z-" and append the chain_id -->
-                            <span class="gradient-text clickable" (click)="goToPartialBlock(partialBlock)">
+                            <!-- Prepend the block height with "Z-" and append the chain_id -->
+                            <!-- Clicking on the block height opens a dialog -->
+                            <span class="gradient-text clickable" (click)="showPartialBlockData(partialBlock)">
                               Z-{{ partialBlock.height | bnHexToDec }}-{{ partialBlock.chain_id}}
                             </span>
                           </div>
@@ -93,8 +98,8 @@
                     <div class="field">
                       <div class="label">Hash</div>
                       <div class="value">
-                        <!-- Clicking the block hash triggers the page navigation -->
-                        <span class="gradient-text clickable" (click)="goToPartialBlock(partialBlock)">
+                        <!-- Clicking the block hash opens a dialog -->
+                        <span class="gradient-text clickable" (click)="showPartialBlockData(partialBlock)">
                           {{ partialBlock.block_hash | truncateMiddle: 8 }}
                         </span>
                       </div>

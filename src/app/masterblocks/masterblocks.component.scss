@@ -14,11 +14,6 @@
   gap: 20px;
 }
 
-/* Tweak panel header styling */
-.panel h2 {
-  margin-bottom: 0px;
-}
-
 /* ----- Left Panel: Blocks List ----- */
 .blocks-list {
   display: flex;
@@ -32,13 +27,20 @@
   justify-content: space-between;
   align-items: center;
   background-color: black;
-  padding: 10px 10px 0px 10px; // top, right, bottom, left
+  padding: 5px 10px 5px 10px; // top, right, bottom, left
   color: $charcoal;
   border-bottom: 1px solid #444;
+  margin-bottom: 0px
+}
+
+.block-item:first-child {
+  padding-top: 0px;
+  margin-top: -5px;
 }
 
 .block-item:last-child {
   border-bottom: none;
+  padding-bottom: 0px;
 }
 
 /* Block columns container */

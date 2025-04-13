@@ -1,12 +1,15 @@
 <div *ngIf="partialBlock">
   <div class="panel">
-    <div class="logo-title">
+    <div class="dialog-title">
       <div class="logo-pane">
         <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Logo" class="logo-img"
-          style="width: 32px; height: 32px;" />
+          style="width: 24px; height: 24px;" />
       </div>
       <h2>Partial Block</h2>
     </div>
+
+    <!-- Separator line -->
+    <div class="separator"></div>
 
     <div class="fields-container">
       <div class="field">
@@ -81,7 +84,7 @@
     <div class="separator"></div>
 
     <!-- Back Button -->
-    <a class="back-btn" (click)="goBack()">
+    <a class="back-btn" (click)="closeDialog()">
       <span class="btn-content">
         <span class="arrow">&#8592;</span> Back
       </span>
@@ -92,7 +95,3 @@
 <ng-template #noInput>
   <p>No input provided. Please supply the PartialBlock data.</p>
 </ng-template>
-
-<div *ngIf="errMsg" class="error">
-  <p>Error: {{ errMsg }}</p>
-</div>
