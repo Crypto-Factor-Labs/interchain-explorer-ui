@@ -44,7 +44,7 @@
     <div class="separator"></div>
 
     <!-- Back Button -->
-    <a class="back-btn" (click)="goBack()">
+    <a class="back-btn" (click)="closeDialog()">
       <span class="btn-content">
         <span class="arrow">&#8592;</span> Back
       </span>
@@ -55,7 +55,3 @@
 <ng-template #loading>
   <p>Loading latest block data...</p>
 </ng-template>
-
-<div *ngIf="errMsg" class="error">
-  <p>Error: {{ errMsg }}</p>
-</div>

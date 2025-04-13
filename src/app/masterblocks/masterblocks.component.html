@@ -17,8 +17,9 @@
                 <div class="block-info">
                   <div class="field">
                     <div class="value">
-                      <!-- Prepend the height with "M-" -->
-                      <span class="gradient-text clickable" (click)="goToMasterBlock(block)">
+                      <!-- Prepend the block height with "M-" -->
+                      <!-- Clicking the block height opens a dialog -->
+                      <span class="gradient-text clickable" (click)="showMasterBlockData(block)">
                         M-{{ block.height | bnHexToDec }}
                       </span>
                     </div>
@@ -36,8 +37,8 @@
               <div class="field">
                 <div class="label">Hash</div>
                 <div class="value">
-                  <!-- Clicking the block hash triggers the page navigation -->
-                  <span class="gradient-text clickable" (click)="goToMasterBlock(block)">
+                  <!-- Clicking the block hash opens a dialog -->
+                  <span class="gradient-text clickable" (click)="showMasterBlockData(block)">
                     {{ block.block_hash | truncateMiddle: 8 }}
                   </span>
                 </div>

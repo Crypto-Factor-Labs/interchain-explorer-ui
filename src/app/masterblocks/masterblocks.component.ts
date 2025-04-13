@@ -8,6 +8,8 @@ import { SharedModule } from '../shared/shared.module';
 import { BackendService } from '../backend.service';
 import { MasterChainBlock } from '../shared/master-chain.interface'
 import { getChainImage } from '../shared/utils';
+import { MatDialog } from '@angular/material/dialog';
+import { MasterBlockComponent } from '../masterblock/masterblock.component';
 
 @Component({
   selector: 'app-masterblocks',
@@ -28,6 +30,7 @@ export class MasterBlocksComponent implements OnInit {
     private router: Router,
     private config: ConfigService,
     private backendService: BackendService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -68,9 +71,16 @@ export class MasterBlocksComponent implements OnInit {
     return block.block_hash;
   }
 
-  // Open the page that shows the data of a MasterBlock
-  goToMasterBlock(masterBlock: any): void {
-    this.router.navigate(['/masterblock'], { state: { masterBlock } });
+  // Show the data of a MasterBlock in a dialog on top of the current page
+  // (so no routing to a new page!)
+  showMasterBlockData(masterBlock: any): void {
+    this.dialog.open(MasterBlockComponent, {
+      data: masterBlock,
+      width: 'auto',
+      panelClass: 'custom-dialog',
+      backdropClass: 'custom-light-backdrop',
+      disableClose: true  // 🔒 prevents backdrop click & ESC-key from closing
+    });
   }
 
   // Open the page that shows the data of a PartialBlock
