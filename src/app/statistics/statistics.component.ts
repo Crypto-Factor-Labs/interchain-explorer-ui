@@ -10,7 +10,7 @@ import { Statistics } from '../shared/master-chain.interface';
   styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent implements OnInit {
-  statistics!: Statistics;
+  statistics?: Statistics;
 
   constructor(private backendService: BackendService) { }
 
@@ -20,5 +20,4 @@ export class StatisticsComponent implements OnInit {
       this.statistics = stats;
     });
   }
-
 }

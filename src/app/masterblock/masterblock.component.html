@@ -5,7 +5,12 @@
         <img src="assets/images/interchain_logo.png" alt="Interchain Logo" class="logo-img"
           style="width: 36px; height: 36px;" />
       </div>
-      <h2>Master Block</h2>
+      <div class="title-text">
+        <h2>Master Block</h2>
+      </div>
+      <div class="close-icon" (click)="dialogRef.close()">
+        <i class="fa-solid fa-square-xmark"></i>
+      </div>
     </div>
 
     <!-- Separator line -->
@@ -14,45 +19,35 @@
     <div class="fields-container">
       <div class="field">
         <div class="label">Height</div>
-        <div class="value">
-          <span class="gradient-text">{{ masterBlock.height | bnHexToDec }}</span>
-        </div>
+        <div class="value">{{ masterBlock.height | bnHexToDec }}</div>
       </div>
       <div class="field">
         <div class="label">Hash</div>
-        <div class="value">
-          <span class="gradient-text">{{ masterBlock.block_hash }}</span>
-        </div>
+        <div class="value">{{ masterBlock.block_hash }}</div>
       </div>
       <div class="field">
         <div class="label">Timestamp</div>
-        <div class="value">
-          <span class="gradient-text">{{ masterBlock.timestamp }}</span>
-        </div>
+        <div class="value">{{ masterBlock.timestamp }}</div>
       </div>
       <div class="field">
         <div class="label">Merkle Root</div>
-        <div class="value">
-          <span class="gradient-text">{{ masterBlock.merkle_root }}</span>
-        </div>
+        <div class="value">{{ masterBlock.merkle_root }}</div>
       </div>
       <div class="field">
         <div class="label">Mint Transaction</div>
-        <div class="value">
-          <span class="gradient-text">{{ masterBlock.block_mint_transaction }}</span>
-        </div>
+        <div class="value">{{ masterBlock.block_mint_transaction }}</div>
       </div>
     </div>
 
     <!-- Separator line -->
     <div class="separator"></div>
 
-    <!-- Back Button -->
-    <a class="back-btn" (click)="closeDialog()">
-      <span class="btn-content">
-        <span class="arrow">&#8592;</span> Back
-      </span>
-    </a>
+    <!-- Close Button -->
+    <div class="button-wrapper">
+      <a class="close-btn" (click)="closeDialog()">
+        <span class="btn-content">Close</span>
+      </a>
+    </div>
   </div>
 </div>
 

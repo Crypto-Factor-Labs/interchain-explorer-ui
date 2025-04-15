@@ -25,9 +25,11 @@ body {
   color: $byzantine-blue;
 }
 
+/* Dialog title styling */
 .dialog-title {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-left: 5px;
 
   .logo-pane {
@@ -35,10 +37,59 @@ body {
     height: 36px;
   }
 
+  .title-text {
+    flex-grow: 1;
+  }
+
+  .close-icon {
+    font-size: 20px;
+    color: $glaucous;
+    cursor: pointer;
+    padding-right: 5px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $powder-blue;
+    }
+  }
+
   h2 {
     //font-size: 22px;
     font-weight: bold;
     padding-left: 0px;
+  }
+}
+
+/* Close-button Styling */
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+
+  .close-btn {
+    display: inline-block;
+    cursor: pointer;
+    padding: 2px; // Determines the border thickness
+    border-radius: 8px;
+    background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
+    margin-left: auto;
+    margin-right: auto;
+
+    .btn-content {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px; // Slightly smaller to reveal the gradient border
+      padding: 6px 12px;
+      color: $powder-blue;
+      background-color: $rich-black;
+      font-size: 14px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .btn-content:hover {
+      color: $alice-blue;
+      background-color: $byzantine-blue;
+    }
   }
 }
 
@@ -101,36 +152,6 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-/* Back Button Styling */
-.back-btn {
-  display: inline-block;
-  cursor: pointer;
-  padding: 2px; // Determines the border thickness
-  border-radius: 8px;
-  background: linear-gradient(90deg, $byzantine-blue, $ultramarine);
-  text-decoration: none;
-  margin-left: 10px
-}
-
-.btn-content {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 6px; // Slightly smaller to reveal the gradient border
-  padding: 6px 12px;
-  color: $alice-blue;
-  background-color: #1e1e1e;
-  font-size: 14px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.btn-content:hover {
-  background-color: $byzantine-blue;
-}
-
-.arrow {
-  margin-right: 8px; // Spacing between arrow and text
 }
 
 /* Clickable values */

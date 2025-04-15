@@ -116,14 +116,15 @@
   align-items: center;
   border-radius: 4px;
   padding: 5px 12px;
-  color: $alice-blue;
+  color: $powder-blue;
   font-weight: lighter;
-  background-color: black;
+  background-color: $rich-black;
   font-size: 13px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .expand-btn .btn-content:hover {
+  color: $alice-blue;
   background-color: $byzantine-blue;
 }
 

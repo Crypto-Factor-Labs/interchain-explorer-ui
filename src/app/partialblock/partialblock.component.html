@@ -5,7 +5,12 @@
         <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Logo" class="logo-img"
           style="width: 24px; height: 24px;" />
       </div>
-      <h2>Partial Block</h2>
+      <div class="title-text">
+        <h2>Partial Block</h2>
+      </div>
+      <div class="close-icon" (click)="dialogRef.close()">
+        <i class="fa-solid fa-square-xmark"></i>
+      </div>
     </div>
 
     <!-- Separator line -->
@@ -83,12 +88,12 @@
     <!-- Separator line -->
     <div class="separator"></div>
 
-    <!-- Back Button -->
-    <a class="back-btn" (click)="closeDialog()">
-      <span class="btn-content">
-        <span class="arrow">&#8592;</span> Back
-      </span>
-    </a>
+    <!-- Close Button -->
+    <div class="button-wrapper">
+      <a class="close-btn" (click)="closeDialog()">
+        <span class="btn-content">Close</span>
+      </a>
+    </div>
   </div>
 </div>
 
