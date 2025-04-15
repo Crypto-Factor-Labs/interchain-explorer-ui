@@ -5,12 +5,12 @@ import { of } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { SharedModule } from '../shared/shared.module';
 import { BackendService } from '../backend.service';
+import { DialogService } from '../shared/services/dialog.service';
 import { MasterBlockComponent } from '../masterblock/masterblock.component';
 import { MasterChainBlock } from '../shared/master-chain.interface'
 import { PartialBlockComponent } from '../partialblock/partialblock.component';
 import { PartialChainBlock } from '../shared/master-chain.interface';
 import { getChainImage } from '../shared/utils';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-masterblocks',
@@ -30,7 +30,7 @@ export class MasterBlocksComponent implements OnInit {
   constructor(
     private config: ConfigService,
     private backendService: BackendService,
-    private dialog: MatDialog,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
@@ -74,23 +74,13 @@ export class MasterBlocksComponent implements OnInit {
   // Show the data of a MasterBlock in a dialog on top of the current page
   // (so no routing to a new page!)
   showMasterBlockData(block: MasterChainBlock): void {
-    this.openDialog(MasterBlockComponent, block);
+    this.dialogService.openDialog(MasterBlockComponent, block);
   }
 
   // Show the data of a PartialBlock in a dialog on top of the current page
   // (so no routing to a new page!)
   showPartialBlockData(block: PartialChainBlock): void {
-    this.openDialog(PartialBlockComponent, block);
-  }
-
-  openDialog(component: any, data: any): void {
-    this.dialog.open(component, {
-      data: data,
-      width: 'auto',
-      panelClass: 'custom-dialog',
-      backdropClass: 'custom-light-backdrop',
-      disableClose: true  // 🔒 prevents backdrop click & ESC-key from closing
-    });
+    this.dialogService.openDialog(PartialBlockComponent, block);
   }
 
   getChainImage(chainId: number): string {
