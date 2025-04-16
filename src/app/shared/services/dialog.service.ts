@@ -11,7 +11,10 @@ export class DialogService {
       width: 'auto',
       panelClass: 'custom-dialog',
       backdropClass: 'custom-light-backdrop',
-      disableClose: true
+      disableClose: true,
+      position: {
+        top: '110px'
+      }
     });
   }
 }

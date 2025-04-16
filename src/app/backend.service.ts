@@ -18,6 +18,10 @@ export class BackendService {
   }
 
   // Methods to retrieve indexed MasterBlocks (i.e. blocks from the MasterChain)
+  getMasterBlock(hash: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/masterchain/block?height_or_hash=${hash}`);
+  }
+
   getLatestMasterBlock(): Observable<any> {
     return this.http.get(`${this.apiUrl}/masterchain/latest-block`);
   }
@@ -40,6 +44,12 @@ export class BackendService {
     return this.http.get(`${this.apiUrl}/masterchain/blocks`, { params });
   }
 
+  // Methods to retrieve indexed PartialBlocks (i.e. blocks from the PartialChains)
+  getPartialBlock(hash: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/partialchain/block?hash=${hash}`);
+  }
+
+  // Methods to retrieve Statistics
   getStatistics(): Observable<any> {
     console.log(">>> getStatistics")
     return this.http.get(`${this.apiUrl}/statistics`);

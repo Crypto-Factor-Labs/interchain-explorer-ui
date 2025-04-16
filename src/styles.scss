@@ -90,6 +90,12 @@ body {
       color: $alice-blue;
       background-color: $byzantine-blue;
     }
+
+    // Don't show focus, because it interferes with the gradient style
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
   }
 }
 

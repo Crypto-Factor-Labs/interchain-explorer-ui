@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';  // CommonModule to access ngIf etc in HTML
 import { SharedModule } from '../shared/shared.module';
 import { MasterChainBlock } from '../shared/master-chain.interface';
@@ -20,6 +20,18 @@ export class MasterBlockComponent {
     @Inject(MAT_DIALOG_DATA) public masterBlock: MasterChainBlock,
     public dialogRef: MatDialogRef<MasterBlockComponent>
   ) { }
+
+  // Close the dialog when Enter is pressed
+  @HostListener('document:keydown.enter', ['$event'])
+  onEnterKey(event: KeyboardEvent) {
+    this.dialogRef.close();
+  }
+
+  // Close the dialog when ESC is pressed
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscKey(event: KeyboardEvent) {
+    this.dialogRef.close();
+  }
 
   closeDialog(): void {
     this.dialogRef.close();

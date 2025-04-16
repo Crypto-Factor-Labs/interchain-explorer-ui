@@ -1,0 +1,9 @@
+<div class="search-panel">
+  <div class="input-wrapper">
+    <input type="text" [(ngModel)]="searchHash" placeholder="Search by block hash" (keydown.enter)="onSearch()" />
+    <!-- Clear button -->
+    <button *ngIf="searchHash" class="clear-btn" (click)="clearSearch()">×</button>
+    <!-- Search button -->
+    <button class="search-btn" (click)="onSearch()"><i class="fa-solid fa-magnifying-glass"></i></button>
+  </div>
+</div>
