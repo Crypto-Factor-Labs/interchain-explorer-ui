@@ -1,9 +1,23 @@
 @import 'cf_color_palette.scss';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
+/* Style the background of the pages with the CFR-emblem */
 body {
   background-color: $charcoal;
+  //background-image: url('/assets/images/CFR_emblem_big.jpg');
+  background-image: url('/assets/images/CFR_emblem_round.png');
+  background-size: 60%;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  max-height: 100px;
+  overflow: auto;
   font-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+  margin: 0;
 }
 
 /* Panel style: black background, rounded corners, and shadow */

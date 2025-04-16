@@ -1,0 +1,23 @@
+@import '../cf_color_palette.scss';
+
+.title-panel {
+  display: flex;
+  align-items: center;
+  background-color: black;
+  color: $byzantine-blue;
+  padding: 10px 20px;
+  gap: 1rem;
+  //position: sticky; // Stick to the top
+  //top: 0;
+  //z-index: 1000;
+
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.title-text {
+  font-size: 15px;
+}
