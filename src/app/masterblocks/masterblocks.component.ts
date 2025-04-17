@@ -49,6 +49,14 @@ export class MasterBlocksComponent implements OnInit {
       })
     ).subscribe((blocks: any) => {
       if (blocks) {
+        // Enrich the PartialBlocks with the timestamp of the MasterBlock
+        blocks.forEach((block: any) => {
+          block.partialBlocks = block.partialBlocks.map((pb: any) => ({
+            ...pb,
+            parentTimestamp: block.timestamp
+          }));
+        });
+
         this.masterBlocks = blocks;
         this.pollingTimeout = setTimeout(() => this.refreshData(), this.pollingFreq);  // Schedule the next refresh
       }
