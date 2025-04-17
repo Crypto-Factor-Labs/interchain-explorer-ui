@@ -87,7 +87,7 @@
                         <div class="field">
                           <!-- PartialBlock does not have a timestamp, use the one from the MasterBlock -->
                           <div class="label">
-                            {{ block.timestamp | timeAgo }}
+                            {{ partialBlock.parentTimestamp | timeAgo }}
                           </div>
                         </div>
                       </div>
