@@ -71,17 +71,6 @@ export class MasterBlocksComponent implements OnInit {
 
   // Toggle visibility of PartialBlocks for the clicked MasterBlock
   togglePartialBlocks(blockHash: string): void {
-    const block = this.masterBlocks.find(b => b.block_hash === blockHash);
-    if (!block) return;
-
-    if (!this.expandedBlocks[blockHash]) {
-      // Enrich the PartialBlocks with the timestamp of the MasterBlock
-      block.partialBlocks = block.partialBlocks.map((pb: any) => ({
-        ...pb,
-        parentTimestamp: block.timestamp
-      }));
-    }
-
     this.expandedBlocks[blockHash] = !this.expandedBlocks[blockHash];
   }
 
