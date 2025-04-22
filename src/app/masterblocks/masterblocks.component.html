@@ -128,6 +128,7 @@
       <!-- Separator line -->
       <div class="separator"></div>
 
+      <!--
       <div class="transactions-list">
         <div class="transaction-item" *ngFor="let tx of dummyTransactions">
           <div class="field">
@@ -150,6 +151,35 @@
           </div>
         </div>
       </div>
+    -->
+
+      <!-- TEMPORARY: show videos in the panel that is meant for the Transactions -->
+      <div class="button-bar" style="display: flex; align-items: center;">
+        <button *ngFor="let vid of videos; let i = index" (click)="selectVideo(i)" style="margin-right: 5px;"
+          [title]="vid.name" [ngStyle]="{ backgroundColor: idxSelectedVideo === i ? '#8EB6F6' : '#e0e0e0' }">
+          ▶ Video {{ i + 1 }}
+        </button>
+
+        <label class="autoplay-toggle" style="font-size: 11pt; margin-right: 12px;">
+          <input type="checkbox" [(ngModel)]="isAutoplayEnabled" (change)="onAutoplayChanged()" />
+          Autoplay
+        </label>
+
+        <div style="margin-left: auto;">
+          <button (click)="toggleMute()" style="width: 34px; text-align: center;">
+            <i class="{{ isMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high' }}"
+              style="font-size: 12pt;"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="video-panel" *ngIf="idxSelectedVideo !== null" style="margin-top: 10px">
+        <video #videoRef width="100%" [muted]="isMuted" playsinline [attr.controls]="showControls ? true : null">
+          <source [src]="videos[idxSelectedVideo].src" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <!-- END TEMPORARY -->
     </div>
   </div>
 </div>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';  // To access ngIf etc in HTML
+import { FormsModule } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ConfigService } from '../config.service';
@@ -15,7 +16,7 @@ import { getChainImage } from '../shared/utils';
 @Component({
   selector: 'app-masterblocks',
   standalone: true,
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, FormsModule, SharedModule],
   templateUrl: './masterblocks.component.html',
   styleUrl: './masterblocks.component.scss'
 })
@@ -94,4 +95,68 @@ export class MasterBlocksComponent implements OnInit {
   getChainImage(chainId: number): string {
     return getChainImage(chainId);  // Call the imported function
   }
+
+  /* * *  TEMPORARY  * * */
+
+  // Show videos in the panel that is meant for the Transactions
+
+  @ViewChild('videoRef') videoElement!: ElementRef<HTMLVideoElement>;
+
+  videos = [
+    { src: 'assets/videos/Interchain_Elegant_Reveal_1.mp4', name: "Elegant Reveal", isPlaying: false, isMuted: true },
+    { src: 'assets/videos/Interchain_Layer_Emergence_2.mp4', name: "Layer Emergence", isPlaying: false, isMuted: true },
+    { src: 'assets/videos/Interchain_Reveal_Powered_By_3.mp4', name: "Reveal Powered By", isPlaying: false, isMuted: true },
+    { src: 'assets/videos/Interchain_Welders_Drip.mp4', name: "Welders Drip", isPlaying: false, isMuted: true },
+  ];
+
+  idxSelectedVideo: number | null = null;
+  isVideoPlaying = false;
+  isAutoplayEnabled = false;
+  showControls = false;
+  isMuted = true;
+
+  selectVideo(index: number): void {
+    this.idxSelectedVideo = index;
+    this.showControls = true;
+
+    setTimeout(() => {
+      const video = this.videoElement.nativeElement;
+      video.pause();
+      video.load();  // Force new video to load
+      video.muted = this.isMuted;
+      video.play().then(() => {
+        this.isVideoPlaying = true;
+        video.onended = () => {
+          this.isVideoPlaying = false;
+          this.showControls = false;
+          if (this.isAutoplayEnabled) {
+            // Loop through the videos
+            const nextIndex = (this.idxSelectedVideo! + 1) % this.videos.length;
+            this.selectVideo(nextIndex);
+          }
+        };
+      });
+    });
+  }
+
+  onAutoplayChanged(): void {
+    if (this.isAutoplayEnabled) {
+      // If no video is selected or playing, start from the current or first
+      if (this.idxSelectedVideo === null || !this.isVideoPlaying) {
+        const indexToPlay = this.idxSelectedVideo ?? 0;
+        this.selectVideo(indexToPlay);
+      }
+    }
+  }
+
+  toggleMute(): void {
+    this.isMuted = !this.isMuted;
+
+    if (this.videoElement) {
+      const video = this.videoElement.nativeElement;
+      video.muted = this.isMuted;
+    }
+  }
+
+  /* END TEMPORARY */
 }
