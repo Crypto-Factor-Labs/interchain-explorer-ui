@@ -1,10 +1,8 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { CommonModule } from '@angular/common';  // To access ngIf etc in HTML
-import { FormsModule } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ConfigService } from '../config.service';
-import { SharedModule } from '../shared/shared.module';
 import { BackendService } from '../backend.service';
 import { DialogService } from '../shared/services/dialog.service';
 import { MasterBlockComponent } from '../masterblock/masterblock.component';
@@ -16,7 +14,7 @@ import { getChainImage } from '../shared/utils';
 @Component({
   selector: 'app-masterblocks',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule],
+  imports: [...SHARED_IMPORTS],
   templateUrl: './masterblocks.component.html',
   styleUrl: './masterblocks.component.scss'
 })

@@ -1,6 +1,5 @@
 import { Component, Inject, ViewEncapsulation, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';  // CommonModule to access ngIf etc in HTML
-import { SharedModule } from '../shared/shared.module';
+import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { PartialChainBlock } from '../shared/master-chain.interface';
 import { getChainImage } from '../shared/utils';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -8,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-partialblock',
   standalone: true,
-  imports: [CommonModule, SharedModule],
+  imports: [...SHARED_IMPORTS],
   templateUrl: './partialblock.component.html',
   styleUrls: ['./partialblock.component.scss'],
   encapsulation: ViewEncapsulation.None,  // In order to let the dialog be positioned

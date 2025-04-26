@@ -1,7 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import BN from 'bn.js';
 
-@Pipe({ name: 'bnHexToDec' })
+@Pipe({
+  name: 'bnHexToDec',
+  standalone: true
+})
 export class BNHexToDecPipe implements PipeTransform {
   transform(value: BN): number {
     if (!value) {
