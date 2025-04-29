@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, of, Subscription } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { BackendService } from '../backend.service';
 import { DialogService } from '../shared/services/dialog.service';
@@ -10,6 +10,12 @@ import { MasterChainBlock } from '../shared/master-chain.interface'
 import { PartialBlockComponent } from '../partialblock/partialblock.component';
 import { PartialChainBlock } from '../shared/master-chain.interface';
 import { getChainImage } from '../shared/utils';
+import BN from 'bn.js';
+
+interface FetchResult {
+  blocks: MasterChainBlock[];
+  latestHeight: BN;
+}
 
 @Component({
   selector: 'app-masterblocks',
@@ -19,12 +25,17 @@ import { getChainImage } from '../shared/utils';
   styleUrl: './masterblocks.component.scss'
 })
 export class MasterBlocksComponent implements OnInit {
-  masterBlocks!: any[];
+  masterBlocks!: MasterChainBlock[];
   expandedBlocks: { [id: string]: boolean } = {}; // For tracking for which MasterBlocks the PartialBlocks are shown
+  latestHeight: BN = new BN(0);
+  pageSize = 5;
+  currentPage = 1;
   dummyTransactions!: any[];
   errMsg: string = '';  // For displaying error messages if the data retrieval fails
+  pollingActive = false;
   private pollingFreq: number = this.config.appPollFreq;  // In milliseconds
   private pollingTimeout: any;
+  private subs = new Subscription();  // Register calls so they can be stopped when necessary
 
   constructor(
     private config: ConfigService,
@@ -36,36 +47,118 @@ export class MasterBlocksComponent implements OnInit {
     this.refreshData();
   }
 
-  refreshData(): void {
-    // Fetch MasterBlock data (including the related PartialBlocks)
-    //console.log(">>> refreshData");
-    this.backendService.getMasterBlocks(5, 0, true).pipe(
-      catchError((error) => {
-        this.errMsg = 'Failed to load MasterBlocks';
-        console.error('Error loading MasterBlock data:', error);
-        this.pollingTimeout = setTimeout(() => this.refreshData(), this.pollingFreq);  // Schedule the next refresh
-        return of(null);  // Return a null observable to continue the execution
-      })
-    ).subscribe((blocks: any) => {
-      if (blocks) {
-        // Enrich the PartialBlocks with the timestamp of the MasterBlock
-        blocks.forEach((block: any) => {
-          block.partialBlocks = block.partialBlocks.map((pb: any) => ({
-            ...pb,
-            parentTimestamp: block.timestamp
-          }));
-        });
-
-        this.masterBlocks = blocks;
-        this.pollingTimeout = setTimeout(() => this.refreshData(), this.pollingFreq);  // Schedule the next refresh
-      }
-    });
+  ngOnDestroy(): void {
+    clearTimeout(this.pollingTimeout);
+    this.subs.unsubscribe();
   }
 
-  ngOnDestroy(): void {
-    if (this.pollingTimeout) {
-      clearTimeout(this.pollingTimeout);
+  refreshData(): void {
+    this.currentPage = 1;
+    this.pollingActive = true;
+    clearTimeout(this.pollingTimeout);
+
+    this.subs.add(
+      this.fetchData(0, true).subscribe(result => {
+        if (result) {
+          this.masterBlocks = result.blocks;
+          this.latestHeight = result.latestHeight;
+        }
+        this.scheduleNextPoll();
+      })
+    );
+  }
+
+  // Jump to an arbitrary page and disable refreshing
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+
+    // Resume polling when jumping back to page 1
+    if (page === 1) {
+      return this.refreshData();
     }
+
+    // Otherwise, stop polling and do a manual fetch
+    this.pollingActive = false;
+    clearTimeout(this.pollingTimeout);
+
+    this.currentPage = page;
+    const skip = (page - 1) * this.pageSize;
+
+    this.subs.add(
+      this.fetchData(skip, false).subscribe(result => {
+        if (result) {
+          this.masterBlocks = result.blocks;
+        }
+      })
+    );
+  }
+
+  /**
+   * Shared loader:
+   *  • calls the backend
+   *  • hydrates partialBlocks
+   *  • parses latestHeight (hex vs. decimal)
+   *  • handles errors (+ optional polling)
+   */
+  private fetchData(skip: number, shouldPoll: boolean): Observable<FetchResult | null> {
+    return this.backendService
+      .getMasterBlocks(this.pageSize, skip, true)
+      .pipe(
+        catchError(err => {
+          this.errMsg = 'Failed to load MasterBlocks';
+          console.error('Error loading MasterBlock data:', err);
+          if (shouldPoll) this.scheduleNextPoll();
+          return of(null);
+        }),
+        map(blocks => {
+          if (!blocks || blocks.length === 0) return null;
+
+          // 1) hydrate partialBlocks
+          const hydrated = blocks.map((block: MasterChainBlock) => ({
+            ...block,
+            partialBlocks: block.partialBlocks.map((pb: PartialChainBlock) => ({
+              ...pb,
+              parentTimestamp: block.timestamp
+            }))
+          }));
+
+          // 2) detect hex vs decimal for the first block’s height
+          const raw = hydrated[0].height.toString().trim();
+          const isHex = /[a-f]/i.test(raw);
+          const latestHeight = new BN(raw, isHex ? 16 : 10);
+
+          return { blocks: hydrated, latestHeight };
+        })
+      );
+  }
+
+  // Compute total pages via BN ceil-division
+  get totalPages(): number {
+    // total blocks = latestHeight + 1
+    const totalBlocksBN = this.latestHeight.addn(1);
+
+    // pages = ceil(totalBlocks / pageSize)
+    const pagesBN = totalBlocksBN
+      .addn(this.pageSize - 1)  // bump for rounding up
+      .divn(this.pageSize);
+    return pagesBN.toNumber();
+  }
+
+  togglePolling(): void {
+    if (this.pollingActive) {
+      // turn it OFF: stop the timer, keep whatever page we’re on
+      this.pollingActive = false;
+      clearTimeout(this.pollingTimeout);
+    } else {
+      // turn it ON: always go back to page 1
+      this.refreshData();
+    }
+  }
+
+  // Schedule the next automatic refresh
+  private scheduleNextPoll(): void {
+    clearTimeout(this.pollingTimeout);
+    this.pollingTimeout = setTimeout(() => this.refreshData(), this.pollingFreq);
   }
 
   // Toggle visibility of PartialBlocks for the clicked MasterBlock

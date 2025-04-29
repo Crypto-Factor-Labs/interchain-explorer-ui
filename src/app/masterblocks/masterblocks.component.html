@@ -1,9 +1,13 @@
 <div class="blocks-page">
   <div class="panels-container">
     <!-- Left Panel: Master Blocks List -->
-    <div class="panel panel-left">
-      <h2>Latest Master Blocks</h2>
-
+    <div class="panel panel-left panel-with-pagination">
+      <div class="panel-header">
+        <h2><span *ngIf="currentPage === 1">Latest </span>Master Blocks</h2>
+        <i class="status-icon fa" [ngClass]="pollingActive ? 'fa-sync fa-spin' : 'fa-pause-circle'"
+          (click)="togglePolling()" [title]="pollingActive ? 'Auto-refresh ON' : 'Auto-refresh OFF'">
+        </i>
+      </div>
       <!-- Separator line -->
       <div class="separator"></div>
 
@@ -52,7 +56,6 @@
             <div class="column column-button">
               <a class="expand-btn" (click)="togglePartialBlocks(block.block_hash)">
                 <span class="btn-content">
-                  <!-- Icon before the text -->
                   <i class="fa fa-expand" style="margin-right: 7px;"></i>
                   Expand
                 </span>
@@ -118,6 +121,27 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Pagination Bar -->
+      <div class="pagination-bar">
+        <button class="expand-btn" (click)="goToPage(1)" [disabled]="currentPage === 1">
+          <span class="btn-content">« First</span>
+        </button>
+        <button class="expand-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+          <span class="btn-content">← Prev</span>
+        </button>
+
+        <span class="page-info">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+
+        <button class="expand-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          <span class="btn-content">Next →</span>
+        </button>
+        <button class="expand-btn" (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
+          <span class="btn-content">Last »</span>
+        </button>
       </div>
     </div>
 

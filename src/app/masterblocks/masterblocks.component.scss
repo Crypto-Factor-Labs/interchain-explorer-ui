@@ -14,10 +14,25 @@
   gap: 20px;
 }
 
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.status-icon {
+  font-size: 1.2rem;
+  color: $byzantine-blue;
+  cursor: pointer;
+}
+
 /* ----- Left Panel: Blocks List ----- */
 .blocks-list {
-  display: flex;
-  flex-direction: column;
+  //display: flex;
+  //flex-direction: column;
+  flex: 1 1 auto;
+  overflow-y: auto;
 }
 
 /* Individual block card */
@@ -30,7 +45,7 @@
   padding: 5px 10px 5px 10px; // top, right, bottom, left
   color: $charcoal;
   border-bottom: 1px solid #444;
-  margin-bottom: 0px
+  margin-bottom: 0px;
 }
 
 .block-item:first-child {
@@ -109,23 +124,29 @@
   padding: 1px; // Determines the width of the border
   border-radius: 4px;
   background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
+
+  .btn-content {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 5px 12px;
+    color: $powder-blue;
+    font-weight: lighter;
+    background-color: $rich-black;
+    font-size: 13px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .btn-content:hover {
+    color: $alice-blue;
+    background-color: $byzantine-blue;
+  }
 }
 
-.expand-btn .btn-content {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 4px;
-  padding: 5px 12px;
-  color: $powder-blue;
-  font-weight: lighter;
-  background-color: $rich-black;
-  font-size: 13px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.expand-btn .btn-content:hover {
-  color: $alice-blue;
-  background-color: $byzantine-blue;
+.expand-btn[disabled] {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
 }
 
 .block-info {

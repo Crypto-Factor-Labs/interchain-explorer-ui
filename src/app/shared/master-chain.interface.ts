@@ -22,6 +22,7 @@ export interface PartialChainBlock {
   commit_proof: string;
   confirmed: boolean;
   indexed_at: string;
+  parentTimestamp: string;  // Timestamp of the Master Block
 }
 
 export interface Statistics {
