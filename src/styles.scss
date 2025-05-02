@@ -33,11 +33,10 @@ body {
   color: $byzantine-blue;
 }
 
-/* In your styles.scss or panel-left.component.scss */
 .panel-with-pagination {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 485px;
 }
 
 /*

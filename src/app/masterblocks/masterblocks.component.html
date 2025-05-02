@@ -54,7 +54,7 @@
             </div>
             <!-- Third Column: Expand Button -->
             <div class="column column-button">
-              <a class="expand-btn" (click)="togglePartialBlocks(block.block_hash)">
+              <a class="gradient-btn" (click)="togglePartialBlocks(block.block_hash)">
                 <span class="btn-content">
                   <i class="fa fa-expand" style="margin-right: 7px;"></i>
                   Expand
@@ -125,10 +125,10 @@
 
       <!-- Pagination Bar -->
       <div class="pagination-bar">
-        <button class="expand-btn" (click)="goToPage(1)" [disabled]="currentPage === 1">
+        <button class="gradient-btn" (click)="goToPage(1)" [disabled]="currentPage === 1">
           <span class="btn-content">« First</span>
         </button>
-        <button class="expand-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+        <button class="gradient-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
           <span class="btn-content">← Prev</span>
         </button>
 
@@ -136,10 +136,10 @@
           Page {{ currentPage }} of {{ totalPages }}
         </span>
 
-        <button class="expand-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+        <button class="gradient-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
           <span class="btn-content">Next →</span>
         </button>
-        <button class="expand-btn" (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
+        <button class="gradient-btn" (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
           <span class="btn-content">Last »</span>
         </button>
       </div>

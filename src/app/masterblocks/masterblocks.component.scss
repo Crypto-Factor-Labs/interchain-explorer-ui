@@ -29,10 +29,12 @@
 
 /* ----- Left Panel: Blocks List ----- */
 .blocks-list {
-  //display: flex;
-  //flex-direction: column;
   flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  scrollbar-gutter: stable both-edges;
 }
 
 /* Individual block card */
@@ -56,6 +58,21 @@
 .block-item:last-child {
   border-bottom: none;
   padding-bottom: 0px;
+}
+
+// Style the scrollbat
+.blocks-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.blocks-list::-webkit-scrollbar-track {
+  background: #222; // track color
+}
+
+.blocks-list::-webkit-scrollbar-thumb {
+  background-color: #555; // thumb color
+  border-radius: 4px; // rounded edges
+  border: 2px solid #222; // gives a little padding around thumb
 }
 
 /* Block columns container */
@@ -107,6 +124,15 @@
   font-size: 16px;
 }
 
+.partial-block-info .column-right .field .label {
+  padding-top: 1px;
+  margin-left: -4px;
+}
+
+.partial-block-info .column-right .field .value {
+  margin-left: -4px;
+}
+
 /* Reusable gradient text */
 .gradient-text {
   display: inline-block;
@@ -116,8 +142,8 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Expand button with gradient border */
-.expand-btn {
+/* Button with gradient border */
+.gradient-btn {
   display: inline-block;
   cursor: pointer;
   margin-top: 5px;
@@ -143,7 +169,7 @@
   }
 }
 
-.expand-btn[disabled] {
+.gradient-btn[disabled] {
   opacity: 0.4;
   cursor: default;
   pointer-events: none;
