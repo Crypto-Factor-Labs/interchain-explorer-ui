@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
+import { PricePoint } from './shared/statistics.interface';
 
 @Injectable({
   providedIn: 'root'  // Makes the BackendService available throughout the application,
@@ -53,5 +54,9 @@ export class BackendService {
   getStatistics(): Observable<any> {
     console.log(">>> getStatistics")
     return this.http.get(`${this.apiUrl}/statistics`);
+  }
+
+  getCfrPriceHistory(minutes = 60): Observable<PricePoint[]> {
+    return this.http.get<PricePoint[]>(`${this.apiUrl}/statistics/cfr-price-history?minutes=${minutes}`);
   }
 }

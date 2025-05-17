@@ -24,10 +24,3 @@ export interface PartialChainBlock {
   indexed_at: string;
   parentTimestamp: string;  // Timestamp of the Master Block
 }
-
-export interface Statistics {
-  cfr_price_usd: string;
-  cfr_tvl_usd: string;
-  avg_block_speed_24hr: string;
-  avg_block_speed_30d: string;
-}

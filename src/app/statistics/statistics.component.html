@@ -36,11 +36,20 @@
         </div>
       </div>
       <div class="column">
+        <!-- Chart cell -->
         <div class="cell">
-          <div class="cell-heading">STATISTIC 5</div>
+          <div class="chart-wrapper">
+            <canvas #cfrPriceChart width="200" height="100" style="display: block; width: 100%; height: 100%;"></canvas>
+          </div>
         </div>
+        <!-- You can leave the second cell empty or use it for controls -->
         <div class="cell">
-          <div class="cell-heading">STATISTIC 6</div>
+          <!-- e.g. a <select> to change the “minutes” window -->
+          <!-- <select (change)="onWindowChange($event.target.value)">
+            <option value="30">Last 30m</option>
+            <option value="60" selected>Last 60m</option>
+            <option value="120">Last 2h</option>
+          </select> -->
         </div>
       </div>
     </div>
