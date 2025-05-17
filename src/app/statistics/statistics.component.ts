@@ -69,20 +69,20 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       data: {
         labels: timestamps,  // X-axis labels are our time points
         datasets: [{
-          label: 'CFR Price (USD)',  // legend label (hidden below)
-          data: values,              // Y-axis data points
-          fill: false,               // don’t fill under the line
-          borderColor: '#435BC7',    // color of the line: byzantine-blue
-          borderWidth: 1,            // thickness of the line
-          tension: 0.3,              // curve tension (0 = straight lines, >0 = smooth)
-          pointRadius: 0,            // hide individual data points for a clean line
+          label: 'CFR Price ($)',  // legend label (hidden below)
+          data: values,            // Y-axis data points
+          fill: false,             // don’t fill under the line
+          borderColor: '#435BC7',  // color of the line: byzantine-blue
+          borderWidth: 1,          // thickness of the line
+          tension: 0.3,            // curve tension (0 = straight lines, >0 = smooth)
+          pointRadius: 0,          // hide individual data points for a clean line
         }]
       },
       options: {
-        responsive: true,             // chart resizes with its container
-        maintainAspectRatio: false,   // allow height/width to be controlled by CSS
+        responsive: true,            // chart resizes with its container
+        maintainAspectRatio: false,  // allow height/width to be controlled by CSS
         layout: {
-          padding: { bottom: 20 }
+          padding: { bottom: 0, left: 9, right: 10 }
         },
         plugins: {
           tooltip: {
@@ -117,13 +117,21 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
                 minute: 'HH:mm'        // format of axis labels (e.g. “08:37”)
               }
             },
+            ticks: {
+              padding: 0
+            },
             title: {                   // X-axis title
-              display: true,
+              display: false,          // don't show the title to save space
               text: 'Time',
               color: '#435BC7',
               font: {
                 weight: 'bold'
               }
+            },
+            border: {
+              display: true,
+              color: '#475268',
+              width: 1,
             },
             grid: {
               drawOnChartArea: false   // only draw vertical grid lines (no background stripes)
@@ -133,7 +141,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             beginAtZero: false,        // don’t force zero baseline if data >0
             title: {                   // Y-axis title
               display: true,
-              text: 'Price (USD)',
+              text: 'CFR price ($)',
               color: '#435BC7',
               font: {
                 weight: 'bold'
@@ -149,6 +157,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
                 //.replace(/\.?0+$/, '');  // e.g. "0.1234" or "1"
                 return `$${str}`;
               }
+            },
+            border: {
+              display: true,
+              color: '#475268',
+              width: 1,
             }
           }
         }
@@ -164,5 +177,14 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
       // Create chart for the first time
       this.chart = new Chart(this.chartRef.nativeElement, config);
     }
+  }
+
+  // Change the time axis of the chart
+  onWindowChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const minutes = Number(select.value);
+    this.backendService.getCfrPriceHistory(minutes).subscribe(data => {
+      this.buildChart(data);
+    });
   }
 }

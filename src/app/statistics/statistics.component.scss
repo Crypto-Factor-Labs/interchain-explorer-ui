@@ -13,6 +13,7 @@
 
   .stats-columns {
     display: flex; // Each column will naturally divide the width equally
+    align-items: stretch; // make all columns stretch full-height
   }
 
   .column {
@@ -80,6 +81,12 @@
     }
   }
 
+  .cell.chart-cell {
+    flex: 1; // take all remaining vertical space
+    padding: 0; // remove top/bottom padding
+    padding-left: 10px; // keep left padding if desired
+  }
+
   // For cells that aren’t the last cell in the column, add a pseudo-element as border
   .cell:not(:last-child)::after {
     content: ''; // Make sure that the pseudo-element is displayed
@@ -95,7 +102,7 @@
 .chart-wrapper {
   position: relative;
   width: 100%;
-  height: 150px;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -105,4 +112,23 @@
   left: 0;
   width: 100% !important;
   height: 100% !important;
+}
+
+/* position the selector atop the chart */
+.chart-selector {
+  position: absolute;
+  bottom: 6px;
+  left: 1px;
+  z-index: 10; // above the canvas
+  background: $ultramarine;
+  color: $glaucous;
+  border: 1px solid $charcoal;
+  border-radius: 4px;
+  padding: 2px 2px;
+  font-size: 0.5rem;
+
+  &:focus {
+    outline: none;
+    border-color: $byzantine-blue;
+  }
 }
