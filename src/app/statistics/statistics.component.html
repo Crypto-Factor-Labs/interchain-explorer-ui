@@ -1,6 +1,7 @@
 <div class="panel">
   <div class="stats-panel">
     <div class="stats-columns">
+      <!-- CFR-data -->
       <div class="column">
         <div class="cell">
           <div class="cell-content">
@@ -16,6 +17,28 @@
           <span class="cell-value">$ {{ statistics?.cfr_tvl_usd }}</span>
         </div>
       </div>
+      <!-- CFR price chart -->
+      <div class="column">
+        <div class="cell chart-cell">
+          <div class="chart-wrapper">
+            <canvas #cfrPriceChart width="200" height="100" style="display: block; width: 100%; height: 100%;"></canvas>
+            <!-- Overlay a <select> to change the “minutes” window -->
+            <select class="chart-selector" (change)="onWindowChange($event)">
+              <option value="60">Last 60m</option>
+              <option value="120" selected>Last 2h</option>
+              <option value="240">Last 4h</option>
+              <option value="480">Last 8h</option>
+              <option value="720">Last 12h</option>
+              <option value="1440">Last 24h</option>
+              <option value="2880">Last 2d</option>
+            </select>
+          </div>
+          <!-- Don't use the second cell (for now?) -->
+          <!--<div class="cell">
+          </div>-->
+        </div>
+      </div>
+      <!-- Transaction-data -->
       <div class="column">
         <div class="cell">
           <div class="cell-heading"><i class="fa-solid fa-server icon-heading"></i>TRANSACTIONS</div>
@@ -33,28 +56,6 @@
               <span class="info-value">{{ statistics?.avg_block_speed_30d }}</span>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="column">
-        <!-- Chart cell -->
-        <div class="cell chart-cell">
-          <div class="chart-wrapper">
-            <canvas #cfrPriceChart width="200" height="100" style="display: block; width: 100%; height: 100%;"></canvas>
-            <!-- Overlay a <select> to change the “minutes” window -->
-            <select class="chart-selector" (change)="onWindowChange($event)">
-              <option value="30">Last 30m</option>
-              <option value="60" selected>Last 60m</option>
-              <option value="120">Last 2h</option>
-              <option value="240">Last 4h</option>
-              <option value="480">Last 8h</option>
-              <option value="720">Last 12h</option>
-              <option value="1440">Last 24h</option>
-              <option value="2880">Last 2d</option>
-            </select>
-          </div>
-          <!-- Don't use the second cell (for now?) -->
-          <!--<div class="cell">
-          </div>-->
         </div>
       </div>
     </div>

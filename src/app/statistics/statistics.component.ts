@@ -22,11 +22,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   private chartRef!: ElementRef<HTMLCanvasElement>;
   private chart!: Chart<'line', number[], Date>;
 
-  // Substribtions for refreshing the Statistics and the Chart
+  // Subscriptions for refreshing the Statistics and the Chart
   private subStats!: Subscription;
   private subChart!: Subscription;
   private freqStats: number = 300_000;  // in ms, 5 minutes
   private freqChart: number = 300_000;  // in ms, 5 minutes
+
+  // Timescale of the X-axis of the Chart
+  private windowMins: number = 60;
+  private stepSize: number = 5;
 
   constructor(private backendService: BackendService) { }
 
@@ -50,7 +54,6 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         switchMap(() => this.backendService.getCfrPriceHistory(60))
       )
       .subscribe(data => this.buildChart(data));
-
   }
 
   ngOnDestroy(): void {
@@ -62,6 +65,15 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Convert raw data into arrays of timestamps and numeric values
     const timestamps = data.map(p => new Date(p.timestamp));
     const values = data.map(p => parseFloat(p.price_usd));
+
+    // Compute the raw millis for window start/end
+    const now = Date.now();
+    const start = now - this.windowMins * 60_000;
+    const stepMs = this.stepSize * 60_000;
+
+    // Snap those to the nearest whole-step multiples
+    const alignedMin = Math.floor(start / stepMs) * stepMs;
+    const alignedMax = Math.ceil(now / stepMs) * stepMs;
 
     // Define the chart configuration object
     const config: ChartConfiguration<'line', number[], Date> = {
@@ -110,6 +122,8 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
         scales: {
           x: {
             type: 'time',              // interpret labels as dates/times
+            min: alignedMin,           // forces ticks to start on the step boundary
+            max: alignedMax,           // forces ticks to end on the step boundary
             time: {
               unit: 'minute',          // granularity of ticks
               tooltipFormat: 'PPpp',   // format in tooltip (e.g. “May 5, 2025, 8:37 AM”)
@@ -118,10 +132,21 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             },
             ticks: {
-              padding: 0
+              stepSize: this.stepSize,  // stepSize depends on the selected period to be shown
+              autoSkip: false,          // ensure that all the step-aligned ticks are drawn
+              callback: (tickValue: string | number): string => {
+                // normalize to a number
+                const ms = typeof tickValue === 'string' ? parseFloat(tickValue) : tickValue;
+                const dt = new Date(ms);
+                // show HH:mm without seconds
+                return dt.toLocaleTimeString(undefined, {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                });
+              }, padding: 0
             },
-            title: {                   // X-axis title
-              display: false,          // don't show the title to save space
+            title: {           // X-axis title
+              display: false,  // don't show the title to save space
               text: 'Time',
               color: '#435BC7',
               font: {
@@ -138,7 +163,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           },
           y: {
-            beginAtZero: false,        // don’t force zero baseline if data >0
+            beginAtZero: false,        // don’t force zero baseline if data > 0
             title: {                   // Y-axis title
               display: true,
               text: 'CFR price ($)',
@@ -169,12 +194,11 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     if (this.chart) {
-      // Update existing chart in place
-      this.chart.options = config.options!; // ! because we know options is defined
-      this.chart.data = config.data!;       // ! because we know data is defined
-      this.chart.update();                  // re-render with new data/options
+      this.chart.options.scales!['x'] = config.options!.scales!['x']!;
+      this.chart.data.labels = config.data!.labels!;
+      this.chart.data.datasets![0].data = values;
+      this.chart.update();
     } else {
-      // Create chart for the first time
       this.chart = new Chart(this.chartRef.nativeElement, config);
     }
   }
@@ -183,6 +207,17 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   onWindowChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     const minutes = Number(select.value);
+
+    // pick a “nice” step:
+    let step: number;
+    if (minutes <= 4 * 60) step = 5;
+    else if (minutes <= 12 * 60) step = 15;
+    else if (minutes <= 24 * 60) step = 30;
+    else step = 60;
+
+    this.windowMins = minutes;
+    this.stepSize = step;
+
     this.backendService.getCfrPriceHistory(minutes).subscribe(data => {
       this.buildChart(data);
     });
