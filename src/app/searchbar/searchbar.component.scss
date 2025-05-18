@@ -3,8 +3,12 @@
 .search-panel {
   display: flex;
   justify-content: center;
-  margin: 20px auto;
-  width: 45%;
+  margin: 0 20px;
+  width: 650px;
+
+  // For when displaying the search-panel below the title bar
+  //margin: 20px auto;
+  //width: 45%;
 
   .input-wrapper {
     position: relative;
@@ -12,7 +16,7 @@
 
     input {
       box-sizing: border-box;
-      background-color: black;
+      background-color: $rich-black;
       color: $alice-blue;
       width: 100%;
       padding: 10px 65px 10px 15px; // leave space for the two buttons
@@ -20,6 +24,10 @@
       border: 1px solid $glaucous;
       border-radius: 0.375rem;
       outline: none;
+
+      &::placeholder {
+        font-size: 0.9rem
+      }
 
       &:focus {
         border-color: $powder-blue;
