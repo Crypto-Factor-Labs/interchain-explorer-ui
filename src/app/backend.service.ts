@@ -52,7 +52,7 @@ export class BackendService {
 
   // Methods to retrieve Statistics
   getStatistics(): Observable<any> {
-    console.log(">>> getStatistics")
+    //console.log(">>> getStatistics")
     return this.http.get(`${this.apiUrl}/statistics`);
   }
 

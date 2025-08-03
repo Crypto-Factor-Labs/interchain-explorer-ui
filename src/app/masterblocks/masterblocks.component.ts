@@ -113,7 +113,7 @@ export class MasterBlocksComponent implements OnInit {
         map(blocks => {
           if (!blocks || blocks.length === 0) return null;
 
-          // 1) hydrate partialBlocks
+          // Hydrate PartialBlocks
           const hydrated = blocks.map((block: MasterChainBlock) => ({
             ...block,
             partialBlocks: block.partialBlocks.map((pb: PartialChainBlock) => ({
@@ -122,11 +122,9 @@ export class MasterBlocksComponent implements OnInit {
             }))
           }));
 
-          // 2) detect hex vs decimal for the first block’s height
-          const raw = hydrated[0].height.toString().trim();
-          const isHex = /[a-f]/i.test(raw);
-          const latestHeight = new BN(raw, isHex ? 16 : 10);
-
+          // Convert hex to decimal for the first block’s height
+          const heightAsHex = hydrated[0].height.toString().trim();
+          const latestHeight = new BN(heightAsHex, 16);
           return { blocks: hydrated, latestHeight };
         })
       );
