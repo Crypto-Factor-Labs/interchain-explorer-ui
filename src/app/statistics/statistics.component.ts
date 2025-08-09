@@ -20,7 +20,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   // Grab the <canvas> from the template
   @ViewChild('cfrPriceChart', { static: true })
   private chartRef!: ElementRef<HTMLCanvasElement>;
-  private chart!: Chart<'line', number[], Date>;
+  private chart!: Chart<'line', { x: number; y: number }[], number>;
 
   // Subscriptions for refreshing the Statistics and the Chart
   private subStats!: Subscription;
@@ -29,197 +29,211 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   private freqChart: number = 300_000;  // in ms, 5 minutes
 
   // Timescale of the X-axis of the Chart
-  private windowMins: number = 60;
-  private stepSize: number = 5;
+  windowMins: number = 120;  // Not private to allow access in the template
+  private stepSize: number = this.getStepSize(this.windowMins);
+
+  // Persist the selected window across reloads
+  private readonly STORAGE_KEY = 'cfrChartWindowMins';
 
   constructor(private backendService: BackendService) { }
 
+  // --- Helpers ----------------------------------------------------------
+
+  private getStepSize(minutes: number): number {
+    if (minutes <= 4 * 60) return 5;
+    if (minutes <= 12 * 60) return 15;
+    if (minutes <= 24 * 60) return 30;
+    return 60;
+  }
+
+  /** Single source of truth for changing the window. */
+  private applyWindow(
+    minutes: number,
+    opts: { persist?: boolean; refresh?: boolean } = {}
+  ) {
+    this.windowMins = minutes;
+    this.stepSize = this.getStepSize(minutes);
+
+    if (opts.persist) {
+      localStorage.setItem(this.STORAGE_KEY, String(minutes));
+    }
+    if (opts.refresh) {
+      this.backendService.getCfrPriceHistory(minutes)
+        .subscribe(data => this.buildChart(data, { animate: true })); // Animate on selector change
+    }
+  }
+
+  /** Restore the window selection from localStorage, if available. */
+  // This is called once on component init to restore the last used window.
+  private restoreWindowMins() {
+    const raw = localStorage.getItem(this.STORAGE_KEY);
+    if (!raw) return;
+    const minutes = Number(raw);
+    if (Number.isFinite(minutes)) {
+      this.applyWindow(minutes); // no persist/refresh here
+    }
+  }
+
+  // --- Angular lifecycle ----------------------------------------------------
+
   ngOnInit(): void {
-    // Start getting the Statistics periodically, starting immediately (startWith(0))
+    // Restore the window selection before starting streams
+    this.restoreWindowMins();
+
+    // Start getting the Statistics periodically, starting immediately
     this.subStats = interval(this.freqStats)
-      .pipe(
-        startWith(0),
-        switchMap(() => this.backendService.getStatistics())
-      )
-      .subscribe(stats => {
-        this.statistics = stats;
-      });
+      .pipe(startWith(0), switchMap(() => this.backendService.getStatistics()))
+      .subscribe(stats => { this.statistics = stats; });
   }
 
   ngAfterViewInit(): void {
-    // Once the view (and canvas) is ready, start getting price history periodically and build the Chart
+    // Once the view (and canvas) is ready, start getting price history periodically
     this.subChart = interval(this.freqChart)
       .pipe(
         startWith(0),
-        switchMap(() => this.backendService.getCfrPriceHistory(60))
+        switchMap(() => this.backendService.getCfrPriceHistory(this.windowMins))
       )
       .subscribe(data => this.buildChart(data));
   }
 
   ngOnDestroy(): void {
-    this.subStats.unsubscribe();
-    this.subChart.unsubscribe();
+    this.subStats?.unsubscribe();
+    this.subChart?.unsubscribe();
   }
 
-  private buildChart(data: PricePoint[]) {
-    // Convert raw data into arrays of timestamps and numeric values
-    const timestamps = data.map(p => new Date(p.timestamp));
-    const values = data.map(p => parseFloat(p.price_usd));
-
-    // Compute the raw millis for window start/end
-    const now = Date.now();
-    const start = now - this.windowMins * 60_000;
-    const stepMs = this.stepSize * 60_000;
-
-    // Snap those to the nearest whole-step multiples
-    const alignedMin = Math.floor(start / stepMs) * stepMs;
-    const alignedMax = Math.ceil(now / stepMs) * stepMs;
-
-    // Define the chart configuration object
-    const config: ChartConfiguration<'line', number[], Date> = {
-      type: 'line',  // we're drawing a line chart
-      data: {
-        labels: timestamps,  // X-axis labels are our time points
-        datasets: [{
-          label: 'CFR Price ($)',  // legend label (hidden below)
-          data: values,            // Y-axis data points
-          fill: false,             // don’t fill under the line
-          borderColor: '#435BC7',  // color of the line: byzantine-blue
-          borderWidth: 1,          // thickness of the line
-          tension: 0.3,            // curve tension (0 = straight lines, >0 = smooth)
-          pointRadius: 0,          // hide individual data points for a clean line
-        }]
-      },
-      options: {
-        responsive: true,            // chart resizes with its container
-        maintainAspectRatio: false,  // allow height/width to be controlled by CSS
-        layout: {
-          padding: { bottom: 0, left: 9, right: 10 }
-        },
-        plugins: {
-          tooltip: {
-            mode: 'index',            // show all datasets at hovered X
-            intersect: false,         // show tooltip even if not exactly on a point
-            displayColors: false,     // don't show a colored square that indicates the dataset (there is only one)
-            callbacks: {
-              // Format the tooltip title (the X value)
-              title: (items: TooltipItem<'line'>[]) => {
-                if (!items.length) return '';
-                const dt = new Date(items[0].parsed.x as number);
-                return format(dt, 'yyyy-MM-dd HH:mm');  // format without seconds
-              },
-              // Format the tooltip label (the Y value)
-              label: (ctx: TooltipItem<'line'>) => {
-                const val = ctx.parsed.y as number;
-                return `$${val.toFixed(6)}`;  // format to 6 decimals
-              }
-            }
-          },
-          legend: {
-            display: false            // hide the legend since we have only one dataset
-          }
-        },
-        scales: {
-          x: {
-            type: 'time',              // interpret labels as dates/times
-            min: alignedMin,           // forces ticks to start on the step boundary
-            max: alignedMax,           // forces ticks to end on the step boundary
-            time: {
-              unit: 'minute',          // granularity of ticks
-              tooltipFormat: 'PPpp',   // format in tooltip (e.g. “May 5, 2025, 8:37 AM”)
-              displayFormats: {
-                minute: 'HH:mm'        // format of axis labels (e.g. “08:37”)
-              }
-            },
-            ticks: {
-              stepSize: this.stepSize,  // stepSize depends on the selected period to be shown
-              autoSkip: false,          // ensure that all the step-aligned ticks are drawn
-              callback: (tickValue: string | number): string => {
-                // normalize to a number
-                const ms = typeof tickValue === 'string' ? parseFloat(tickValue) : tickValue;
-                const dt = new Date(ms);
-                // show HH:mm without seconds
-                return dt.toLocaleTimeString(undefined, {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                });
-              }, padding: 0
-            },
-            title: {           // X-axis title
-              display: false,  // don't show the title to save space
-              text: 'Time',
-              color: '#435BC7',
-              font: {
-                weight: 'bold'
-              }
-            },
-            border: {
-              display: true,
-              color: '#475268',
-              width: 1,
-            },
-            grid: {
-              drawOnChartArea: false   // only draw vertical grid lines (no background stripes)
-            }
-          },
-          y: {
-            beginAtZero: false,        // don’t force zero baseline if data > 0
-            title: {                   // Y-axis title
-              display: true,
-              text: 'CFR price ($)',
-              color: '#435BC7',
-              font: {
-                weight: 'bold'
-              }
-            },
-            ticks: {
-              callback: (value: string | number) => {
-                // normalize to a number
-                const num = typeof value === 'string' ? parseFloat(value) : value;
-                // format to max 4 decimal places, then trim off trailing zeros (& the dot if needed)
-                const str = num
-                  .toFixed(4)              // e.g. "0.12340"
-                //.replace(/\.?0+$/, '');  // e.g. "0.1234" or "1"
-                return `$${str}`;
-              }
-            },
-            border: {
-              display: true,
-              color: '#475268',
-              width: 1,
-            }
-          }
-        }
-      }
-    };
-
-    if (this.chart) {
-      this.chart.options.scales!['x'] = config.options!.scales!['x']!;
-      this.chart.data.labels = config.data!.labels!;
-      this.chart.data.datasets![0].data = values;
-      this.chart.update();
-    } else {
-      this.chart = new Chart(this.chartRef.nativeElement, config);
-    }
-  }
+  // --- UI handlers ----------------------------------------------------------
 
   // Change the time axis of the chart
   onWindowChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     const minutes = Number(select.value);
+    this.applyWindow(minutes, { persist: true, refresh: true });
+  }
 
-    // pick a “nice” step:
-    let step: number;
-    if (minutes <= 4 * 60) step = 5;
-    else if (minutes <= 12 * 60) step = 15;
-    else if (minutes <= 24 * 60) step = 30;
-    else step = 60;
+  // --- Chart rendering ------------------------------------------------------
 
-    this.windowMins = minutes;
-    this.stepSize = step;
+  private buildChart(data: PricePoint[], opts: { animate?: boolean } = {}) {
+    // Map to {x,y} and guard against NaNs
+    const pointsAll = data
+      .map(p => ({ x: new Date(p.timestamp).getTime(), y: Number(p.price_usd) }))
+      .filter(pt => Number.isFinite(pt.y));
 
-    this.backendService.getCfrPriceHistory(minutes).subscribe(data => {
-      this.buildChart(data);
-    });
+    // Compute window and snap to step boundaries
+    const now = Date.now();
+    const startRaw = now - this.windowMins * 60_000;
+    const stepMs = this.stepSize * 60_000;
+    const alignedMin = Math.floor(startRaw / stepMs) * stepMs;
+    const alignedMax = Math.ceil(now / stepMs) * stepMs;
+
+    // Keep only points inside the visible window
+    const points = pointsAll.filter(pt => pt.x >= alignedMin && pt.x <= alignedMax);
+
+    if (this.chart) {
+      // Update in place: don't replace the whole scale object (avoids flicker)
+      const scales = this.chart.options.scales as Record<string, any>;
+      const x = scales['x'];
+      x.min = alignedMin;
+      x.max = alignedMax;
+
+      (this.chart.data.datasets![0].data as any) = points;
+
+      // Only animate (i.e. use transition 'default') if explicitly requested
+      this.chart.update(opts.animate ? 'default' : 'none');
+      return;
+    }
+
+    // Initial chart config
+    const config: ChartConfiguration<'line', { x: number; y: number }[], number> = {
+      type: 'line',
+      data: {
+        // No labels array—x comes from each point’s `x`
+        datasets: [{
+          label: 'CFR Price ($)',
+          data: points,
+          fill: false,
+          borderColor: '#435BC7',
+          borderWidth: 1,
+          tension: 0.3,
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          spanGaps: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        parsing: false,     // we supply {x,y}
+
+        animation: { duration: 0 }, // default: instant
+        transitions: {
+          default: { animation: { duration: 600, easing: 'easeOutQuart' } }, // selector change (manual)
+          none: { animation: { duration: 0 } }                               // periodic refresh (automatic)
+        },
+
+        layout: { padding: { bottom: 0, left: 9, right: 10 } },
+        plugins: {
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            displayColors: false,
+            callbacks: {
+              title: (items: TooltipItem<'line'>[]) => {
+                if (!items.length) return '';
+                const dt = new Date(items[0].parsed.x as number);
+                return format(dt, 'yyyy-MM-dd HH:mm');  // format without seconds
+              },
+              label: (ctx: TooltipItem<'line'>) => {
+                const val = ctx.parsed.y as number;
+                return `$${val.toFixed(6)}`;
+              }
+            }
+          },
+          legend: { display: false }
+        },
+        scales: {
+          x: {
+            type: 'time',
+            min: alignedMin,
+            max: alignedMax,
+            time: {
+              unit: 'minute',
+              tooltipFormat: 'PPpp',
+              displayFormats: { minute: 'HH:mm' }
+            },
+            ticks: {
+              stepSize: this.stepSize,
+              autoSkip: false,
+              padding: 0
+            },
+            title: {
+              display: false,
+              text: 'Time',
+              color: '#435BC7',
+              font: { weight: 'bold' }
+            },
+            border: { display: true, color: '#475268', width: 1 },
+            grid: { drawOnChartArea: false }
+          },
+          y: {
+            beginAtZero: false,
+            title: {
+              display: true,
+              text: 'CFR price ($)',
+              color: '#435BC7',
+              font: { weight: 'bold' }
+            },
+            ticks: {
+              callback: (value: string | number) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                return `$${Number(num).toFixed(4)}`;
+              }
+            },
+            border: { display: true, color: '#475268', width: 1 }
+          }
+        }
+      }
+    };
+
+    this.chart = new Chart(this.chartRef.nativeElement, config);
   }
 }

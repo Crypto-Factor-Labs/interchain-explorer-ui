@@ -23,13 +23,13 @@
           <div class="chart-wrapper">
             <canvas #cfrPriceChart width="200" height="100" style="display: block; width: 100%; height: 100%;"></canvas>
             <!-- Overlay a <select> to change the “minutes” window -->
-            <select class="chart-selector" (change)="onWindowChange($event)">
+            <select class="chart-selector" [value]="windowMins" (change)="onWindowChange($event)">
               <option value="60">Last 60m</option>
               <option value="120" selected>Last 2h</option>
               <option value="240">Last 4h</option>
               <option value="480">Last 8h</option>
               <option value="720">Last 12h</option>
-              <option value="1440">Last 24h</option>
+              <option value="1440">Last 1d</option>
               <option value="2880">Last 2d</option>
             </select>
           </div>

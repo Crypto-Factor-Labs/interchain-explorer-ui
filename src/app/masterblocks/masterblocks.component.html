@@ -152,7 +152,7 @@
       <!-- Separator line -->
       <div class="separator"></div>
 
-      <!--
+      <!-- Transactions List -->
       <div class="transactions-list">
         <div class="transaction-item" *ngFor="let tx of dummyTransactions">
           <div class="field">
@@ -175,9 +175,8 @@
           </div>
         </div>
       </div>
-    -->
 
-      <!-- TEMPORARY: show videos in the panel that is meant for the Transactions -->
+      <!-- TEMPORARY: show videos in the panel that is meant for the Transactions --
       <div class="button-bar" style="display: flex; align-items: center;">
         <button *ngFor="let vid of videos; let i = index" (click)="selectVideo(i)" style="margin-right: 5px;"
           [title]="vid.name" [ngStyle]="{ backgroundColor: idxSelectedVideo === i ? '#8EB6F6' : '#e0e0e0' }">
@@ -203,7 +202,7 @@
           Your browser does not support the video tag.
         </video>
       </div>
-      <!-- END TEMPORARY -->
+      <-- END TEMPORARY -->
     </div>
   </div>
 </div>

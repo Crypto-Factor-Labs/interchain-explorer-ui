@@ -1,3 +1,5 @@
+@import '../../cf_color_palette.scss';
+
 :host {
   padding: 20px;
 }
@@ -29,5 +31,6 @@
 
 /* Adjust the value to take up remaining space */
 .value {
+  color: $jordy-blue;
   flex: 5; // occupies twice as much space as the label
 }
