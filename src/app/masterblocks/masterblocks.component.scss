@@ -175,6 +175,25 @@
   pointer-events: none;
 }
 
+.expand-toggle-btn .btn-content {
+  display: inline-flex;
+  justify-content: center;
+  width: 66px;
+  white-space: nowrap;
+}
+
+.rotate-clockwise {
+  display: inline-block;
+  transition: transform 1.0s ease;
+  transform: rotate(90deg);
+}
+
+.rotate-counterclockwise {
+  display: inline-block;
+  transition: transform 1.0s ease;
+  transform: rotate(-90deg);
+}
+
 .block-info {
   display: flex;
   flex-direction: column;
