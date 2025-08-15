@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BackendService } from '../../backend.service';
+import { BackendService } from '../../shared/services/backend.service';
 import { DialogService } from './dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MasterBlockComponent } from '../../masterblock/masterblock.component';

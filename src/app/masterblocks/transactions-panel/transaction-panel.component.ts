@@ -3,7 +3,7 @@ import { SHARED_IMPORTS } from '../../shared/shared-standalone';
 import { Subscription, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ConfigService } from '../../config.service';
-import { BackendService } from '../../backend.service';
+import { BackendService } from '../../shared/services/backend.service';
 import { DialogService } from '../../shared/services/dialog.service';
 
 import { Transaction, ExecutionPart } from '../../shared/interfaces/transaction.interface';

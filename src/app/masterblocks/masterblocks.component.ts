@@ -3,7 +3,7 @@ import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 import { ConfigService } from '../config.service';
-import { BackendService } from '../backend.service';
+import { BackendService } from '../shared/services/backend.service';
 import { DialogService } from '../shared/services/dialog.service';
 import { MasterBlockComponent } from '../masterblock/masterblock.component';
 import { MasterChainBlock } from '../shared/interfaces/master-chain.interface'
