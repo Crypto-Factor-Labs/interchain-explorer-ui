@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MasterblocksComponent } from './masterblocks.component';
+import { MasterBlocksComponent } from './masterblocks.component';
 
 describe('MasterblocksComponent', () => {
-  let component: MasterblocksComponent;
-  let fixture: ComponentFixture<MasterblocksComponent>;
+  let component: MasterBlocksComponent;
+  let fixture: ComponentFixture<MasterBlocksComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MasterblocksComponent]
+      imports: [MasterBlocksComponent]
     })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(MasterblocksComponent);
+      .compileComponents();
+
+    fixture = TestBed.createComponent(MasterBlocksComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
-import { PricePoint } from './shared/statistics.interface';
+import { PricePoint } from './shared/interfaces/statistics.interface';
 
 @Injectable({
   providedIn: 'root'  // Makes the BackendService available throughout the application,
@@ -45,10 +45,31 @@ export class BackendService {
     return this.http.get(`${this.apiUrl}/masterchain/blocks`, { params });
   }
 
+  // Methods to retrieve Transactions
+  getTransactions(nr: number, skip?: number, includeExecutionParts?: boolean): Observable<any> {
+
+    let params = new HttpParams().set('nr', nr.toString());
+
+    // If `skip` is provided, add it to the params
+    if (skip !== undefined) {
+      params = params.set('skip', skip.toString());
+    }
+
+    // If `includeExecutionParts` is provided, add it to the params
+    if (includeExecutionParts !== undefined) {
+      params = params.set('includePartialBlocks', includeExecutionParts.toString());
+    }
+
+    // Make the GET request with the modified params
+    return this.http.get(`${this.apiUrl}/masterchain/transactions`, { params });
+  }
+
   // Methods to retrieve indexed PartialBlocks (i.e. blocks from the PartialChains)
   getPartialBlock(hash: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/partialchain/block?hash=${hash}`);
   }
+
+
 
   // Methods to retrieve Statistics
   getStatistics(): Observable<any> {

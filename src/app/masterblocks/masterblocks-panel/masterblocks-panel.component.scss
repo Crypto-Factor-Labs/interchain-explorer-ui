@@ -1,4 +1,4 @@
-@import '../../cf_color_palette';
+@import '../../../cf_color_palette';
 
 /* Overall page container */
 .blocks-page {
@@ -10,6 +10,7 @@
 
 /* Panels container: creates a two-column layout */
 /* Equal 50/50 panels */
+/*
 .panels-container {
   display: flex;
   gap: 16px;
@@ -21,6 +22,7 @@
   flex: 1 1 0;
   min-width: 0; // allow content to shrink/ellipsis
 }
+*/
 
 .panel-header {
   display: flex;

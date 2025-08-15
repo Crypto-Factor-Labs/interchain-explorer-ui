@@ -1,0 +1,139 @@
+<div class="panel panel-left panel-with-pagination">
+  <div class="panel-header">
+    <h2><span *ngIf="currentPage === 1">Latest </span>Master Blocks</h2>
+    <i class="status-icon fa" [ngClass]="pollingActive ? 'fa-sync fa-spin' : 'fa-pause-circle'"
+      (click)="togglePolling.emit()" [title]="pollingActive ? 'Auto-refresh ON' : 'Auto-refresh OFF'">
+    </i>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="blocks-list">
+    <div class="block-item" *ngFor="let block of masterBlocks; trackBy: trackByBlockHash">
+      <div class="block-columns">
+        <!-- Left Column -->
+        <div class="column column-left">
+          <div class="left-column-content">
+            <div class="logo-pane">
+              <img src="assets/images/interchain_logo.png" alt="Interchain Logo" class="logo-img"
+                style="width: 48px; height: 48px;" />
+            </div>
+            <div class="block-info">
+              <div class="field">
+                <div class="value">
+                  <span class="gradient-text clickable" (click)="openMasterBlock.emit(block)">
+                    M-{{ block.height }}
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <div class="label">{{ block.timestamp | timeAgo }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Hash -->
+        <div class="column column-right">
+          <div class="field">
+            <div class="label">Hash</div>
+            <div class="value">
+              <span class="gradient-text clickable" (click)="openMasterBlock.emit(block)">
+                {{ block.block_hash | truncateMiddle: 8 }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Third Column: Expand Button -->
+        <div class="column column-button">
+          <a class="gradient-btn expand-toggle-btn" (click)="togglePartialBlocks.emit(block.block_hash)">
+            <span class="btn-content">
+              <i class="fa" [ngClass]="{
+                   'fa-expand': !expandedBlocks[block.block_hash],
+                   'fa-compress': expandedBlocks[block.block_hash],
+                   'rotate-clockwise': !expandedBlocks[block.block_hash],
+                   'rotate-counterclockwise': expandedBlocks[block.block_hash]
+                 }" style="margin-right: 7px;">
+              </i>
+              {{ expandedBlocks[block.block_hash] ? 'Collapse' : 'Expand' }}
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- PartialBlocks -->
+      <div *ngIf="expandedBlocks[block.block_hash]" class="partial-blocks-section">
+        <div *ngFor="let partialBlock of block.partialBlocks">
+          <div class="partial-block-info">
+            <div class="block-columns">
+              <!-- Left Column -->
+              <div class="column column-left">
+                <div class="left-column-content">
+                  <div class="chain-logo">
+                    <div class="logo-pane">
+                      <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Logo" class="logo-img"
+                        style="width: 32px; height: 32px;" />
+                    </div>
+                  </div>
+                  <div class="block-info">
+                    <div class="field">
+                      <div class="value">
+                        <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
+                          Z-{{ partialBlock.height }}-{{ partialBlock.chain_id }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <div class="label">{{ partialBlock.parentTimestamp | timeAgo }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div class="column column-right">
+                <div class="field">
+                  <div class="label">Hash</div>
+                  <div class="value">
+                    <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
+                      {{ partialBlock.block_hash | truncateMiddle: 8 }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="label" style="margin-right: 10px;">Confirmed</div>
+                <div class="value">
+                  <span class="gradient-text">
+                    {{ partialBlock.confirmed }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /partial-blocks -->
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-bar">
+    <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
+      <span class="btn-content">« First</span>
+    </button>
+    <button class="gradient-btn" (click)="pageChange.emit(currentPage - 1)" [disabled]="currentPage === 1">
+      <span class="btn-content">← Prev</span>
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button class="gradient-btn" (click)="pageChange.emit(currentPage + 1)" [disabled]="currentPage === totalPages">
+      <span class="btn-content">Next →</span>
+    </button>
+    <button class="gradient-btn" (click)="pageChange.emit(totalPages)" [disabled]="currentPage === totalPages">
+      <span class="btn-content">Last »</span>
+    </button>
+  </div>
+</div>

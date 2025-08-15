@@ -1,0 +1,185 @@
+<div class="panel panel-right panel-with-pagination">
+  <div class="panel-header">
+    <h2><span *ngIf="txCurrentPage === 1">Latest </span>Transactions</h2>
+    <i class="status-icon fa" [ngClass]="pollingActive ? 'fa-sync fa-spin' : 'fa-pause-circle'"
+      (click)="togglePolling()" [title]="pollingActive ? 'Auto-refresh ON' : 'Auto-refresh OFF'">
+    </i>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- Error -->
+  <div class="error" *ngIf="errMsg">{{ errMsg }}</div>
+
+  <!-- Transactions List -->
+  <div class="transactions-list">
+    <div class="transaction-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
+      <div class="block-columns">
+        <!-- Left Column -->
+        <div class="column column-left">
+          <div class="left-column-content">
+            <div class="logo-pane">
+              <img src="assets/images/interchain_logo.png" alt="Interchain Logo" class="logo-img"
+                style="width: 32px; height: 32px;" />
+            </div>
+            <div class="block-info">
+              <div class="field">
+                <div class="label">Tx</div>
+                <div class="value">
+                  <span class="gradient-text clickable" (click)="showTransactionData(tx)">
+                    {{ tx.transactionHash | truncateMiddle: 10 }}
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <div class="label">Sender</div>
+                <div class="value">
+                  <span class="gradient-text">{{ tx.sourceSender | truncateMiddle: 8 }}</span>
+                </div>
+              </div>
+              <div class="field">
+                <div class="label">Status</div>
+                <div class="value">
+                  <span class="status-chip" [ngClass]="triStateClass(tx.result)">
+                    {{ triStateLabel(tx.result) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="column column-right">
+          <div class="field">
+            <div class="label">Master Block</div>
+            <div class="value">
+              <span class="gradient-text">{{ tx.includedInMasterBlock | truncateMiddle: 10 }}</span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">Idx</div>
+            <div class="value"><span class="gradient-text">{{ tx.masterBlockTransactionIndex }}</span></div>
+          </div>
+          <div class="field">
+            <div class="label">Parts</div>
+            <div class="value"><span class="gradient-text">{{ tx.executionParts.length }}</span></div>
+          </div>
+        </div>
+
+        <!-- Expand/Collapse -->
+        <div class="column column-button">
+          <a class="gradient-btn expand-toggle-btn" (click)="toggleExecutionParts(tx.transactionHash)">
+            <span class="btn-content">
+              <i class="fa" [ngClass]="{
+                   'fa-expand': !expandedTx[tx.transactionHash],
+                   'fa-compress': expandedTx[tx.transactionHash],
+                   'rotate-clockwise': !expandedTx[tx.transactionHash],
+                   'rotate-counterclockwise': expandedTx[tx.transactionHash]
+                 }" style="margin-right: 7px;">
+              </i>
+              {{ expandedTx[tx.transactionHash] ? 'Collapse' : 'Expand' }}
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Execution Parts -->
+      <div *ngIf="expandedTx[tx.transactionHash]" class="partial-blocks-section">
+        <div *ngFor="let part of tx.executionParts; trackBy: trackByExecPart">
+          <div class="partial-block-info">
+            <div class="block-columns">
+              <!-- Left Column -->
+              <div class="column column-left">
+                <div class="left-column-content">
+                  <div class="logo-pane">
+                    <img [src]="getChainImage(part.chainId)" alt="Chain Logo" class="logo-img"
+                      style="width: 24px; height: 24px;" />
+                  </div>
+                  <div class="block-info">
+                    <div class="field">
+                      <div class="label">Chain</div>
+                      <div class="value"><span class="gradient-text">{{ part.chainId }}</span></div>
+                    </div>
+                    <div class="field">
+                      <div class="label">Part</div>
+                      <div class="value"><span class="gradient-text">{{ part.transactionExecutionPartIndex }}</span>
+                      </div>
+                    </div>
+                    <div class="field" *ngIf="part.targetChainExecutionEvent">
+                      <div class="label">Exec</div>
+                      <div class="value">
+                        <span class="status-chip" [ngClass]="triStateClass(part.targetChainExecutionEvent.result)">
+                          {{ triStateLabel(part.targetChainExecutionEvent.result) }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div class="column column-right">
+                <div class="field">
+                  <div class="label">Operator</div>
+                  <div class="value">
+                    <span class="gradient-text">{{ part.operatorAddress | truncateMiddle: 8 }}</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="label">Sender</div>
+                  <div class="value">
+                    <span class="gradient-text">{{ part.senderAddress | truncateMiddle: 8 }}</span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="label">Partial Block</div>
+                  <div class="value">
+                    <span class="gradient-text clickable" (click)="showExecutionPartData(part)">
+                      {{ part.includedInPartialBlock | truncateMiddle: 10 }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Timestamps (optional) -->
+              <div class="field" *ngIf="part.targetChainPublishEvent?.eventTimestamp">
+                <div class="label" style="margin-right: 10px;">Published</div>
+                <div class="value">
+                  <span class="gradient-text">{{ part.targetChainPublishEvent?.eventTimestamp | timeAgo }}</span>
+                </div>
+              </div>
+              <div class="field" *ngIf="part.targetChainExecutionEvent?.eventTimestamp">
+                <div class="label" style="margin-right: 10px;">Executed</div>
+                <div class="value">
+                  <span class="gradient-text">{{ part.targetChainExecutionEvent?.eventTimestamp | timeAgo }}</span>
+                </div>
+              </div>
+            </div>
+          </div> <!-- /partial-block-info -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination Bar -->
+  <div class="pagination-bar">
+    <button class="gradient-btn" (click)="goToPage(1)" [disabled]="txCurrentPage === 1">
+      <span class="btn-content">« First</span>
+    </button>
+    <button class="gradient-btn" (click)="goToPage(txCurrentPage - 1)" [disabled]="txCurrentPage === 1">
+      <span class="btn-content">← Prev</span>
+    </button>
+
+    <span class="page-info">
+      Page {{ txCurrentPage }} of {{ txTotalPages }}
+    </span>
+
+    <button class="gradient-btn" (click)="goToPage(txCurrentPage + 1)" [disabled]="txCurrentPage === txTotalPages">
+      <span class="btn-content">Next →</span>
+    </button>
+    <button class="gradient-btn" (click)="goToPage(txTotalPages)" [disabled]="txCurrentPage === txTotalPages">
+      <span class="btn-content">Last »</span>
+    </button>
+  </div>
+</div>

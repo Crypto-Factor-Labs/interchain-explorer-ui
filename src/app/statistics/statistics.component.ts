@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy } fr
 import { interval, Subscription } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 import { BackendService } from '../backend.service';
-import { Statistics, PricePoint } from '../shared/statistics.interface';
+import { Statistics, PricePoint } from '../shared/interfaces/statistics.interface';
 import type { TooltipItem, ChartConfiguration } from 'chart.js';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';

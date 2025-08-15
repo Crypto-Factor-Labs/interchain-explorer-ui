@@ -1,7 +1,7 @@
 import { Component, Inject, ViewEncapsulation, HostListener } from '@angular/core';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
-import { PartialChainBlock } from '../shared/master-chain.interface';
-import { getChainImage } from '../shared/utils';
+import { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
+import { getChainImage } from '../shared/utils/common.utils';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
