@@ -8,7 +8,7 @@
 
   <div class="separator"></div>
 
-  <div class="blocks-list">
+  <div class="blocks-list" #blockListRef>
     <div class="block-item" *ngFor="let block of masterBlocks; trackBy: trackByBlockHash">
       <div class="block-columns">
         <!-- Left Column -->
@@ -62,54 +62,53 @@
         </div>
       </div>
 
-      <!-- PartialBlocks -->
-      <div *ngIf="expandedBlocks[block.block_hash]" class="partial-blocks-section">
-        <div *ngFor="let partialBlock of block.partialBlocks">
-          <div class="partial-block-info">
-            <div class="block-columns">
-              <!-- Left Column -->
-              <div class="column column-left">
-                <div class="left-column-content">
-                  <div class="chain-logo">
-                    <div class="logo-pane">
-                      <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Logo" class="logo-img"
-                        style="width: 32px; height: 32px;" />
+      <!-- PartialBlocks, animated on expand -->
+      <div *ngIf="expandedBlocks[block.block_hash]" class="partial-blocks-section" @expandCollapse
+        (@expandCollapse.done)="onExpandDone($event)" @staggerItems>
+        <div *ngFor="let partialBlock of block.partialBlocks" class="partial-block-info">
+          <div class="block-columns">
+            <!-- Left Column -->
+            <div class="column column-left">
+              <div class="left-column-content">
+                <div class="chain-logo">
+                  <div class="logo-pane">
+                    <img [src]="getChainImage(partialBlock.chain_id)" alt="Chain Logo" class="logo-img"
+                      style="width: 32px; height: 32px;" />
+                  </div>
+                </div>
+                <div class="block-info">
+                  <div class="field">
+                    <div class="value">
+                      <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
+                        Z-{{ partialBlock.height }}-{{ partialBlock.chain_id }}
+                      </span>
                     </div>
                   </div>
-                  <div class="block-info">
-                    <div class="field">
-                      <div class="value">
-                        <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
-                          Z-{{ partialBlock.height }}-{{ partialBlock.chain_id }}
-                        </span>
-                      </div>
-                    </div>
-                    <div class="field">
-                      <div class="label">{{ partialBlock.parentTimestamp | timeAgo }}</div>
-                    </div>
+                  <div class="field">
+                    <div class="label">{{ partialBlock.parentTimestamp | timeAgo }}</div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- Right Column -->
-              <div class="column column-right">
-                <div class="field">
-                  <div class="label">Hash</div>
-                  <div class="value">
-                    <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
-                      {{ partialBlock.block_hash | truncateMiddle: 8 }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
+            <!-- Right Column -->
+            <div class="column column-right">
               <div class="field">
-                <div class="label" style="margin-right: 10px;">Confirmed</div>
+                <div class="label">Hash</div>
                 <div class="value">
-                  <span class="gradient-text">
-                    {{ partialBlock.confirmed }}
+                  <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
+                    {{ partialBlock.block_hash | truncateMiddle: 8 }}
                   </span>
                 </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label" style="margin-right: 10px;">Confirmed</div>
+              <div class="value">
+                <span class="gradient-text">
+                  {{ partialBlock.confirmed }}
+                </span>
               </div>
             </div>
           </div>
