@@ -159,7 +159,7 @@
   margin-top: 5px;
   padding: 1px; // Determines the width of the border
   border-radius: 4px;
-  background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
+  background: $byzantine-blue;
 
   .btn-content {
     display: inline-flex;
@@ -194,14 +194,14 @@
 
 .rotate-clockwise {
   display: inline-block;
-  transition: transform 1.0s ease;
-  transform: rotate(90deg);
+  transition: transform 0.25s ease;
+  transform: rotate(0deg);
 }
 
 .rotate-counterclockwise {
   display: inline-block;
-  transition: transform 1.0s ease;
-  transform: rotate(-90deg);
+  transition: transform 0.25s ease;
+  transform: rotate(180deg);
 }
 
 .block-info {
@@ -226,22 +226,4 @@
   background-color: #000;
   border-radius: 4px;
   margin-bottom: 5px;
-}
-
-/* ----- Right Panel: Transactions List ----- */
-.transactions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.transaction-item {
-  background-color: #000;
-  padding: 12px 20px;
-  color: $charcoal;
-  border-bottom: 1px solid #444;
-}
-
-.transaction-item:last-child {
-  border-bottom: none;
 }
