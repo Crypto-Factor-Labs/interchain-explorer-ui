@@ -1,5 +1,6 @@
 @import '../../shared/shared-panel';
 
+/* Header & status icon */
 .panel-header {
   @extend %panel-header;
 }
@@ -8,24 +9,22 @@
   @extend %status-icon;
 }
 
-.blocks-list {
+/* Scrollable list + items */
+.transactions-list {
   @extend %scroll-list;
-  @extend %list-gap;
 }
 
-.block-item {
+.tx-item {
   @extend %panel-card;
 }
 
-.block-item:first-child {
-  @extend %panel-card-first;
+.tx-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.block-item:last-child {
-  @extend %panel-card-last;
-}
-
-.block-columns {
+/* Two-column row layout (semantic class for TXs) */
+.tx-columns {
   @extend %panel-columns;
 }
 
@@ -49,13 +48,11 @@
   @extend %logo-img;
 }
 
-/* height + timeAgo stack tighter */
-.block-info {
-  @extend %info-stack; // keeps side-by-side with the logo
-  --field-mt: 3px;
-  --field-mb: 5px;
+.tx-info {
+  @extend %info-stack;
 }
 
+/* Field/text utilities */
 .field {
   @extend %field;
 }
@@ -64,16 +61,16 @@
   @extend %value;
 }
 
+/* Re-usable gradient text */
 .gradient-text {
   @extend %gradient-text;
 }
 
-.partial-blocks-section {
-  @extend %partial-section;
-}
-
-.partial-block-info {
-  @extend %partial-row;
+/* Optional empty state */
+.empty-state {
+  opacity: .7;
+  padding: 12px;
+  text-align: center;
 }
 
 .pagination-bar {

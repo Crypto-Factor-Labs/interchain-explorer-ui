@@ -1,0 +1,60 @@
+<div class="panel panel-right panel-with-pagination">
+  <div class="panel-header">
+    <h2><span *ngIf="currentPage === 1">Latest </span>Transactions</h2>
+    <i class="status-icon fa" [ngClass]="pollingActive ? 'fa-sync fa-spin' : 'fa-pause-circle'"
+      (click)="togglePolling.emit()" [title]="pollingActive ? 'Auto-refresh ON' : 'Auto-refresh OFF'"></i>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="transactions-list">
+    <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
+      <div class="block-columns">
+        <div class="column column-left">
+          <div class="left-column-content">
+            <div class="logo-pane">
+              <img src="assets/images/interchain_logo.png" alt="Interchain Logo" class="logo-img"
+                style="width: 32px; height: 32px;" />
+            </div>
+            <div class="tx-info">
+              <div class="field">
+                <div class="label">{{ tx.timestamp | timeAgo }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="column column-right">
+          <div class="field">
+            <div class="label">Hash</div>
+            <div class="value">
+              <span class="gradient-text clickable" (click)="openTx.emit(tx)">
+                {{ tx.tx_hash | truncateMiddle: 8 }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
+  </div>
+
+  <div class="pagination-bar">
+    <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
+      <span class="btn-content">« First</span>
+    </button>
+    <button class="gradient-btn" (click)="pageChange.emit(currentPage - 1)" [disabled]="currentPage === 1">
+      <span class="btn-content">← Prev</span>
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button class="gradient-btn" (click)="pageChange.emit(currentPage + 1)" [disabled]="currentPage === totalPages">
+      <span class="btn-content">Next →</span>
+    </button>
+    <button class="gradient-btn" (click)="pageChange.emit(totalPages)" [disabled]="currentPage === totalPages">
+      <span class="btn-content">Last »</span>
+    </button>
+  </div>
+</div>

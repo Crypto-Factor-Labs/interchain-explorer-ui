@@ -11,7 +11,7 @@ import { PartialBlockComponent } from '../partialblock/partialblock.component';
 import { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
 import { getChainImage as utilGetChainImage } from '../shared/utils/common.utils';
 import { MasterBlocksPanelComponent } from './masterblocks-panel/masterblocks-panel.component';
-import { TransactionPanelComponent } from './transactions-panel/transaction-panel.component';
+import { TransactionsPanelComponent } from './transactions-panel/transactions-panel.component';
 import BN from 'bn.js';
 
 interface FetchResult {
@@ -22,7 +22,7 @@ interface FetchResult {
 @Component({
   selector: 'app-masterblocks',
   standalone: true,
-  imports: [...SHARED_IMPORTS, MasterBlocksPanelComponent, TransactionPanelComponent],
+  imports: [...SHARED_IMPORTS, MasterBlocksPanelComponent, TransactionsPanelComponent],
   templateUrl: './masterblocks.component.html',
   styleUrl: './masterblocks.component.scss'
 })

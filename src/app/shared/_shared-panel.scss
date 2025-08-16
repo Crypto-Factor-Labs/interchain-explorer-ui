@@ -1,0 +1,213 @@
+@import '../../cf_color_palette';
+
+%panel-title {
+  margin: var(--panel-title-margin, 0);
+  font-size: var(--panel-title-size, 18px);
+}
+
+%panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--panel-header-padding-x, 1rem);
+}
+
+%status-icon {
+  font-size: 1.2rem;
+  color: $byzantine-blue;
+  cursor: pointer;
+}
+
+%scroll-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  margin-top: var(--panel-scroll-mt, 5px);
+  margin-bottom: var(--panel-scroll-mb, 15px);
+  padding-top: var(--panel-scroll-pt, 5px); // cancels first-item -5px
+  scrollbar-gutter: stable both-edges;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #222;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+    border: 2px solid #222;
+  }
+}
+
+%panel-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--panel-card-bg, #000);
+  padding: var(--panel-card-padding, 5px 10px 1px 10px);
+  color: $charcoal;
+  border-bottom: var(--panel-card-border, 1px solid #444);
+}
+
+%panel-card-first {
+  padding-top: var(--panel-first-pad-top, 0);
+  margin-top: var(--panel-first-margin-top, -5px);
+}
+
+%panel-card-last {
+  border-bottom: none;
+}
+
+/* vertical gap between consecutive items in a list */
+%list-gap {
+  >*+* {
+    margin-top: var(--panel-card-gap, 5px);
+  }
+}
+
+%panel-columns {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: var(--panel-columns-gap, 0);
+}
+
+%col-left {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: var(--panel-col-left-mr, 20px);
+}
+
+%col-right {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+%logo-pane {
+  display: flex;
+  align-items: center;
+  transform: translateY(var(--logo-nudge, -5px));
+}
+
+%logo-img {
+  display: block;
+}
+
+/* inline media (logo + text side-by-side) */
+%inline-media {
+  display: flex;
+  align-items: center;
+  gap: var(--inline-gap, 8px);
+}
+
+/* stacked meta next to the logo */
+%info-stack {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--info-stack-mt, 0);
+}
+
+%field {
+  margin-top: var(--field-mt, 3px);
+  margin-bottom: var(--field-mb, 10px);
+}
+
+%value {
+  font-size: 16px;
+}
+
+%gradient-text {
+  display: inline-block;
+  background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Button */
+.gradient-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 5px;
+  padding: 1px;
+  border-radius: 4px;
+  background: $jordy-blue;
+
+  .btn-content {
+    display: inline-flex;
+    align-items: center;
+    border-radius: inherit;
+    padding: 5px 12px;
+    color: $powder-blue;
+    font-weight: lighter;
+    background-color: $rich-black;
+    font-size: 13px;
+    transition: background-color .2s ease, color .2s ease;
+    width: var(--btn-width, auto);
+    white-space: nowrap;
+  }
+
+  &:focus-visible .btn-content {
+    box-shadow: 0 0 0 2px rgba(#000, .6), 0 0 0 4px rgba($byzantine-blue, .6);
+
+  }
+
+  .btn-content:hover {
+    color: $alice-blue;
+    background-color: $byzantine-blue;
+  }
+}
+
+.gradient-btn[disabled] {
+  opacity: .4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.expand-toggle-btn {
+  --btn-width: 66px;
+}
+
+.rotate-clockwise,
+.rotate-counterclockwise {
+  display: inline-block;
+  transition: transform var(--exp-rotate-duration, .25s) ease;
+}
+
+.rotate-counterclockwise {
+  transform: rotate(180deg);
+}
+
+%partial-section {
+  margin-top: var(--partial-section-mt, 10px);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+%partial-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: #000;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+%pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pagination-gap, 6px);
+
+  --btn-width: var(--pagination-btn-width, 40px);
+
+}

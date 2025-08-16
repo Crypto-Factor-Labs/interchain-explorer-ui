@@ -1,6 +1,6 @@
 @import '../../cf_color_palette';
 
-/* Overall page container */
+/* Layout only (unchanged) */
 .blocks-page {
   display: flex;
   flex-direction: column;
@@ -8,238 +8,26 @@
   padding: 20px;
 }
 
-/* Panels container: creates a two-column layout */
-/* Equal 50/50 panels */
 .panels-container {
   display: flex;
   gap: 16px;
   align-items: stretch;
-}
 
-.panels-container>* {
-  // applies to the left div AND the right component host
-  flex: 1 1 0;
-  min-width: 0; // allow content to shrink/ellipsis
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-}
-
-.status-icon {
-  font-size: 1.2rem;
-  color: $byzantine-blue;
-  cursor: pointer;
-}
-
-/* ----- Left Panel: Blocks List ----- */
-.blocks-list {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  scrollbar-gutter: stable both-edges;
-}
-
-/* Individual block card */
-.block-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background-color: black;
-  padding: 5px 10px 5px 10px; // top, right, bottom, left
-  color: $charcoal;
-  border-bottom: 1px solid #444;
-  margin-bottom: 0px;
-}
-
-.block-item:first-child {
-  padding-top: 0px;
-  margin-top: -5px;
-}
-
-.block-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0px;
-}
-
-// Style the scrollbar
-.blocks-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.blocks-list::-webkit-scrollbar-track {
-  background: #222; // track color
-}
-
-.blocks-list::-webkit-scrollbar-thumb {
-  background-color: #555; // thumb color
-  border-radius: 4px; // rounded edges
-  border: 2px solid #222; // gives a little padding around thumb
-}
-
-/* Block columns container */
-.block-columns {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-/* Left column styling (contains Height and Duration) */
-.column-left {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  margin-top: 0px;
-  margin-right: 20px;
-}
-
-/* Container for the left column content */
-.left-column-content {
-  display: flex;
-  align-items: center;
-}
-
-/* Reduced spacing for the first field (Height) */
-.column-left .field:first-of-type {
-  margin-bottom: 4px;
-}
-
-/* Right column styling (contains Hash) */
-.column-right {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-/* Additional spacing for the first field (Hash) */
-.column-right .field:first-of-type {
-  margin-top: 8px;
-}
-
-/* Field styling */
-.field {
-  margin-top: 3px;
-  margin-bottom: 10px;
-}
-
-.value {
-  font-size: 16px;
-}
-
-.partial-block-info .column-right .field .label {
-  padding-top: 1px;
-  margin-left: -4px;
-}
-
-.partial-block-info .column-right .field .value {
-  margin-left: -4px;
-}
-
-/* Reusable gradient text */
-.gradient-text {
-  display: inline-block;
-  background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Button with gradient border */
-.gradient-btn {
-  display: inline-block;
-  cursor: pointer;
-  margin-top: 5px;
-  padding: 1px; // Determines the width of the border
-  border-radius: 4px;
-  background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
-
-  .btn-content {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 4px;
-    padding: 5px 12px;
-    color: $powder-blue;
-    font-weight: lighter;
-    background-color: $rich-black;
-    font-size: 13px;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .btn-content:hover {
-    color: $alice-blue;
-    background-color: $byzantine-blue;
+  >* {
+    flex: 1 1 0;
+    min-width: 0;
   }
 }
 
-.gradient-btn[disabled] {
-  opacity: 0.4;
-  cursor: default;
-  pointer-events: none;
+// Panel-specific tuning via CSS vars
+/* The MasterBlocks-panel simply uses the defaults from the parent that are set in _shared-panel.scss,
+ * so no specific vars are needed here.
+app-masterblocks-panel {
 }
+*/
 
-.expand-toggle-btn .btn-content {
-  display: inline-flex;
-  justify-content: center;
-  width: 66px;
-  white-space: nowrap;
+/* If necessary, tweaks for the Transactions-panel can be made here by assigning different vars
+app-transactions-panel {
+  /* e.g., --panel-card-padding: 8px 12px; *
 }
-
-.rotate-clockwise {
-  display: inline-block;
-  transition: transform 1.0s ease;
-  transform: rotate(90deg);
-}
-
-.rotate-counterclockwise {
-  display: inline-block;
-  transition: transform 1.0s ease;
-  transform: rotate(-90deg);
-}
-
-.block-info {
-  display: flex;
-  flex-direction: column;
-  margin-top: 5px;
-}
-
-.partial-blocks-section {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column; // Stack PartialBlocks vertically
-  width: 100%;
-}
-
-.partial-block-info {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  //gap: 20px; // Space between properties
-  //padding: 0px 10px 0px 0px;
-  background-color: #000;
-  border-radius: 4px;
-  margin-bottom: 5px;
-}
-
-/* ----- Right Panel: Transactions List ----- */
-.transactions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.transaction-item {
-  background-color: #000;
-  padding: 12px 20px;
-  color: $charcoal;
-  border-bottom: 1px solid #444;
-}
-
-.transaction-item:last-child {
-  border-bottom: none;
-}
+*/
