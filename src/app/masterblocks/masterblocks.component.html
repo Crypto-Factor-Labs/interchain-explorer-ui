@@ -9,7 +9,9 @@
     </app-masterblocks-panel>
 
     <!-- Right Panel: List with Transactions and ExecutionParts -->
-    <app-transactions-panel></app-transactions-panel>
-
+    <app-transactions-panel [transactions]="transactions" [currentPage]="txPage" [totalPages]="txTotalPages"
+      [pollingActive]="txPolling" [trackByTxHash]="trackByTxHash" (togglePolling)="onTxTogglePolling()"
+      (pageChange)="goToTxPage($event)" (openTx)="openTxDialog($event)">
+    </app-transactions-panel>
   </div>
 </div>

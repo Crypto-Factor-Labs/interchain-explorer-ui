@@ -9,12 +9,13 @@
 
   <div class="transactions-list">
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
-      <div class="block-columns">
-        <div class="column column-left">
+      <div class="tx-columns">
+        <!-- Left: logo + meta -->
+        <div class="column-left">
           <div class="left-column-content">
             <div class="logo-pane">
               <img src="assets/images/interchain_logo.png" alt="Interchain Logo" class="logo-img"
-                style="width: 32px; height: 32px;" />
+                style="width:32px;height:32px;" />
             </div>
             <div class="tx-info">
               <div class="field">
@@ -24,7 +25,8 @@
           </div>
         </div>
 
-        <div class="column column-right">
+        <!-- Right: hash -->
+        <div class="column-right">
           <div class="field">
             <div class="label">Hash</div>
             <div class="value">
@@ -40,6 +42,7 @@
     <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
   </div>
 
+  <!-- Pagination -->
   <div class="pagination-bar">
     <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
       <span class="btn-content">« First</span>

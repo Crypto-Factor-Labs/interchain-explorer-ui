@@ -6,6 +6,8 @@ export function getChainImage(chainId: string | number): string {
       return 'assets/images/defichain_logo.png';
     case 18500:
       return 'assets/images/partisia_logo.png';
+    case 80002:
+      return 'assets/images/polygon_logo.png';
     default:
       return 'assets/images/interchain_logo.png';
   }

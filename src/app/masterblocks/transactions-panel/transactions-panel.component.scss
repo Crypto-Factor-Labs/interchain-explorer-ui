@@ -5,25 +5,30 @@
   @extend %panel-header;
 }
 
+.panel-header h2 {
+  @extend %panel-title;
+}
+
 .status-icon {
   @extend %status-icon;
 }
 
-/* Scrollable list + items */
+/* Scrollable list + consistent gaps only between items */
 .transactions-list {
   @extend %scroll-list;
+  @extend %list-gap;
 }
 
+/* Card */
 .tx-item {
   @extend %panel-card;
 }
 
 .tx-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+  @extend %panel-card-last;
 }
 
-/* Two-column row layout (semantic class for TXs) */
+/* Two-column layout */
 .tx-columns {
   @extend %panel-columns;
 }
@@ -36,6 +41,7 @@
   @extend %col-right;
 }
 
+/* Inline logo + info; centered logo baseline */
 .left-column-content {
   @extend %inline-media;
 }
@@ -52,7 +58,7 @@
   @extend %info-stack;
 }
 
-/* Field/text utilities */
+/* Fields & text */
 .field {
   @extend %field;
 }
@@ -61,18 +67,18 @@
   @extend %value;
 }
 
-/* Re-usable gradient text */
 .gradient-text {
   @extend %gradient-text;
 }
 
-/* Optional empty state */
+/* Pagination defaults (uniform button width/spacing if you kept this placeholder) */
+.pagination-bar {
+  @extend %pagination-bar;
+}
+
+/* Optional */
 .empty-state {
   opacity: .7;
   padding: 12px;
   text-align: center;
-}
-
-.pagination-bar {
-  @extend %pagination-bar;
 }

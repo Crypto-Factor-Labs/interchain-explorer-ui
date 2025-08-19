@@ -18,7 +18,7 @@ export class BackendService {
     this.apiUrl = `${this.config.appBaseUrl}/api`;
   }
 
-  // Methods to retrieve indexed MasterBlocks (i.e. blocks from the MasterChain)
+  /*** Methods to retrieve indexed MasterBlocks (i.e. blocks from the MasterChain) ***/
   getMasterBlock(hash: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/masterchain/block?height_or_hash=${hash}`);
   }
@@ -45,7 +45,7 @@ export class BackendService {
     return this.http.get(`${this.apiUrl}/masterchain/blocks`, { params });
   }
 
-  // Methods to retrieve Transactions
+  /*** Methods to retrieve Transactions ***/
   getTransactions(nr: number, skip?: number, includeExecutionParts?: boolean): Observable<any> {
 
     let params = new HttpParams().set('nr', nr.toString());
@@ -57,21 +57,23 @@ export class BackendService {
 
     // If `includeExecutionParts` is provided, add it to the params
     if (includeExecutionParts !== undefined) {
-      params = params.set('includePartialBlocks', includeExecutionParts.toString());
+      params = params.set('includeExecutionParts', includeExecutionParts.toString());
     }
 
+    // Also the `sender` and `operator` parameters can be added if needed
+    // params = params.set('sender', sender).set('operator', operator);
+
     // Make the GET request with the modified params
+    // returns: { total, items: [...] }
     return this.http.get(`${this.apiUrl}/masterchain/transactions`, { params });
   }
 
-  // Methods to retrieve indexed PartialBlocks (i.e. blocks from the PartialChains)
+  /*** Methods to retrieve indexed PartialBlocks (i.e. blocks from the PartialChains) ***/
   getPartialBlock(hash: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/partialchain/block?hash=${hash}`);
   }
 
-
-
-  // Methods to retrieve Statistics
+  /*** Methods to retrieve Statistics ***/
   getStatistics(): Observable<any> {
     //console.log(">>> getStatistics")
     return this.http.get(`${this.apiUrl}/statistics`);

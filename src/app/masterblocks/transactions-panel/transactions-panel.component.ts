@@ -1,6 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import your standalone pipes
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe';
 

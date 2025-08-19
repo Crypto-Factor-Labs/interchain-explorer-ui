@@ -89,6 +89,7 @@
   flex: 1;
 }
 
+/* Base logo pane */
 %logo-pane {
   display: flex;
   align-items: center;
@@ -128,6 +129,12 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+// Make the font size smaller for partial blocks
+.partial-blocks-section .value {
+  font-size: 14px;
+  line-height: 1; // for tighter lines
 }
 
 /* Button */
