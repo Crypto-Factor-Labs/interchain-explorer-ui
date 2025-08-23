@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConfigService } from '../../config.service';
 import { PricePoint } from '../interfaces/statistics.interface';
+import { TxListDto } from '../interfaces/transaction.interface';
 
 @Injectable({
   providedIn: 'root'  // Makes the BackendService available throughout the application,
@@ -65,7 +66,7 @@ export class BackendService {
 
     // Make the GET request with the modified params
     // returns: { total, items: [...] }
-    return this.http.get(`${this.apiUrl}/masterchain/transactions`, { params });
+    return this.http.get<TxListDto>(`${this.apiUrl}/masterchain/transactions`, { params });
   }
 
   /*** Methods to retrieve indexed PartialBlocks (i.e. blocks from the PartialChains) ***/

@@ -9,20 +9,11 @@ import { MasterBlockComponent } from '../masterblock/masterblock.component';
 import { MasterChainBlock } from '../shared/interfaces/master-chain.interface'
 import { PartialBlockComponent } from '../partialblock/partialblock.component';
 import { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
+import { Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
 import { getChainImage as utilGetChainImage } from '../shared/utils/common.utils';
 import { MasterBlocksPanelComponent } from './masterblocks-panel/masterblocks-panel.component';
 import { TransactionsPanelComponent } from './transactions-panel/transactions-panel.component';
 import BN from 'bn.js';
-
-/* ---------------- Transactions types ---------------- */
-interface Tx {
-  tx_hash: string;
-  timestamp?: number | string | Date;
-}
-interface TxFetchResult {
-  transactions: Tx[];
-  total: number;
-}
 
 interface FetchResult {
   blocks: MasterChainBlock[];
@@ -236,25 +227,38 @@ export class MasterBlocksComponent implements OnInit {
   /** Backend adapter for transactions list ({ total, items }) */
   private fetchTxData(skip: number, shouldPoll: boolean): Observable<TxFetchResult | null> {
     return this.backendService
-      .getTransactions(this.pageSize, skip, false) // includeExecutionParts = false (Phase 1)
+      .getTransactions(this.pageSize, skip, false) // { total, items }
       .pipe(
         catchError(err => {
           console.error('Error loading transactions:', err);
           if (shouldPoll) this.scheduleNextTxPoll();
           return of(null);
         }),
-        map((resp: { total: number; items: any[] } | null) => {
+        map((resp: {
+          total: number; items: Array<{
+            id: string;
+            transactionHash: string;
+            includedInMasterBlock: string;
+            masterBlockTransactionIndex: number;
+            sourceSender: string;
+            sourceChainId: number;
+            state: number;
+            result: any;
+            timestamp?: number; // if backend adds later
+          }>
+        } | null) => {
           if (!resp) return null;
 
-          const total = Number(resp.total ?? 0);
-          const items = Array.isArray(resp.items) ? resp.items : [];
-
-          const transactions: Tx[] = items.map(t => ({
-            tx_hash: t.tx_hash ?? t.hash ?? String(t),
-            timestamp: t.timestamp ?? t.time ?? undefined,
+          const transactions: Tx[] = resp.items.map(i => ({
+            tx_hash: i.transactionHash,
+            timestamp: null, // backend doesn’t provide one yet
+            includedInMasterBlock: i.includedInMasterBlock ?? "[missing]",
+            masterBlockTransactionIndex: i.masterBlockTransactionIndex,
+            state: i.state,
+            chainId: i.sourceChainId
           }));
 
-          return { transactions, total };
+          return { transactions, total: resp.total };
         })
       );
   }

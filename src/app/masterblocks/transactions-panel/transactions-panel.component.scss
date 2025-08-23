@@ -1,5 +1,12 @@
 @import '../../shared/shared-panel';
 
+:host {
+  --logo-pane-size: 40px;
+  --logo-size: 24px;
+  --logo-gap: 12px;
+  --logo-nudge: 0px;
+}
+
 /* Header & status icon */
 .panel-header {
   @extend %panel-header;
@@ -17,68 +24,104 @@
 .transactions-list {
   @extend %scroll-list;
   @extend %list-gap;
+  --panel-card-gap: 0px;
+  // remove the inherited top spacer
+  --panel-scroll-mt: 0px;
+  --panel-scroll-pt: 0px;
 }
 
-/* Card */
+/* Each transaction row as a flat GRID card */
 .tx-item {
-  @extend %panel-card;
+  @extend %panel-card-grid;
+  /* grid-native card (no flex centering) */
+  grid-template-columns:
+    var(--logo-pane-size, var(--logo-size, 48px)) var(--logo-gap, 12px) 1fr max-content; // logo | gap | hash | meta (autofit)
+  grid-template-areas: "logo . hash meta";
+  column-gap: 0;
+  row-gap: 6px;
+  align-items: start;
+  justify-items: stretch;
+  --panel-card-padding: 9px 10px;
 }
+
 
 .tx-item:last-child {
   @extend %panel-card-last;
 }
 
-/* Two-column layout */
-.tx-columns {
-  @extend %panel-columns;
-}
-
-.column-left {
-  @extend %col-left;
-}
-
-.column-right {
-  @extend %col-right;
-}
-
-/* Inline logo + info; centered logo baseline */
-.left-column-content {
-  @extend %inline-media;
-}
-
 .logo-pane {
   @extend %logo-pane;
+  grid-area: logo;
+  align-self: center;
 }
 
 .logo-img {
   @extend %logo-img;
 }
 
-.tx-info {
-  @extend %info-stack;
+.hash {
+  grid-area: hash;
+  display: grid;
+  grid-template-rows: auto auto; // label above value
+  row-gap: 0px;
 }
 
-/* Fields & text */
-.field {
-  @extend %field;
+.hash .label {
+  font-weight: 500;
+  margin-top: 3px;
 }
 
-.value {
-  @extend %value;
+.hash .value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.meta {
+  grid-area: meta;
+}
+
+/* Key–value grid (label | value per row) used in .meta */
+.fields-container {
+  @extend %kv-grid;
+}
+
+.fields-container .field {
+  @extend %kv-field-as-contents;
+}
+
+.fields-container .label {
+  @extend %kv-label;
+}
+
+.fields-container .value {
+  @extend %kv-value;
+}
+
+/* Reusable gradient text */
 .gradient-text {
   @extend %gradient-text;
 }
 
-/* Pagination defaults (uniform button width/spacing if you kept this placeholder) */
+/* Pagination */
 .pagination-bar {
   @extend %pagination-bar;
 }
 
-/* Optional */
+/* Optional empty state */
 .empty-state {
   opacity: .7;
   padding: 12px;
   text-align: center;
+}
+
+/* Responsive: stack meta below on narrow screens */
+@media (max-width: 820px) {
+  .tx-item {
+    grid-template-columns: 48px 12px 1fr;
+    grid-template-areas:
+      "logo . hash"
+      "meta  meta meta";
+    row-gap: 8px;
+  }
 }

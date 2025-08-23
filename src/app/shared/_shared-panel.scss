@@ -62,6 +62,44 @@
   border-bottom: none;
 }
 
+%panel-card-grid {
+  display: grid;
+  grid-auto-rows: auto;
+  background-color: var(--panel-card-bg, #000);
+  padding: var(--panel-card-padding, 3px 10px);
+  color: $charcoal;
+  border-bottom: var(--panel-card-border, 1px solid #444);
+  align-items: start;
+  justify-items: stretch;
+}
+
+/* Key–value grid utilities (label | value per row) */
+%kv-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  /* label | value */
+  column-gap: 8px;
+  row-gap: 4px;
+}
+
+%kv-field-as-contents {
+  display: contents;
+  margin: 0;
+}
+
+%kv-label {
+  grid-column: 1;
+  white-space: nowrap;
+}
+
+%kv-value {
+  grid-column: 2;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 /* vertical gap between consecutive items in a list */
 %list-gap {
   >*+* {
@@ -93,11 +131,15 @@
 %logo-pane {
   display: flex;
   align-items: center;
-  transform: translateY(var(--logo-nudge, -5px));
+  width: var(--logo-pane-size, var(--logo-size, 48px));
+  height: var(--logo-pane-size, var(--logo-size, 48px));
+  transform: translateY(var(--logo-nudge, 0px));
 }
 
 %logo-img {
   display: block;
+  width: var(--logo-size, 48px);
+  height: var(--logo-size, 48px);
 }
 
 /* inline media (logo + text side-by-side) */

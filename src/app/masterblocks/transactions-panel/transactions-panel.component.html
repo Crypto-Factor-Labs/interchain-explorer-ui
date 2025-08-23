@@ -9,32 +9,31 @@
 
   <div class="transactions-list">
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
-      <div class="tx-columns">
-        <!-- Left: logo + meta -->
-        <div class="column-left">
-          <div class="left-column-content">
-            <div class="logo-pane">
-              <img src="assets/images/interchain_logo.png" alt="Interchain Logo" class="logo-img"
-                style="width:32px;height:32px;" />
-            </div>
-            <div class="tx-info">
-              <div class="field">
-                <div class="label">{{ tx.timestamp | timeAgo }}</div>
-              </div>
-            </div>
+      <!-- logo -->
+      <div class="logo-pane">
+        <img class="logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
+      </div>
+      <!-- hash (stacked: label over value) -->
+      <div class="hash">
+        <div class="label">Hash</div>
+        <div class="value">
+          <span class="gradient-text clickable" (click)="openTx.emit(tx)">
+            {{ tx.tx_hash | truncateMiddle: 8 }}
+          </span>
+        </div>
+      </div>
+
+      <!-- right meta (two rows: label | value) -->
+      <div class="meta fields-container">
+        <div class="field">
+          <div class="label">MasterBlock</div>
+          <div class="value gradient-text clickable">
+            {{ tx.includedInMasterBlock | truncateMiddle: 8 }}
           </div>
         </div>
-
-        <!-- Right: hash -->
-        <div class="column-right">
-          <div class="field">
-            <div class="label">Hash</div>
-            <div class="value">
-              <span class="gradient-text clickable" (click)="openTx.emit(tx)">
-                {{ tx.tx_hash | truncateMiddle: 8 }}
-              </span>
-            </div>
-          </div>
+        <div class="field">
+          <div class="label">Index in block</div>
+          <div class="value">{{ tx.masterBlockTransactionIndex }}</div>
         </div>
       </div>
     </div>

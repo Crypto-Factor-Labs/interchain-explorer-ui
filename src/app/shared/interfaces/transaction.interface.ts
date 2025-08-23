@@ -100,3 +100,36 @@ export interface Transaction {
   result: TriState;
   encodableType: number;
 }
+
+// Interfaces for transaction list response
+export interface Tx {
+  tx_hash: string;
+  timestamp?: number | null;
+  includedInMasterBlock: string;
+  masterBlockTransactionIndex?: number;
+  state: number;
+  chainId: number;
+}
+
+export interface TxFetchResult {
+  total: number;
+  transactions: Tx[];
+}
+
+// DTO interfaces for API responses
+export interface TxDto {
+  id: string;
+  transactionHash: string;
+  includedInMasterBlock: string;
+  masterBlockTransactionIndex: number;
+  sourceSender: string;
+  sourceChainId: number;
+  state: number;
+  result: any;
+}
+
+export interface TxListDto {
+  total: number;
+  items: TxDto[];
+}
+

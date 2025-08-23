@@ -2,11 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe';
-
-export interface Tx {
-  tx_hash: string;
-  timestamp?: number | string | Date;
-}
+import { Tx } from '../../shared/interfaces/transaction.interface';
 
 @Component({
   selector: 'app-transactions-panel',
@@ -21,6 +17,7 @@ export class TransactionsPanelComponent {
   @Input() totalPages = 1;
   @Input() pollingActive = true;
 
+  @Input() getChainImage!: (chainId: number) => string;
   @Input() trackByTxHash!: (i: number, tx: Tx) => any;
 
   @Output() togglePolling = new EventEmitter<void>();
