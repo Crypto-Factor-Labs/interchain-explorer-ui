@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfigService } from '../../config.service';
 import { PricePoint } from '../interfaces/statistics.interface';
-import { TxListDto } from '../interfaces/transaction.interface';
+import {
+  TxDto, TxExecutionPartDto, TxListDto,
+  Tx, TxExecutionPart, TxFetchResult,
+} from '../interfaces/transaction.interface';
 
 @Injectable({
   providedIn: 'root'  // Makes the BackendService available throughout the application,
@@ -19,7 +23,9 @@ export class BackendService {
     this.apiUrl = `${this.config.appBaseUrl}/api`;
   }
 
-  /*** Methods to retrieve indexed MasterBlocks (i.e. blocks from the MasterChain) ***/
+  /*
+   * Methods to retrieve indexed MasterBlocks (i.e. blocks from the MasterChain) 
+   */
   getMasterBlock(hash: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/masterchain/block?height_or_hash=${hash}`);
   }
@@ -46,35 +52,58 @@ export class BackendService {
     return this.http.get(`${this.apiUrl}/masterchain/blocks`, { params });
   }
 
-  /*** Methods to retrieve Transactions ***/
-  getTransactions(nr: number, skip?: number, includeExecutionParts?: boolean): Observable<any> {
+  /*
+   * Methods to retrieve indexed PartialBlocks (i.e. blocks from the PartialChains)
+   */
+  getPartialBlock(hash: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/partialchain/block?hash=${hash}`);
+  }
 
-    let params = new HttpParams().set('nr', nr.toString());
-
-    // If `skip` is provided, add it to the params
-    if (skip !== undefined) {
-      params = params.set('skip', skip.toString());
-    }
-
-    // If `includeExecutionParts` is provided, add it to the params
-    if (includeExecutionParts !== undefined) {
-      params = params.set('includeExecutionParts', includeExecutionParts.toString());
-    }
+  /*
+   * Methods to retrieve Transactions
+   */
+  getTransactions(nr: number, skip = 0, includeParts = false): Observable<TxFetchResult> {
+    const params = new HttpParams()
+      .set('nr', String(nr))
+      .set('skip', String(skip))
+      .set('includeParts', String(includeParts));
 
     // Also the `sender` and `operator` parameters can be added if needed
     // params = params.set('sender', sender).set('operator', operator);
 
     // Make the GET request with the modified params
     // returns: { total, items: [...] }
-    return this.http.get<TxListDto>(`${this.apiUrl}/masterchain/transactions`, { params });
+    console.log(`>>> getTransactions: nr=${nr}, skip=${skip}, includeParts=${includeParts}`);
+    return this.http.get<TxListDto>(`${this.apiUrl}/masterchain/transactions`, { params }).pipe(
+      map(dto => ({
+        total: dto.total,
+        transactions: dto.items.map(this.mapTx),
+      }))
+    );
   }
 
-  /*** Methods to retrieve indexed PartialBlocks (i.e. blocks from the PartialChains) ***/
-  getPartialBlock(hash: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/partialchain/block?hash=${hash}`);
-  }
+  private mapTx = (dto: TxDto): Tx => ({
+    tx_hash: dto.transactionHash,
+    timestamp: dto.timestamp ?? null,
+    state: dto.state,
+    chainId: dto.sourceChainId,
+    includedInMasterBlock: dto.includedInMasterBlock ?? '',
+    masterBlockTransactionIndex: dto.masterBlockTransactionIndex,
+    executionParts: (dto.executionParts ?? []).map(this.mapPart),
+  });
 
-  /*** Methods to retrieve Statistics ***/
+  private mapPart = (dto: TxExecutionPartDto): TxExecutionPart => ({
+    hash: dto.hash,
+    transactionHash: dto.transactionHash,
+    isRevert: dto.isRevert,
+    chainId: dto.chainId ?? null,
+    includedInPartialBlock: dto.includedInPartialBlock ?? null,
+    partIndex: dto.partIndex ?? null,
+  });
+
+  /*
+   * Methods to retrieve Statistics
+   */
   getStatistics(): Observable<any> {
     //console.log(">>> getStatistics")
     return this.http.get(`${this.apiUrl}/statistics`);

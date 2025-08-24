@@ -9,6 +9,7 @@
 
   <div class="transactions-list">
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
+
       <!-- logo -->
       <div class="logo-pane">
         <img class="logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
@@ -23,7 +24,7 @@
         </div>
       </div>
 
-      <!-- right meta (two rows: label | value) -->
+      <!-- right meta + expand -->
       <div class="meta fields-container">
         <div class="field">
           <div class="label">MasterBlock</div>
@@ -34,6 +35,45 @@
         <div class="field">
           <div class="label">Index in block</div>
           <div class="value">{{ tx.masterBlockTransactionIndex }}</div>
+        </div>
+
+        <!-- Expand/Collapse for ExecutionParts -->
+        <div class="field field--stack">
+          <div class="label">Execution parts</div>
+          <div class="value">
+            <a class="gradient-btn expand-toggle-btn" (click)="toggleExecutionParts.emit(tx.tx_hash)">
+              <span class="btn-content">
+                <i class="fa" [ngClass]="expandedTx[tx.tx_hash] ? 'fa-compress rotate-counterclockwise'
+                                                     : 'fa-expand rotate-clockwise'"></i>
+                {{ expandedTx[tx.tx_hash] ? 'Collapse' : 'Expand' }}
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expanded ExecutionParts (full width under the row) -->
+      <div *ngIf="expandedTx[tx.tx_hash]" class="execution-parts-section">
+        <div class="execution-part-row" *ngFor="let ep of tx.executionParts; trackBy: trackByPart">
+          <div class="ep-logo-pane">
+            <img class="logo-img"
+              [src]="ep.chainId != null ? getChainImage(ep.chainId) : 'assets/images/interchain_logo.png'"
+              alt="Chain Logo" />
+          </div>
+          <div class="ep-fields fields-container">
+            <div class="field">
+              <div class="label">Chain</div>
+              <div class="value">{{ ep.chainId ?? '—' }}</div>
+            </div>
+            <div class="field">
+              <div class="label">PartialBlock</div>
+              <div class="value gradient-text">{{ ep.includedInPartialBlock | truncateMiddle: 8 }}</div>
+            </div>
+            <div class="field">
+              <div class="label">Part index</div>
+              <div class="value">{{ ep.partIndex ?? (ep.isRevert ? 'revert' : '—') }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

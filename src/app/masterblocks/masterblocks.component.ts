@@ -43,6 +43,7 @@ export class MasterBlocksComponent implements OnInit {
 
   /* ---------------- Transactions state ---------------- */
   transactions: Tx[] = [];
+  expandedTx: Record<string, boolean> = {};
   txPage = 1;
   txTotalPages = 1;              // adjust if your API provides a total
   txPolling = false;
@@ -227,41 +228,18 @@ export class MasterBlocksComponent implements OnInit {
   /** Backend adapter for transactions list ({ total, items }) */
   private fetchTxData(skip: number, shouldPoll: boolean): Observable<TxFetchResult | null> {
     return this.backendService
-      .getTransactions(this.pageSize, skip, false) // { total, items }
+      .getTransactions(this.pageSize, skip, true)
       .pipe(
         catchError(err => {
           console.error('Error loading transactions:', err);
           if (shouldPoll) this.scheduleNextTxPoll();
-          return of(null);
-        }),
-        map((resp: {
-          total: number; items: Array<{
-            id: string;
-            transactionHash: string;
-            includedInMasterBlock: string;
-            masterBlockTransactionIndex: number;
-            sourceSender: string;
-            sourceChainId: number;
-            state: number;
-            result: any;
-            timestamp?: number; // if backend adds later
-          }>
-        } | null) => {
-          if (!resp) return null;
-
-          const transactions: Tx[] = resp.items.map(i => ({
-            tx_hash: i.transactionHash,
-            timestamp: null, // backend doesn’t provide one yet
-            includedInMasterBlock: i.includedInMasterBlock ?? "[missing]",
-            masterBlockTransactionIndex: i.masterBlockTransactionIndex,
-            state: i.state,
-            chainId: i.sourceChainId
-          }));
-
-          return { transactions, total: resp.total };
+          return of(null as TxFetchResult | null);
         })
       );
   }
+
+  toggleExecutionParts = (hash: string) =>
+    (this.expandedTx[hash] = !this.expandedTx[hash]);
 
   /** TrackBy for tx list */
   trackByTxHash = (_: number, tx: Tx) => tx.tx_hash;

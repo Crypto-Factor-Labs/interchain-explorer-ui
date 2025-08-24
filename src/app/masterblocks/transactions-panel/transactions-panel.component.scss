@@ -115,13 +115,51 @@
   text-align: center;
 }
 
-/* Responsive: stack meta below on narrow screens */
-@media (max-width: 820px) {
-  .tx-item {
-    grid-template-columns: 48px 12px 1fr;
-    grid-template-areas:
-      "logo . hash"
-      "meta  meta meta";
-    row-gap: 8px;
-  }
+/* --- ExecutionParts below the row --- */
+.execution-parts-section {
+  @extend %partial-section; // uses CSS vars for bg/padding/radius
+  grid-column: 1 / -1; // span full width under the tx row
+
+  /* optional: tighten inside spacing for parts */
+  --partial-row-gap: 6px;
+}
+
+.execution-part-row {
+  @extend %partial-row;
+  display: grid;
+  grid-template-columns: 32px 10px 1fr; // part logo | gap | fields
+  align-items: center;
+  padding: 6px 8px;
+}
+
+.ep-logo-pane {
+  @extend %logo-pane;
+}
+
+.execution-part-row .logo-img {
+  width: 32px;
+  height: 32px;
+  transform: translateY(var(--logo-nudge, -5px));
+}
+
+/* reuse KV grid for each part’s fields */
+.ep-fields {
+  @extend %kv-grid;
+}
+
+.ep-fields .field {
+  @extend %kv-field-as-contents;
+}
+
+.ep-fields .label {
+  @extend %kv-label;
+}
+
+.ep-fields .value {
+  @extend %kv-value;
+}
+
+/* ensure expand button keeps fixed width only, not pagination */
+.expand-toggle-btn {
+  --btn-width: 66px;
 }

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe';
-import { Tx } from '../../shared/interfaces/transaction.interface';
+import { Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface';
 
 @Component({
   selector: 'app-transactions-panel',
@@ -17,10 +17,15 @@ export class TransactionsPanelComponent {
   @Input() totalPages = 1;
   @Input() pollingActive = true;
 
-  @Input() getChainImage!: (chainId: number) => string;
-  @Input() trackByTxHash!: (i: number, tx: Tx) => any;
+  @Input() expandedTx: Record<string, boolean> = {};
+  @Input() getChainImage!: (chainId: number | string) => string;
+  @Input() trackByTxHash!: (index: number, tx: Tx) => any;
 
   @Output() togglePolling = new EventEmitter<void>();
-  @Output() pageChange = new EventEmitter<number>();
+  @Output() toggleExecutionParts = new EventEmitter<string>();
   @Output() openTx = new EventEmitter<Tx>();
+  @Output() pageChange = new EventEmitter<number>();
+
+  // trackBy for parts (fallback to index)
+  trackByPart = (i: number, ep: TxExecutionPart) => ep.hash ?? i;
 }

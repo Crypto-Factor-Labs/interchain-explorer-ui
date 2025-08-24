@@ -109,6 +109,16 @@ export interface Tx {
   masterBlockTransactionIndex?: number;
   state: number;
   chainId: number;
+  executionParts?: TxExecutionPart[];
+}
+
+export interface TxExecutionPart {
+  hash: string;
+  transactionHash: string;
+  isRevert: boolean;
+  chainId?: number | null;
+  includedInPartialBlock?: string | null;
+  partIndex?: number | null; // null for revert
 }
 
 export interface TxFetchResult {
@@ -126,8 +136,18 @@ export interface TxDto {
   sourceChainId: number;
   state: number;
   result: any;
+  timestamp?: number;
+  executionParts?: TxExecutionPartDto[];
 }
 
+export interface TxExecutionPartDto {
+  hash: string;
+  transactionHash: string;
+  isRevert: boolean;
+  chainId?: number | null;
+  includedInPartialBlock?: string | null;
+  partIndex?: number | null; // null for revert
+}
 export interface TxListDto {
   total: number;
   items: TxDto[];

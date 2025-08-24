@@ -1,6 +1,18 @@
-export function getChainImage(chainId: string | number): string {
-  const id = typeof chainId === 'string' ? Number(chainId) : chainId;
-  switch (Number.isNaN(id) ? -1 : id) {
+export function getChainImage(chainId: string | number | null | undefined): string {
+  const DEFAULT_IMG = 'assets/images/interchain_logo.png';
+  if (chainId == null) return DEFAULT_IMG; // null or undefined
+
+  // Normalize to a number; empty strings or non-numeric → NaN
+  const id =
+    typeof chainId === 'number'
+      ? chainId
+      : chainId.trim() === ''
+        ? NaN
+        : Number(chainId);
+
+  if (!Number.isFinite(id)) return DEFAULT_IMG;
+
+  switch (id) {
     case 1130:
     case 1131:
       return 'assets/images/defichain_logo.png';
@@ -9,6 +21,7 @@ export function getChainImage(chainId: string | number): string {
     case 80002:
       return 'assets/images/polygon_logo.png';
     default:
-      return 'assets/images/interchain_logo.png';
+      return DEFAULT_IMG;
   }
 }
+
