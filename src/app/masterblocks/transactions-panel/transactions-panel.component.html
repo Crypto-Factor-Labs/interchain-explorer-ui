@@ -10,46 +10,38 @@
   <div class="transactions-list">
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
 
-      <!-- logo -->
+      <!-- Logo-area -->
       <div class="logo-pane">
         <img class="logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
       </div>
       <!-- hash (stacked: label over value) -->
       <div class="hash">
         <div class="label">Hash</div>
-        <div class="value">
-          <span class="gradient-text clickable" (click)="openTx.emit(tx)">
-            {{ tx.tx_hash | truncateMiddle: 8 }}
-          </span>
+        <div class="value">{{ tx.tx_hash | truncateMiddle: 8 }}</div>
+      </div>
+
+      <!-- Info-area -->
+      <div class="info">
+        <div class="state-stack">
+          <div class="label">State</div>
+          <div class="value">{{ tx.state }}</div>
         </div>
       </div>
 
-      <!-- right meta + expand -->
-      <div class="meta fields-container">
-        <div class="field">
-          <div class="label">MasterBlock</div>
-          <div class="value gradient-text clickable">
-            {{ tx.includedInMasterBlock | truncateMiddle: 8 }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="label">Index in block</div>
-          <div class="value">{{ tx.masterBlockTransactionIndex }}</div>
-        </div>
-
-        <!-- Expand/Collapse for ExecutionParts -->
-        <div class="field field--stack">
-          <div class="label">Execution parts</div>
-          <div class="value">
-            <a class="gradient-btn expand-toggle-btn" (click)="toggleExecutionParts.emit(tx.tx_hash)">
-              <span class="btn-content">
-                <i class="fa" [ngClass]="expandedTx[tx.tx_hash] ? 'fa-compress rotate-counterclockwise'
-                                                     : 'fa-expand rotate-clockwise'"></i>
-                {{ expandedTx[tx.tx_hash] ? 'Collapse' : 'Expand' }}
-              </span>
-            </a>
-          </div>
-        </div>
+      <!-- Expand-button area -->
+      <div class="expander">
+        <a class="gradient-btn expand-toggle-btn" (click)="toggleExecutionParts.emit(tx.tx_hash)">
+          <span class="btn-content">
+            <i class="fa" [ngClass]="{
+                   'fa-expand': !expandedTx[tx.tx_hash],
+                   'fa-compress': expandedTx[tx.tx_hash],
+                   'rotate-clockwise': !expandedTx[tx.tx_hash],
+                   'rotate-counterclockwise': expandedTx[tx.tx_hash]
+                 }" style="margin-right: 7px;">
+            </i>
+            {{ expandedTx[tx.tx_hash] ? 'Collapse' : 'Expand' }}
+          </span>
+        </a>
       </div>
 
       <!-- Expanded ExecutionParts (full width under the row) -->

@@ -163,6 +163,7 @@
 
 %value {
   font-size: 16px;
+  @extend %gradient-text;
 }
 
 %gradient-text {

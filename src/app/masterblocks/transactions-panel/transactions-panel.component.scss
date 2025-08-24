@@ -20,6 +20,10 @@
   @extend %status-icon;
 }
 
+.value {
+  @extend %value;
+}
+
 /* Scrollable list + consistent gaps only between items */
 .transactions-list {
   @extend %scroll-list;
@@ -30,25 +34,24 @@
   --panel-scroll-pt: 0px;
 }
 
-/* Each transaction row as a flat GRID card */
+/* Each transaction row as a flat GRID card with a number or areas (columns) */
 .tx-item {
-  @extend %panel-card-grid;
-  /* grid-native card (no flex centering) */
+  @extend %panel-card-grid; // logo | hash | info | expand
   grid-template-columns:
-    var(--logo-pane-size, var(--logo-size, 48px)) var(--logo-gap, 12px) 1fr max-content; // logo | gap | hash | meta (autofit)
-  grid-template-areas: "logo . hash meta";
-  column-gap: 0;
+    var(--logo-pane-size, var(--logo-size, 48px)) minmax(0, 1fr) var(--info-col-width, 350px) max-content;
+  grid-template-areas: "logo hash info expand";
+  column-gap: var(--logo-gap, 12px);
   row-gap: 6px;
   align-items: start;
   justify-items: stretch;
   --panel-card-padding: 9px 10px;
 }
 
-
 .tx-item:last-child {
   @extend %panel-card-last;
 }
 
+/* Map the area for the logo */
 .logo-pane {
   @extend %logo-pane;
   grid-area: logo;
@@ -59,10 +62,12 @@
   @extend %logo-img;
 }
 
+/* Map the area for the tx hash (label above value) */
 .hash {
   grid-area: hash;
   display: grid;
   grid-template-rows: auto auto; // label above value
+  min-width: 0;
   row-gap: 0px;
 }
 
@@ -73,15 +78,43 @@
 
 .hash .value {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
 }
 
-.meta {
-  grid-area: meta;
+/* Map the area for the info section */
+.info {
+  grid-area: info;
+  align-self: center;
+  justify-self: stretch;
+  display: grid;
+  place-items: center;
 }
 
-/* Key–value grid (label | value per row) used in .meta */
+.info .state-stack {
+  display: grid;
+  grid-auto-rows: min-content;
+  row-gap: 2px; // space between label and value */
+  text-align: center;
+}
+
+.info .label {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.info .value {
+  font-size: 16px;
+}
+
+/* Map the area for the Expand-button */
+.expander {
+  grid-area: expand;
+  align-self: center;
+}
+
+/* Key–value grid (label | value per row) */
 .fields-container {
   @extend %kv-grid;
 }
