@@ -238,7 +238,7 @@ export class MasterBlocksComponent implements OnInit {
       );
   }
 
-  toggleExecutionParts = (hash: string) =>
+  toggleTxExecutionParts = (hash: string) =>
     (this.expandedTx[hash] = !this.expandedTx[hash]);
 
   /** TrackBy for tx list */

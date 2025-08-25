@@ -73,7 +73,6 @@ export class BackendService {
 
     // Make the GET request with the modified params
     // returns: { total, items: [...] }
-    console.log(`>>> getTransactions: nr=${nr}, skip=${skip}, includeParts=${includeParts}`);
     return this.http.get<TxListDto>(`${this.apiUrl}/masterchain/transactions`, { params }).pipe(
       map(dto => ({
         total: dto.total,

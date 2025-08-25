@@ -28,4 +28,10 @@ export class TransactionsPanelComponent {
 
   // trackBy for parts (fallback to index)
   trackByPart = (i: number, ep: TxExecutionPart) => ep.hash ?? i;
+
+  onExpandClick(hash: string): void {
+    console.log('[child] emit', hash);
+    this.toggleExecutionParts.emit(hash);
+  }
+
 }
