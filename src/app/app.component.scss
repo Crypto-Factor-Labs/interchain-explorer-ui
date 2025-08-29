@@ -2,6 +2,17 @@
 
 .background-layer {
   position: fixed;
+  inset: 0;
+  background: linear-gradient(to bottom, $ultramarine, $byzantine-blue);
+  background-attachment: fixed;
+  z-index: 0;
+  filter: brightness(1.1) contrast(0.9);
+  pointer-events: none;
+}
+
+/*
+.background-layer {
+  position: fixed;
   //top: 0;
   //left: 0;
   width: 100vw;
@@ -15,7 +26,7 @@
   z-index: 0;
   filter: brightness(1.5) contrast(0.75);
 }
-
+*/
 .title-panel {
   display: flex;
   align-items: center;

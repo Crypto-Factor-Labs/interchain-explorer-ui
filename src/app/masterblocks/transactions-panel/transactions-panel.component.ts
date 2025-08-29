@@ -1,15 +1,21 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
-import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe';
-import { Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface';
+import { AnimationEvent as NgAnimationEvent } from '@angular/animations';
+import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe.js';
+import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe.js';
+import { TxStateWordPipe } from '../../shared/pipes/state-to-word.pipe.js';
+import { FilterExecPartsByStatePipe } from '../../shared/pipes/filter-exec-parts-by-state.pipe.js';
+import { Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
+import { expandCollapse, staggerItems } from '../masterblocks.animations.js';
+import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
 
 @Component({
   selector: 'app-transactions-panel',
   standalone: true,
-  imports: [CommonModule, TimeAgoPipe, TruncateMiddlePipe],
+  imports: [CommonModule, TimeAgoPipe, TruncateMiddlePipe, TxStateWordPipe, FilterExecPartsByStatePipe],
   templateUrl: './transactions-panel.component.html',
   styleUrls: ['./transactions-panel.component.scss'],
+  animations: [expandCollapse, staggerItems('.execution-part-row', 45, '180ms')]  // Set the stagger delay and duration here
 })
 export class TransactionsPanelComponent {
   @Input() transactions: Tx[] = [];
@@ -29,9 +35,8 @@ export class TransactionsPanelComponent {
   // trackBy for parts (fallback to index)
   trackByPart = (i: number, ep: TxExecutionPart) => ep.hash ?? i;
 
-  onExpandClick(hash: string): void {
-    console.log('[child] emit', hash);
-    this.toggleExecutionParts.emit(hash);
+  @ViewChild('txListRef') listRef?: ElementRef<HTMLDivElement>;
+  onExpandDone(event: NgAnimationEvent) {
+    scrollExpandedIntoView(this.listRef, event);
   }
-
 }

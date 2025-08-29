@@ -1,4 +1,4 @@
-import { TriState } from '../interfaces/transaction.interface';
+import { TriState } from '../interfaces/transaction.interface.js';
 
 export const TRI_STATE = {
   PENDING: 0 as TriState,

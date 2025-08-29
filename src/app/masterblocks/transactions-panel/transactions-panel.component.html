@@ -7,13 +7,15 @@
 
   <div class="separator"></div>
 
-  <div class="transactions-list">
+  <!-- Add template ref for scroll-into-view -->
+  <div class="transactions-list" #txListRef>
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
 
       <!-- Logo-area -->
       <div class="logo-pane">
         <img class="logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
       </div>
+
       <!-- hash (stacked: label over value) -->
       <div class="hash">
         <div class="label">Hash</div>
@@ -24,7 +26,7 @@
       <div class="info">
         <div class="state-stack">
           <div class="label">State</div>
-          <div class="value">{{ tx.state }}</div>
+          <span class="badge-state">{{ tx.state | txStateWord }}</span>
         </div>
       </div>
 
@@ -44,32 +46,34 @@
         </a>
       </div>
 
-      <!-- Expanded ExecutionParts (full width under the row) -->
-      <div *ngIf="expandedTx[tx.tx_hash]" class="execution-parts-section">
-        <div class="execution-part-row" *ngFor="let ep of tx.executionParts; trackBy: trackByPart">
-          <div class="ep-logo-pane">
-            <img class="logo-img"
-              [src]="ep.chainId != null ? getChainImage(ep.chainId) : 'assets/images/interchain_logo.png'"
-              alt="Chain Logo" />
-          </div>
-          <div class="ep-fields fields-container">
-            <div class="field">
-              <div class="label">Chain</div>
-              <div class="value">{{ ep.chainId ?? '—' }}</div>
+      <!-- Expanded ExecutionParts (full width under the row) using animation -->
+      <div *ngIf="expandedTx[tx.tx_hash]" class="ep-anim-wrapper"
+        [@expandCollapse]="{ value: 'open', params: { enter: '360ms', leave: '260ms' } }"
+        (@expandCollapse.done)="onExpandDone($event)">
+        <div class="execution-parts-section" @staggerItems>
+          <!-- The ExecutionParts are filtered by whether the state is related to a revert or not -->
+          <div class="execution-part-row"
+            *ngFor="let ep of (tx.executionParts | filterExecPartsByState: tx.state); trackBy: trackByPart">
+            <div class="logo-pane">
+              <img class="logo-img"
+                [src]="ep.chainId != null ? getChainImage(ep.chainId) : 'assets/images/interchain_logo.png'"
+                alt="Chain Logo" />
             </div>
-            <div class="field">
-              <div class="label">PartialBlock</div>
-              <div class="value">{{ ep.includedInPartialBlock | truncateMiddle: 8 }}</div>
-            </div>
-            <div class="field">
-              <div class="label">Part index</div>
-              <div class="value">{{ ep.partIndex ?? (ep.isRevert ? 'revert' : '—') }}</div>
+
+            <!-- Hash (stacked: label over truncated value) -->
+            <div class="ep-hash">
+              <div class="label-row">
+                <div class="label">Hash</div>
+                <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
+              </div>
+              <div class="value">{{ ep.hash | truncateMiddle: 8 }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Empty state -->
     <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
   </div>
 

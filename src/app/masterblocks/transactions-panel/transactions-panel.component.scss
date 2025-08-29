@@ -1,10 +1,11 @@
 @import '../../shared/shared-panel';
 
 :host {
-  --logo-pane-size: 40px;
-  --logo-size: 24px;
+  // Note: size of the EP logo and logo-pane are set later 
+  --logo-pane-size: 40px; // Tx logo pane
+  --logo-size: 24px; // Tx icon size
   --logo-gap: 12px;
-  --logo-nudge: 0px;
+  --tx-logo-col: var(--logo-pane-size); // <- reserve for alignment
 }
 
 /* Header & status icon */
@@ -36,15 +37,20 @@
 
 /* Each transaction row as a flat GRID card with a number or areas (columns) */
 .tx-item {
-  @extend %panel-card-grid; // logo | hash | info | expand
-  grid-template-columns:
-    var(--logo-pane-size, var(--logo-size, 48px)) minmax(0, 1fr) var(--info-col-width, 350px) max-content;
+  --col-logo: var(--logo-pane-size, 48px);
+  --col-hash: minmax(0, 1fr);
+  --col-info: var(--info-col-width, 340px);
+  --col-exp: max-content;
+  --panel-card-padding: 9px 10px;
+  @extend %panel-card-grid;
   grid-template-areas: "logo hash info expand";
+  grid-template-columns:
+    //  var(--logo-pane-size) minmax(0, 1fr) var(--info-col-width, 340px) max-content;
+    var(--col-logo) var(--col-hash) var(--col-info) var(--col-exp);
   column-gap: var(--logo-gap, 12px);
   row-gap: 6px;
   align-items: start;
   justify-items: stretch;
-  --panel-card-padding: 9px 10px;
 }
 
 .tx-item:last-child {
@@ -52,13 +58,11 @@
 }
 
 /* Map the area for the logo */
-.logo-pane {
+.tx-item .logo-pane {
   @extend %logo-pane;
-  grid-area: logo;
-  align-self: center;
 }
 
-.logo-img {
+.tx-item .logo-img {
   @extend %logo-img;
 }
 
@@ -72,7 +76,7 @@
 }
 
 .hash .label {
-  font-weight: 500;
+  font-weight: 600;
   margin-top: 3px;
 }
 
@@ -95,13 +99,12 @@
 .info .state-stack {
   display: grid;
   grid-auto-rows: min-content;
-  row-gap: 2px; // space between label and value */
+  row-gap: 2px; // space between label and value
   text-align: center;
 }
 
 .info .label {
-  font-weight: 500;
-  opacity: 0.85;
+  font-weight: 600;
 }
 
 .info .value {
@@ -111,7 +114,7 @@
 /* Map the area for the Expand-button */
 .expander {
   grid-area: expand;
-  align-self: center;
+  align-self: start;
 }
 
 /* Key–value grid (label | value per row) */
@@ -149,30 +152,59 @@
 }
 
 /* --- ExecutionParts below the row --- */
+
+.ep-anim-wrapper {
+  grid-column: 1 / -1;
+}
+
 .execution-parts-section {
-  @extend %partial-section; // uses CSS vars for bg/padding/radius
-  grid-column: 1 / -1; // span full width under the tx row
-
-  /* optional: tighten inside spacing for parts */
-  --partial-row-gap: 6px;
+  --logo-pane-size: 32px;
+  --logo-size: 20px;
+  //padding: 8px 0;
+  //border: 1px solid #222;
+  //border-radius: 8px;
+  //background: var(--partial-bg, #0e0f14);
+  margin-top: 5px;
 }
 
+/* Flex instead of grid for each EP row */
 .execution-part-row {
-  @extend %partial-row;
   display: grid;
-  grid-template-columns: 32px 10px 1fr; // part logo | gap | fields
+  grid-template-areas: "logo hash";
+  grid-template-columns: var(--tx-logo-col) 1fr; // reserve Tx width
   align-items: center;
-  padding: 6px 8px;
+  column-gap: var(--logo-gap, 12px); // same gap as Tx
+  padding: 3px 0px 2px 0px;
+  margin-bottom: 3px;
+  background: var(--partial-bg, #0e0f14);
+  border-radius: 8px;
 }
 
-.ep-logo-pane {
+/* Left: fixed logo pane — reuse same size as Tx row */
+.execution-part-row .logo-pane {
   @extend %logo-pane;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
 }
 
 .execution-part-row .logo-img {
-  width: 32px;
-  height: 32px;
-  transform: translateY(var(--logo-nudge, -5px));
+  @extend %logo-img;
+  object-fit: contain;
+}
+
+/* Right: hash fills remaining space and truncates nicely */
+/* Hash occupies column 2 */
+.execution-part-row .ep-hash {
+  grid-column: 2;
+  min-width: 0;
+  padding-top: 3px;
+}
+
+.execution-part-row .ep-hash .value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* reuse KV grid for each part’s fields */
@@ -196,3 +228,53 @@
 .expand-toggle-btn {
   --btn-width: 66px;
 }
+
+/* label + badge on one line */
+.ep-hash .label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* badges */
+.badge-state {
+  @extend %badge;
+  background-image: linear-gradient(90deg, $ultramarine, $byzantine-blue);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset;
+  margin-bottom: 3px;
+  margin-top: -3px;
+}
+
+.badge-revert {
+  @extend %badge;
+  background: #f59e0b;
+  color: #0b0e14;
+  letter-spacing: 0.2pt;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  --badge-px: 10px;
+  --badge-py-top: 3px;
+  --badge-py-bottom: 2px;
+}
+
+/* EP typography — smaller than Tx */
+.execution-parts-section {
+  --ep-label-size: 13px;
+  --ep-value-size: 15px;
+  --ep-line-height: 1;
+}
+
+.execution-parts-section .label {
+  font-size: var(--ep-label-size);
+}
+
+.execution-parts-section .value {
+  font-size: var(--ep-value-size);
+  line-height: var(--ep-line-height);
+}
+
+/* (optional) keep the Revert badge in proportion *
+.execution-parts-section .badge-revert {
+  --badge-font: 9px;
+}
+  */

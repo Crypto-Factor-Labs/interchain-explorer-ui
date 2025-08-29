@@ -1,3 +1,5 @@
+import { TransactionStateEnum } from '../interfaces/transaction-state.enum.js';
+
 export function getChainImage(chainId: string | number | null | undefined): string {
   const DEFAULT_IMG = 'assets/images/interchain_logo.png';
   if (chainId == null) return DEFAULT_IMG; // null or undefined
@@ -25,3 +27,8 @@ export function getChainImage(chainId: string | number | null | undefined): stri
   }
 }
 
+export function txStateToWord(state: TransactionStateEnum | number | null | undefined): string {
+  if (!Number.isInteger(state)) return 'UNKNOWN';
+  const name = TransactionStateEnum[state as TransactionStateEnum]; // e.g. "PENDING_IN_MEMPOOL"
+  return name ? name.replace(/_/g, ' ') : 'UNKNOWN';
+}
