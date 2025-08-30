@@ -13,24 +13,24 @@
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
 
       <!-- Logo-area -->
-      <div class="logo-pane">
-        <img class="logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
+      <div class="tx-logo-pane">
+        <img class="tx-logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
       </div>
 
       <!-- Hash (stacked: label over value) -->
-      <div class="hash">
+      <div class="tx-hash">
         <div class="label">Hash</div>
         <div class="value">{{ tx.tx_hash | truncateMiddle: 6 }}</div>
       </div>
 
       <!-- Height (stacked: label over value) -->
-      <div class="m-block-height">
+      <div class="tx-height">
         <div class="label">Master Block</div>
-        <div class="value">{{ getTxHeight(tx) }}</div>
+        <div class="value">M-{{ tx.masterBlockHeight }}</div>
       </div>
 
       <!-- Info-area -->
-      <div class="info">
+      <div class="tx-info">
         <div class="state-stack">
           <div class="label">State</div>
           <span class="badge-state">{{ tx.state | txStateWord }}</span>
@@ -38,7 +38,7 @@
       </div>
 
       <!-- Expand-button area -->
-      <div class="expander">
+      <div class="tx-expander">
         <a class="gradient-btn expand-toggle-btn" (click)="toggleExecutionParts.emit(tx.tx_hash)">
           <span class="btn-content">
             <i class="fa" [ngClass]="{
@@ -62,8 +62,8 @@
           <!-- The ExecutionParts are filtered by whether the state is related to a revert or not -->
           <div class="execution-part-row"
             *ngFor="let ep of (tx.executionParts | filterExecPartsByState: tx.state); trackBy: trackByPart">
-            <div class="logo-pane">
-              <img class="logo-img"
+            <div class="ep-logo-pane">
+              <img class="ep-logo-img"
                 [src]="ep.chainId != null ? getChainImage(ep.chainId) : 'assets/images/interchain_logo.png'"
                 alt="Chain Logo" />
             </div>

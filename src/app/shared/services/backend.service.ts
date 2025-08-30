@@ -9,6 +9,13 @@ import {
   Tx, TxExecutionPart, TxFetchResult,
 } from '../interfaces/transaction.interface';
 
+// TEMPORARY workaround for BN to decimal conversion
+// until the relevant properities have been added to the entities in the backend.
+import BN from 'bn.js';
+
+const hexToDec = (v: string | null): string | null =>
+  v && v.trim() ? new BN(v.trim().replace(/^0x/i, ''), 16).toString(10) : null;
+
 @Injectable({
   providedIn: 'root'  // Makes the BackendService available throughout the application,
 })                    // no need to specify it explicitly as provider in other modules.
@@ -87,7 +94,8 @@ export class BackendService {
     state: dto.state,
     chainId: dto.sourceChainId,
     includedInMasterBlock: dto.includedInMasterBlock ?? '',
-    masterBlockTransactionIndex: dto.masterBlockTransactionIndex,
+    masterBlockHeight: hexToDec(dto.masterBlockHeight) ?? null,  // TEMPORARY workaround for BN to decimal conversion
+    masterBlockTransactionIndex: dto.masterBlockTransactionIndex ?? null,
     executionParts: (dto.executionParts ?? []).map(this.mapPart),
   });
 

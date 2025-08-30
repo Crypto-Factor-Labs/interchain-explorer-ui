@@ -90,6 +90,7 @@ export interface Transaction {
 
   state: TriState; // validation state
   includedInMasterBlock: string;
+  masterBlockHeight: string; // decimal string
   masterBlockTransactionIndex: number;
 
   // Events for linking/inspection
@@ -106,7 +107,8 @@ export interface Tx {
   tx_hash: string;
   timestamp?: number | null;
   includedInMasterBlock: string;
-  masterBlockTransactionIndex?: number;
+  masterBlockHeight?: string | null;
+  masterBlockTransactionIndex?: number | null;
   state: number;
   chainId: number;
   executionParts?: TxExecutionPart[];
@@ -131,7 +133,8 @@ export interface TxDto {
   id: string;
   transactionHash: string;
   includedInMasterBlock: string;
-  masterBlockTransactionIndex: number;
+  masterBlockHeight: string | null;
+  masterBlockTransactionIndex: number | null;
   sourceSender: string;
   sourceChainId: number;
   state: number;

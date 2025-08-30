@@ -1,10 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AnimationEvent as NgAnimationEvent } from '@angular/animations';
-import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe.js';
-import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe.js';
-import { TxStateWordPipe } from '../../shared/pipes/state-to-word.pipe.js';
-import { FilterExecPartsByStatePipe } from '../../shared/pipes/filter-exec-parts-by-state.pipe.js';
+import { SHARED_IMPORTS } from '../../shared/shared-standalone.js';
 import { Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
 import { expandCollapse, staggerItems } from '../masterblocks.animations.js';
 import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
@@ -12,7 +8,7 @@ import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
 @Component({
   selector: 'app-transactions-panel',
   standalone: true,
-  imports: [CommonModule, TimeAgoPipe, TruncateMiddlePipe, TxStateWordPipe, FilterExecPartsByStatePipe],
+  imports: [...SHARED_IMPORTS],  // Import shared modules, components, and pipes
   templateUrl: './transactions-panel.component.html',
   styleUrls: ['./transactions-panel.component.scss'],
   animations: [expandCollapse, staggerItems('.execution-part-row', 45, '180ms')]  // Set the stagger delay and duration here

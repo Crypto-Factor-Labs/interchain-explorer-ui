@@ -47,7 +47,7 @@
   --col-height: var(--height-col-width);
   --col-info: var(--info-col-width);
   --col-exp: max-content;
-  grid-template-areas: "logo hash m-block-height info expand";
+  grid-template-areas: "tx-logo tx-hash tx-height tx-info tx-expand";
   grid-template-columns:
     var(--col-logo) var(--col-hash) var(--col-height) var(--col-info) var(--col-exp);
   column-gap: var(--logo-gap);
@@ -62,49 +62,50 @@
 }
 
 /* Map the area for the logo */
-.tx-item .logo-pane {
+.tx-item .tx-logo-pane {
   @extend %logo-pane;
+  grid-area: tx-logo;
 }
 
-.tx-item .logo-img {
+.tx-item .tx-logo-img {
   @extend %logo-img;
 }
 
 /* Map the area for the tx hash (label above value) */
-.hash {
-  grid-area: hash;
+tx-hash {
+  grid-area: tx-hash;
   display: grid;
   grid-template-rows: auto auto; // label above value
   min-width: 0;
   row-gap: 0px;
 }
 
-.hash .label {
+.tx-hash .label {
   font-weight: 600;
   margin-top: 3px;
 }
 
-.hash .value {
+.tx-hash .value {
   min-width: 0;
   white-space: nowrap;
   overflow: visible;
   text-overflow: clip;
 }
 
-.m-block-height {
-  grid-area: m-block-height;
+.tx-height {
+  grid-area: tx-height;
   display: grid;
   grid-template-rows: auto auto;
   min-width: 0;
   row-gap: 0;
 }
 
-.m-block-height .label {
+.tx-height .label {
   font-weight: 600;
   margin-top: 3px;
 }
 
-.m-block-height .value {
+.tx-height .value {
   min-width: 0;
   white-space: nowrap;
   overflow: hidden; // prevent pushing the info column
@@ -112,32 +113,32 @@
 }
 
 /* Map the area for the info section */
-.info {
-  grid-area: info;
+.tx-info {
+  grid-area: tx-info;
   align-self: center;
   justify-self: stretch;
   display: grid;
   place-items: center;
 }
 
-.info .state-stack {
+.tx-info .state-stack {
   display: grid;
   grid-auto-rows: min-content;
   row-gap: 2px; // space between label and value
   text-align: center;
 }
 
-.info .label {
+.tx-info .label {
   font-weight: 600;
 }
 
-.info .value {
+.tx-info .value {
   font-size: 16px;
 }
 
 /* Map the area for the Expand-button */
-.expander {
-  grid-area: expand;
+.tx-expander {
+  grid-area: tx-expand;
   align-self: start;
 }
 
@@ -174,7 +175,7 @@
 
 .execution-part-row {
   display: grid;
-  grid-template-areas: "logo ep-hash ep-height";
+  grid-template-areas: "ep-logo ep-hash ep-height";
   // Use the same columns as the Tx row for alignment.
   // Note: col-info and col-exp are not used here, but keep for alignment (for now?)
   grid-template-columns: var(--col-logo) var(--col-hash) var(--col-height) var(--col-info) var(--col-exp);
@@ -186,13 +187,13 @@
   border-radius: 8px;
 }
 
-.execution-part-row .logo-pane {
+.execution-part-row .ep-logo-pane {
   @extend %logo-pane;
-  grid-area: logo;
+  grid-area: ep-logo;
   margin-inline: auto;
 }
 
-.execution-part-row .logo-img {
+.execution-part-row .ep-logo-img {
   @extend %logo-img;
   object-fit: contain;
 }
