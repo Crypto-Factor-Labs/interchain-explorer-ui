@@ -7,8 +7,9 @@
 
   <div class="separator"></div>
 
+  <!-- Transaction list, use "transactions-list debug-grid" to show the grid -->
   <!-- Add template ref for scroll-into-view -->
-  <div class="transactions-list" #txListRef>
+  <div class="transactions-list debug-grid" #txListRef>
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
 
       <!-- Logo-area -->
@@ -16,10 +17,16 @@
         <img class="logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
       </div>
 
-      <!-- hash (stacked: label over value) -->
+      <!-- Hash (stacked: label over value) -->
       <div class="hash">
         <div class="label">Hash</div>
-        <div class="value">{{ tx.tx_hash | truncateMiddle: 8 }}</div>
+        <div class="value">{{ tx.tx_hash | truncateMiddle: 6 }}</div>
+      </div>
+
+      <!-- Height (stacked: label over value) -->
+      <div class="m-block-height">
+        <div class="label">Master Block</div>
+        <div class="value">{{ getTxHeight(tx) }}</div>
       </div>
 
       <!-- Info-area -->
@@ -50,6 +57,7 @@
       <div *ngIf="expandedTx[tx.tx_hash]" class="ep-anim-wrapper"
         [@expandCollapse]="{ value: 'open', params: { enter: '360ms', leave: '260ms' } }"
         (@expandCollapse.done)="onExpandDone($event)">
+        <!-- Use "execution-parts-section debug-grid" to show the grid (or set it at Tx-level)-->
         <div class="execution-parts-section" @staggerItems>
           <!-- The ExecutionParts are filtered by whether the state is related to a revert or not -->
           <div class="execution-part-row"
@@ -66,8 +74,15 @@
                 <div class="label">Hash</div>
                 <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
               </div>
-              <div class="value">{{ ep.hash | truncateMiddle: 8 }}</div>
+              <div class="value">{{ ep.hash | truncateMiddle: 6 }}</div>
             </div>
+
+            <!-- Height -->
+            <div class="ep-height">
+              <div class="label">Partial Block</div>
+              <div class="value">{{ getEpHeight(ep) }}</div>
+            </div>
+
           </div>
         </div>
       </div>

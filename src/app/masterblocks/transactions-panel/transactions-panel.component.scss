@@ -1,11 +1,15 @@
 @import '../../shared/shared-panel';
 
 :host {
-  // Note: size of the EP logo and logo-pane are set later 
-  --logo-pane-size: 40px; // Tx logo pane
-  --logo-size: 24px; // Tx icon size
+  --logo-pane-size: 40px; // Tx logo-pane, EP logo-pane is set later
+  --logo-size: 24px; // Tx logo-img, EP logo-img is set later
   --logo-gap: 12px;
-  --tx-logo-col: var(--logo-pane-size); // <- reserve for alignment
+
+  // Column widths for the both the .tx-item grid and the .execution-part-row grid
+  --logo-col-width: var(--logo-pane-size); // Set to logo-pane-size of Tx, even when a smaller size is set for EPs later
+  --hash-col-width: 125px;
+  --height-col-width: 125px;
+  --info-col-width: minmax(180px, 1fr); // flexes to fill
 }
 
 /* Header & status icon */
@@ -35,22 +39,22 @@
   --panel-scroll-pt: 0px;
 }
 
-/* Each transaction row as a flat GRID card with a number or areas (columns) */
+/* Each transaction row is a flat GRID card with a number of areas (columns) */
 .tx-item {
-  --col-logo: var(--logo-pane-size, 48px);
-  --col-hash: minmax(0, 1fr);
-  --col-info: var(--info-col-width, 340px);
-  --col-exp: max-content;
-  --panel-card-padding: 9px 10px;
   @extend %panel-card-grid;
-  grid-template-areas: "logo hash info expand";
+  --col-logo: var(--logo-col-width);
+  --col-hash: var(--hash-col-width);
+  --col-height: var(--height-col-width);
+  --col-info: var(--info-col-width);
+  --col-exp: max-content;
+  grid-template-areas: "logo hash m-block-height info expand";
   grid-template-columns:
-    //  var(--logo-pane-size) minmax(0, 1fr) var(--info-col-width, 340px) max-content;
-    var(--col-logo) var(--col-hash) var(--col-info) var(--col-exp);
-  column-gap: var(--logo-gap, 12px);
+    var(--col-logo) var(--col-hash) var(--col-height) var(--col-info) var(--col-exp);
+  column-gap: var(--logo-gap);
   row-gap: 6px;
   align-items: start;
   justify-items: stretch;
+  --panel-card-padding: 9px 10px;
 }
 
 .tx-item:last-child {
@@ -87,6 +91,26 @@
   text-overflow: clip;
 }
 
+.m-block-height {
+  grid-area: m-block-height;
+  display: grid;
+  grid-template-rows: auto auto;
+  min-width: 0;
+  row-gap: 0;
+}
+
+.m-block-height .label {
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.m-block-height .value {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden; // prevent pushing the info column
+  text-overflow: ellipsis;
+}
+
 /* Map the area for the info section */
 .info {
   grid-area: info;
@@ -117,23 +141,6 @@
   align-self: start;
 }
 
-/* Key–value grid (label | value per row) */
-.fields-container {
-  @extend %kv-grid;
-}
-
-.fields-container .field {
-  @extend %kv-field-as-contents;
-}
-
-.fields-container .label {
-  @extend %kv-label;
-}
-
-.fields-container .value {
-  @extend %kv-value;
-}
-
 /* Reusable gradient text */
 .gradient-text {
   @extend %gradient-text;
@@ -151,7 +158,9 @@
   text-align: center;
 }
 
-/* --- ExecutionParts below the row --- */
+/*
+ * --- ExecutionParts below the row --- 
+ */
 
 .ep-anim-wrapper {
   grid-column: 1 / -1;
@@ -160,32 +169,27 @@
 .execution-parts-section {
   --logo-pane-size: 32px;
   --logo-size: 20px;
-  //padding: 8px 0;
-  //border: 1px solid #222;
-  //border-radius: 8px;
-  //background: var(--partial-bg, #0e0f14);
   margin-top: 5px;
 }
 
-/* Flex instead of grid for each EP row */
 .execution-part-row {
   display: grid;
-  grid-template-areas: "logo hash";
-  grid-template-columns: var(--tx-logo-col) 1fr; // reserve Tx width
+  grid-template-areas: "logo ep-hash ep-height";
+  // Use the same columns as the Tx row for alignment.
+  // Note: col-info and col-exp are not used here, but keep for alignment (for now?)
+  grid-template-columns: var(--col-logo) var(--col-hash) var(--col-height) var(--col-info) var(--col-exp);
   align-items: center;
-  column-gap: var(--logo-gap, 12px); // same gap as Tx
+  column-gap: var(--logo-gap, 12px);
   padding: 3px 0px 2px 0px;
   margin-bottom: 3px;
   background: var(--partial-bg, #0e0f14);
   border-radius: 8px;
 }
 
-/* Left: fixed logo pane — reuse same size as Tx row */
 .execution-part-row .logo-pane {
   @extend %logo-pane;
-  margin: 0 auto;
-  display: grid;
-  place-items: center;
+  grid-area: logo;
+  margin-inline: auto;
 }
 
 .execution-part-row .logo-img {
@@ -193,40 +197,10 @@
   object-fit: contain;
 }
 
-/* Right: hash fills remaining space and truncates nicely */
-/* Hash occupies column 2 */
-.execution-part-row .ep-hash {
-  grid-column: 2;
+.ep-hash {
+  grid-area: ep-hash;
   min-width: 0;
   padding-top: 3px;
-}
-
-.execution-part-row .ep-hash .value {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* reuse KV grid for each part’s fields */
-.ep-fields {
-  @extend %kv-grid;
-}
-
-.ep-fields .field {
-  @extend %kv-field-as-contents;
-}
-
-.ep-fields .label {
-  @extend %kv-label;
-}
-
-.ep-fields .value {
-  @extend %kv-value;
-}
-
-/* ensure expand button keeps fixed width only, not pagination */
-.expand-toggle-btn {
-  --btn-width: 66px;
 }
 
 /* label + badge on one line */
@@ -234,6 +208,30 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.ep-hash .value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ep-height {
+  grid-area: ep-height;
+  min-width: 0;
+  text-align: left;
+  padding-top: 3px;
+}
+
+.ep-height .value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ensure expand button keeps fixed width only, not pagination */
+.expand-toggle-btn {
+  --btn-width: 66px;
 }
 
 /* badges */
@@ -277,4 +275,24 @@
 .execution-parts-section .badge-revert {
   --badge-font: 9px;
 }
-  */
+*/
+
+/* DEBUG (temporary) - visualise the grid */
+
+.debug-grid .tx-item {
+  outline: 1px dashed #555;
+  background: rgba(80, 80, 80, .08);
+}
+
+.debug-grid .tx-item>* {
+  outline: 1px dashed rgba(81, 245, 11, 0.6);
+}
+
+.debug-grid .execution-part-row {
+  outline: 1px dashed #555;
+  background: rgba(80, 80, 80, .08);
+}
+
+.debug-grid .execution-part-row>* {
+  outline: 1px dashed rgba(245, 158, 11, .6);
+}

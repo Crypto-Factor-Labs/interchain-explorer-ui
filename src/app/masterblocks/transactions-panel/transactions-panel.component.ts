@@ -39,4 +39,13 @@ export class TransactionsPanelComponent {
   onExpandDone(event: NgAnimationEvent) {
     scrollExpandedIntoView(this.listRef, event);
   }
+
+  getTxHeight(_tx: Tx): number | string {
+    return 'M-999999';
+  }
+
+  getEpHeight(_ep: TxExecutionPart): string | number | null {
+    return 'Z-999999-99999'
+  }
+
 }
