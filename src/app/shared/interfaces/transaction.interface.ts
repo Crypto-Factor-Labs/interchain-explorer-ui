@@ -55,6 +55,7 @@ export interface ExecutionPartBase {
   operatorAddress: string;
   senderAddress: string;
   includedInPartialBlock: string;
+  partialBlockHeight: string; // decimal string
   partialBlockPartIndex: number;
   txnType?: number;
 }
@@ -91,7 +92,7 @@ export interface Transaction {
   state: TriState; // validation state
   includedInMasterBlock: string;
   masterBlockHeight: string; // decimal string
-  masterBlockTransactionIndex: number;
+  masterBlockTxIndex: number;
 
   // Events for linking/inspection
   sourceChainPushEvent?: ChainEvent;
@@ -108,19 +109,22 @@ export interface Tx {
   timestamp?: number | null;
   includedInMasterBlock: string;
   masterBlockHeight?: string | null;
-  masterBlockTransactionIndex?: number | null;
+  masterBlockTxIndex?: number | null;
   state: number;
   chainId: number;
   executionParts?: TxExecutionPart[];
 }
 
 export interface TxExecutionPart {
+  id?: string;
   hash: string;
   transactionHash: string;
+  partIndex?: number | null; // null for revert
   isRevert: boolean;
   chainId?: number | null;
   includedInPartialBlock?: string | null;
-  partIndex?: number | null; // null for revert
+  partialBlockHeight?: string | null;
+  partialBlockPartIndex?: number | null;
 }
 
 export interface TxFetchResult {
@@ -134,7 +138,7 @@ export interface TxDto {
   transactionHash: string;
   includedInMasterBlock: string;
   masterBlockHeight: string | null;
-  masterBlockTransactionIndex: number | null;
+  masterBlockTxIndex: number | null;
   sourceSender: string;
   sourceChainId: number;
   state: number;
@@ -144,12 +148,15 @@ export interface TxDto {
 }
 
 export interface TxExecutionPartDto {
+  id: string;
   hash: string;
   transactionHash: string;
+  partIndex?: number | null; // null for revert
   isRevert: boolean;
   chainId?: number | null;
   includedInPartialBlock?: string | null;
-  partIndex?: number | null; // null for revert
+  partialBlockHeight?: string | null;
+  partialBlockPartIndex?: number | null;
 }
 export interface TxListDto {
   total: number;

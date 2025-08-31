@@ -26,7 +26,8 @@
       <!-- Height (stacked: label over value) -->
       <div class="tx-height">
         <div class="label">Master Block</div>
-        <div class="value">M-{{ tx.masterBlockHeight }}</div>
+        <div class="value">{{ !tx.masterBlockHeight && tx.masterBlockHeight !== '0' ? '\u00A0—' :
+          'M-' + tx.masterBlockHeight }}</div>
       </div>
 
       <!-- Info-area -->
@@ -80,7 +81,9 @@
             <!-- Height -->
             <div class="ep-height">
               <div class="label">Partial Block</div>
-              <div class="value">{{ getEpHeight(ep) }}</div>
+              <div class="value">{{ !ep.partialBlockHeight && ep.partialBlockHeight !== '0' ? '\u00A0—' :
+                ('Z-' + ep.partialBlockHeight + '-' + ep.chainId) }}</div>
+
             </div>
 
           </div>

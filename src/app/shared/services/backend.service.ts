@@ -13,7 +13,7 @@ import {
 // until the relevant properities have been added to the entities in the backend.
 import BN from 'bn.js';
 
-const hexToDec = (v: string | null): string | null =>
+const hexToDec = (v: string | null | undefined): string | null =>
   v && v.trim() ? new BN(v.trim().replace(/^0x/i, ''), 16).toString(10) : null;
 
 @Injectable({
@@ -95,17 +95,19 @@ export class BackendService {
     chainId: dto.sourceChainId,
     includedInMasterBlock: dto.includedInMasterBlock ?? '',
     masterBlockHeight: hexToDec(dto.masterBlockHeight) ?? null,  // TEMPORARY workaround for BN to decimal conversion
-    masterBlockTransactionIndex: dto.masterBlockTransactionIndex ?? null,
-    executionParts: (dto.executionParts ?? []).map(this.mapPart),
+    masterBlockTxIndex: dto.masterBlockTxIndex ?? null,
+    executionParts: (dto.executionParts ?? []).map(this.mapExecPart),
   });
 
-  private mapPart = (dto: TxExecutionPartDto): TxExecutionPart => ({
+  private mapExecPart = (dto: TxExecutionPartDto): TxExecutionPart => ({
     hash: dto.hash,
     transactionHash: dto.transactionHash,
+    partIndex: dto.partIndex ?? null,
     isRevert: dto.isRevert,
     chainId: dto.chainId ?? null,
     includedInPartialBlock: dto.includedInPartialBlock ?? null,
-    partIndex: dto.partIndex ?? null,
+    partialBlockHeight: hexToDec(dto.partialBlockHeight) ?? null, // TEMPORARY workaround for BN to decimal conversion
+    partialBlockPartIndex: dto.partialBlockPartIndex ?? null,
   });
 
   /*
