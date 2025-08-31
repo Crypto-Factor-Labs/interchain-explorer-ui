@@ -134,7 +134,8 @@
   justify-content: center;
   width: var(--logo-pane-size, var(--logo-size, 48px));
   height: var(--logo-pane-size, var(--logo-size, 48px));
-  //transform: translateY(var(--logo-nudge, 0px));
+  background: linear-gradient(to right, $oxford-blue, $rich-black);
+  border-radius: 8px;
 }
 
 %logo-img {

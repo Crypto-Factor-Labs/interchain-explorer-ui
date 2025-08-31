@@ -9,7 +9,7 @@
 
   <!-- Transaction list, use "transactions-list debug-grid" to show the grid -->
   <!-- Add template ref for scroll-into-view -->
-  <div class="transactions-list debug-grid" #txListRef>
+  <div class="transactions-list" #txListRef>
     <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
 
       <!-- Logo-area -->

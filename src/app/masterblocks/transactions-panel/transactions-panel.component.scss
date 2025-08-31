@@ -181,16 +181,18 @@ tx-hash {
   grid-template-columns: var(--col-logo) var(--col-hash) var(--col-height) var(--col-info) var(--col-exp);
   align-items: center;
   column-gap: var(--logo-gap, 12px);
-  padding: 3px 0px 2px 0px;
+  padding: 4px 0px 2px 0px;
   margin-bottom: 3px;
-  background: var(--partial-bg, #0e0f14);
+  background: var(--partial-bg, #181a23);
   border-radius: 8px;
 }
 
 .execution-part-row .ep-logo-pane {
   @extend %logo-pane;
   grid-area: ep-logo;
-  margin-inline: auto;
+  //margin-inline: auto;
+  margin-left: 5px;
+  background: linear-gradient(to right, $rich-black, black);
 }
 
 .execution-part-row .ep-logo-img {

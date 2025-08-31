@@ -151,6 +151,8 @@ body {
   }
 }
 
+// Is still used by the Masterblocks-panel (for margin-right mainly).
+// Can be removed if not needed anymore.
 .logo-pane {
   width: 48px;
   height: 48px;
@@ -159,7 +161,6 @@ body {
   border-radius: 8px;
   margin-right: 10px;
 
-  // Note: width and height must be set in-line in the HTML
   .logo-img {
     // Center the image
     position: absolute;
