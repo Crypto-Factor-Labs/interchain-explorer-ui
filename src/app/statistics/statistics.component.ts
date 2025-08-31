@@ -1,7 +1,11 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, AfterViewInit, ViewChild,
+  ElementRef, inject, ChangeDetectionStrategy
+} from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 import { BackendService } from '../shared/services/backend.service';
+import { TxStatsService } from './tx-stats.service.js';
 import { Statistics, PricePoint } from '../shared/interfaces/statistics.interface';
 import type { TooltipItem, ChartConfiguration } from 'chart.js';
 import Chart from 'chart.js/auto';
@@ -13,6 +17,7 @@ import { format } from 'date-fns';
   standalone: true,
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
   statistics?: Statistics;
@@ -34,6 +39,10 @@ export class StatisticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Persist the selected window across reloads
   private readonly STORAGE_KEY = 'cfrChartWindowMins';
+
+  // Inject the TxStatsService to update the number of transactions in the Statistics.
+  // The nrOfTx signal is updated in masterblocks.component.ts, whenever the transactions are fetched.
+  public txStats = inject(TxStatsService);
 
   constructor(private backendService: BackendService) { }
 

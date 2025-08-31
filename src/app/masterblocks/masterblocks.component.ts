@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { BackendService } from '../shared/services/backend.service';
@@ -13,6 +13,7 @@ import { Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
 import { getChainImage as utilGetChainImage } from '../shared/utils/common.utils';
 import { MasterBlocksPanelComponent } from './masterblocks-panel/masterblocks-panel.component';
 import { TransactionsPanelComponent } from './transactions-panel/transactions-panel.component';
+import { TxStatsService } from '../statistics/tx-stats.service';
 import BN from 'bn.js';
 
 interface FetchResult {
@@ -45,7 +46,7 @@ export class MasterBlocksComponent implements OnInit {
   transactions: Tx[] = [];
   expandedTx: Record<string, boolean> = {};
   txPage = 1;
-  txTotalPages = 1;              // adjust if your API provides a total
+  txTotalPages = 1;
   txPolling = false;
   private txPollingTimeout: any;
 
@@ -166,6 +167,8 @@ export class MasterBlocksComponent implements OnInit {
 
   /* ================= Transactions ================= */
 
+  private txStats = inject(TxStatsService);
+
   /** Start polling page 1 for transactions */
   refreshTx(): void {
     this.txPage = 1;
@@ -173,16 +176,20 @@ export class MasterBlocksComponent implements OnInit {
     clearTimeout(this.txPollingTimeout);
 
     this.subs.add(
-      this.fetchTxData(0, true).subscribe(res => {
-        if (res) {
-          this.transactions = res.transactions;
-          this.txTotalPages = Math.max(1, Math.ceil(res.total / this.pageSize));
-        } else {
-          this.transactions = [];
-          this.txTotalPages = 1;
-        }
-        this.scheduleNextTxPoll();
-      })
+      this.fetchTxData(0, true)
+        .pipe(  // Update the total number of transactions in the Statistics using a Signal
+          tap(res => this.txStats.setNrOfTx(res?.total ?? 0)))
+        .subscribe(res => {
+          if (res) {
+            this.transactions = res.transactions;
+            this.txTotalPages = Math.max(1, Math.ceil(res.total / this.pageSize));
+          } else {
+            this.transactions = [];
+            this.txTotalPages = 1;
+            this.txStats.setNrOfTx(0);  // Keep Stats consistent on empty
+          }
+          this.scheduleNextTxPoll();
+        })
     );
   }
 
