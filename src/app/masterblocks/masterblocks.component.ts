@@ -38,7 +38,7 @@ export class MasterBlocksComponent implements OnInit {
   errMsg: string = '';
   pollingActive = false;
   getChainImage = utilGetChainImage;
-  private pollingFreq: number = this.config.appPollFreq;
+  private pollingFreq: number = this.config.appPollFreq;  // Is also used for tx polling
   private pollingTimeout: any;
   private subs = new Subscription();
 
@@ -47,7 +47,7 @@ export class MasterBlocksComponent implements OnInit {
   expandedTx: Record<string, boolean> = {};
   txPage = 1;
   txTotalPages = 1;
-  txPolling = false;
+  txPollingActive = false;
   private txPollingTimeout: any;
 
   constructor(
@@ -172,7 +172,7 @@ export class MasterBlocksComponent implements OnInit {
   /** Start polling page 1 for transactions */
   refreshTx(): void {
     this.txPage = 1;
-    this.txPolling = true;
+    this.txPollingActive = true;
     clearTimeout(this.txPollingTimeout);
 
     this.subs.add(
@@ -199,7 +199,7 @@ export class MasterBlocksComponent implements OnInit {
 
     if (page === 1) return this.refreshTx();
 
-    this.txPolling = false;
+    this.txPollingActive = false;
     clearTimeout(this.txPollingTimeout);
 
     this.txPage = page;
@@ -219,8 +219,8 @@ export class MasterBlocksComponent implements OnInit {
 
   /** Toggle transactions auto-refresh */
   onTxTogglePolling(): void {
-    if (this.txPolling) {
-      this.txPolling = false;
+    if (this.txPollingActive) {
+      this.txPollingActive = false;
       clearTimeout(this.txPollingTimeout);
     } else {
       this.refreshTx();

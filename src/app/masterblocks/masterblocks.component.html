@@ -10,7 +10,7 @@
 
     <!-- Right Panel: List with Transactions and ExecutionParts -->
     <app-transactions-panel [transactions]="transactions" [expandedTx]="expandedTx" [currentPage]="txPage"
-      [totalPages]="txTotalPages" [pollingActive]="txPolling" [getChainImage]="getChainImage"
+      [totalPages]="txTotalPages" [pollingActive]="txPollingActive" [getChainImage]="getChainImage"
       [trackByTxHash]="trackByTxHash" (togglePolling)="onTxTogglePolling()" (openTx)="openTxDialog($event)"
       (toggleExecutionParts)="toggleTxExecutionParts($event)" (pageChange)="goToTxPage($event)">
     </app-transactions-panel>
