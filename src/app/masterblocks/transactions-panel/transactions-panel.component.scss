@@ -72,7 +72,7 @@
 }
 
 /* Map the area for the tx hash (label above value) */
-tx-hash {
+.tx-hash {
   grid-area: tx-hash;
   display: grid;
   grid-template-rows: auto auto; // label above value
@@ -175,10 +175,10 @@ tx-hash {
 
 .execution-part-row {
   display: grid;
-  grid-template-areas: "ep-logo ep-hash ep-height";
+  grid-template-areas: "ep-logo ep-hash ep-height ep-progress";
   // Use the same columns as the Tx row for alignment.
-  // Note: col-info and col-exp are not used here, but keep for alignment (for now?)
-  grid-template-columns: var(--col-logo) var(--col-hash) var(--col-height) var(--col-info) var(--col-exp);
+  // Note: col-info is used for ep-progress.
+  grid-template-columns: var(--col-logo) var(--col-hash) var(--col-height) var(--col-info);
   align-items: center;
   column-gap: var(--logo-gap, 12px);
   padding: 4px 0px 2px 0px;
@@ -280,7 +280,163 @@ tx-hash {
 }
 */
 
-/* DEBUG (temporary) - visualise the grid */
+/* 
+ * --- Progress micro-tracker (4 steps) --- 
+ */
+.ep-progress {
+  grid-area: ep-progress;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 24px;
+  gap: 10px;
+  min-width: 120px; // stays compact; grows if col-info is wider
+
+  // Palette hooks
+  --c-neutral: rgba(255, 255, 255, .22);
+  --c-fill: #{$byzantine-blue}; // success / active;
+  --c-fill-border: #{lighten($byzantine-blue, 12%)};
+  --c-fill-connector: #{lighten($byzantine-blue, 5%)};
+  --c-fill-inprog: #{$jordy-blue}; // in-progress
+  --c-fill-inprog-conn: #{darken($jordy-blue, 5%)};
+  --c-warn: #f59e0b; // failed / revert
+  --c-fill-pulse: #{rgba($jordy-blue, .50)};
+  --c-check: white;
+}
+
+.ep-progress .step {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+// Base dot: inner-fill via padding + background-clip
+.ep-progress .dot {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2px solid var(--c-neutral);
+  margin-left: -3px; // space before dot
+  padding: 2px; // creates an inner circle area
+  background-clip: content-box; // background only fills the inner area
+  background-color: transparent; // default (pending)
+}
+
+/* SUCCESS */
+.ep-progress .step.done .dot {
+  border-color: var(--c-fill-border);
+  box-shadow: inset 0 0 0 999px var(--c-fill);
+  position: relative;
+}
+
+// Show a checkmark inside the dot
+.ep-progress .step.done .dot::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 2px;
+  border-left: 2px solid var(--c-check);
+  border-bottom: 2px solid var(--c-check);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%) rotate(-45deg); // center and rotate
+  pointer-events: none;
+}
+
+/* FAILED / REVERT */
+.ep-progress .step.failed .dot {
+  border-color: var(--c-warn);
+  box-shadow: inset 0 0 0 999px var(--c-warn);
+}
+
+/* IN PROGRESS: filled center + pulsing ring */
+.ep-progress .step.inprog .dot {
+  border-color: var(--c-fill-inprog);
+  // [0] inset solid fill, [1] outer ring (starts at 0)
+  box-shadow: inset 0 0 0 999px var(--c-fill-inprog), 0 0 0 0 var(--c-fill-pulse);
+  animation: epPulse 1.2s ease-in-out infinite;
+}
+
+// Animate only the SECOND shadow (outer ring)
+@keyframes epPulse {
+
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 999px var(--c-fill), 0 0 0 0 var(--c-fill-pulse);
+  }
+
+  50% {
+    box-shadow: inset 0 0 0 999px var(--c-fill-inprog), 0 0 0 3px var(--c-fill-pulse);
+  }
+}
+
+// Base connector (to the next step)
+.ep-progress .conn {
+  width: 30px;
+  height: 2px;
+  margin-left: 6px; // space after dot
+  background: var(--c-neutral);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+// The colored fill that grows left -> right
+.ep-progress .conn .fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: var(--c-fill-connector);
+  transition: width 180ms ease-out;
+}
+
+// No connector after the last step
+.ep-progress .step:last-child .conn {
+  display: none;
+}
+
+// State-driven fill widths
+.ep-progress .step.done .conn .fill {
+  width: 100%;
+}
+
+.ep-progress .step.inprog .conn .fill {
+  background: var(--c-fill-inprog-conn);
+  width: 40%;
+}
+
+// Partial
+.ep-progress .step.pending .conn .fill {
+  width: 0%;
+}
+
+.ep-progress .step.failed .conn .fill {
+  width: 0%;
+}
+
+// Let partial fill pulsate
+@keyframes epConnectorPulse {
+
+  0%,
+  100% {
+    width: 15%;
+  }
+
+  50% {
+    width: 35%;
+  }
+}
+
+.ep-progress .step.inprog .conn .fill {
+  animation: epConnectorPulse 1.2s ease-in-out infinite;
+}
+
+/* DEBUG - visualise the grid
+ * Enable by adding the class "debug-grid" to the transactions-list element
+ */
 
 .debug-grid .tx-item {
   outline: 1px dashed #555;

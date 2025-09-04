@@ -5,6 +5,16 @@ import { Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interfa
 import { expandCollapse, staggerItems } from '../masterblocks.animations.js';
 import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
 
+// --- Progress helper types (local, non-exported) ---
+type EpEventStatus = 'pending' | 'in_progress' | 'success' | 'failed' | 'revert' | 'skipped';
+
+interface EpEvent {
+  name?: string;
+  status: EpEventStatus;
+  timestamp?: string; // ISO
+  attempts?: number;
+}
+
 @Component({
   selector: 'app-transactions-panel',
   standalone: true,
@@ -34,5 +44,41 @@ export class TransactionsPanelComponent {
   @ViewChild('txListRef') listRef?: ElementRef<HTMLDivElement>;
   onExpandDone(event: NgAnimationEvent) {
     scrollExpandedIntoView(this.listRef, event);
+  }
+
+  // -------- Progress helpers (for EP 4-step micro-tracker) --------
+
+  // Narrowing guard: EP has explicit per-event statuses from backend
+  private hasEvents(ep: TxExecutionPart): ep is TxExecutionPart & { events: EpEvent[] } {
+    return Array.isArray((ep as any).events) && (ep as any).events.length === 4;
+  }
+
+  /**
+   * Returns the 4 statuses that drive the micro-tracker UI.
+   * If backend provides `events[4]`, use that; otherwise infer from existing flags.
+   */
+  public getEpSteps(ep: TxExecutionPart): EpEventStatus[] {
+    // Prefer explicit per-event statuses if backend provides them
+    if (this.hasEvents(ep)) {
+      return (ep as any).events.map((e: EpEvent) => e?.status ?? 'pending');
+    }
+
+    // Fallback with only known field(s)
+    if (ep.isRevert === true) {
+      // We know it failed, but not at which step → mark first as failed, rest pending
+      return ['failed', 'pending', 'pending', 'pending'];
+    }
+
+    // Unknown granularity: show neutral pending for all
+    //return ['pending', 'pending', 'pending', 'pending'];
+    return ['success', 'in_progress', 'pending', 'pending'];
+  }
+
+  public getStepTitle(ep: TxExecutionPart, i: number, st: EpEventStatus): string {
+    const has = this.hasEvents(ep);
+    const name = has && (ep as any).events?.[i]?.name ? (ep as any).events[i]!.name : `Step ${i + 1}`;
+    const ts = has ? (ep as any).events?.[i]?.timestamp : undefined;
+    const when = ts ? ` — ${new Date(ts).toLocaleString()}` : '';
+    return `${name}: ${st.replace('_', ' ')}${when}`;
   }
 }
