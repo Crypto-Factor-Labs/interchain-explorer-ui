@@ -5,25 +5,14 @@
  * - TriState: 0=pending, 1=success, 2=failed/rollback.
  */
 
+import { ChainEvents } from "./chain-events.interface";
+
 export type TriState = 0 | 1 | 2;
 export type ExecResult = TriState;
 export type ValidationResult = TriState;
 
-/** Generic chain event (block/tx/event level data). */
+/** Generic ChainEvent **/
 export interface ChainEvent {
-  // Block-level
-  blockHash: string;
-  blockHeight: string;        // decimal string
-  blockTimestamp: number;     // ms
-  blockSubchain?: string;
-
-  // Transaction-level (optional)
-  transactionHash?: string;
-  transactionReceiver?: string;
-  transactionSender?: string;
-  transactionSubchain?: string;
-  transactionData?: string;
-
   // Event-level
   eventHash?: string;
   eventTimestamp?: number;    // ms
@@ -33,6 +22,19 @@ export interface ChainEvent {
   eventSender?: string;
   eventSubchain?: string;
   eventData?: string;
+
+  // Transaction-level (optional)
+  transactionHash?: string;
+  transactionReceiver?: string;
+  transactionSender?: string;
+  transactionSubchain?: string;
+  transactionData?: string;
+
+  // Block-level
+  blockHash: string;
+  blockHeight: string;        // decimal string
+  blockTimestamp: number;     // ms
+  blockSubchain?: string;
 
   // Optional metadata
   type?: number;
@@ -60,7 +62,7 @@ export interface ExecutionPartBase {
   txnType?: number;
 }
 
-/** Full execution-part with events and optional proofs. */
+/** Full ExecutionPart with ChainEvents and optional proofs. */
 export interface ExecutionPart extends ExecutionPartBase {
   // Scheduling / publish events (no result)
   targetChainSchedulingEvent?: ChainEvent;
@@ -125,6 +127,7 @@ export interface TxExecutionPart {
   includedInPartialBlock?: string | null;
   partialBlockHeight?: string | null;
   partialBlockPartIndex?: number | null;
+  events?: ChainEvents; // Optional: 4-step progress from backend
 }
 
 export interface TxFetchResult {
@@ -157,6 +160,7 @@ export interface TxExecutionPartDto {
   includedInPartialBlock?: string | null;
   partialBlockHeight?: string | null;
   partialBlockPartIndex?: number | null;
+  events?: ChainEvents; // Optional: 4-step progress from backend
 }
 export interface TxListDto {
   total: number;

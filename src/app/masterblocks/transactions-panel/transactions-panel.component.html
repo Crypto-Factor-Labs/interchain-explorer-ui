@@ -87,10 +87,10 @@
 
             <!-- Progress (4-step micro-tracker) -->
             <div class="ep-progress" role="group" aria-label="Execution progress">
-              <div class="step" *ngFor="let st of getEpSteps(ep); let i = index" [class.done]="st === 'success'"
+              <div class="step" *ngFor="let st of getEpSteps(ep); let stepNr = index" [class.done]="st === 'success'"
                 [class.inprog]="st === 'in_progress'" [class.pending]="st === 'pending' || st === 'skipped'"
                 [class.failed]="st === 'failed' || st === 'revert'"
-                [attr.aria-current]="st === 'in_progress' ? 'step' : null" [attr.title]="getStepTitle(ep, i, st)">
+                [attr.aria-current]="st === 'in_progress' ? 'step' : null" [attr.title]="getStepTitle(ep, stepNr)">
                 <span class="dot"></span>
                 <span class="conn"><span class="fill"></span></span>
               </div>

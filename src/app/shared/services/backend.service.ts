@@ -3,11 +3,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConfigService } from '../../config.service';
-import { PricePoint } from '../interfaces/statistics.interface';
+import { PricePoint } from '../interfaces/statistics.interface.js';
+import { ChainEvents } from '../interfaces/chain-events.interface.js';
 import {
   TxDto, TxExecutionPartDto, TxListDto,
   Tx, TxExecutionPart, TxFetchResult,
-} from '../interfaces/transaction.interface';
+} from '../interfaces/transaction.interface.js';
 
 // TEMPORARY workaround for BN to decimal conversion
 // until the relevant properities have been added to the entities in the backend.
@@ -69,11 +70,12 @@ export class BackendService {
   /*
    * Methods to retrieve Transactions
    */
-  getTransactions(nr: number, skip = 0, includeParts = false): Observable<TxFetchResult> {
+  getTransactions(nr: number, skip = 0, includeParts = false, includeEvents = false): Observable<TxFetchResult> {
     const params = new HttpParams()
       .set('nr', String(nr))
       .set('skip', String(skip))
-      .set('includeParts', String(includeParts));
+      .set('includeParts', String(includeParts))
+      .set('includeEvents', String(includeEvents));
 
     // Also the `sender` and `operator` parameters can be added if needed
     // params = params.set('sender', sender).set('operator', operator);
@@ -108,6 +110,9 @@ export class BackendService {
     includedInPartialBlock: dto.includedInPartialBlock ?? null,
     partialBlockHeight: hexToDec(dto.partialBlockHeight) ?? null, // TEMPORARY workaround for BN to decimal conversion
     partialBlockPartIndex: dto.partialBlockPartIndex ?? null,
+    // Optional: 4-step progress from backend
+    events: Array.isArray(dto.events) && dto.events.length === 4 ? dto.events : undefined,
+
   });
 
   /*

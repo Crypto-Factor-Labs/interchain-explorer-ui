@@ -235,7 +235,7 @@ export class MasterBlocksComponent implements OnInit {
   /** Backend adapter for transactions list ({ total, items }) */
   private fetchTxData(skip: number, shouldPoll: boolean): Observable<TxFetchResult | null> {
     return this.backendService
-      .getTransactions(this.pageSize, skip, true)
+      .getTransactions(this.pageSize, skip, true, true)
       .pipe(
         catchError(err => {
           console.error('Error loading transactions:', err);

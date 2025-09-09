@@ -55,8 +55,16 @@ export class TransactionsPanelComponent {
 
   /**
    * Returns the 4 statuses that drive the micro-tracker UI.
-   * If backend provides `events[4]`, use that; otherwise infer from existing flags.
    */
+  getEpSteps(ep: any) {
+    return ep?.events?.map((e: any) => e.status) ?? ['pending', 'pending', 'pending', 'pending'];
+  }
+  getStepTitle(ep: any, stepNr: number) {
+    const e = ep?.events?.[stepNr];
+    return e ? `${e.name}: ${e.status}` : `Step ${stepNr + 1}: pending`;
+  }
+
+  /*
   public getEpSteps(ep: TxExecutionPart): EpEventStatus[] {
     // Prefer explicit per-event statuses if backend provides them
     if (this.hasEvents(ep)) {
@@ -81,4 +89,5 @@ export class TransactionsPanelComponent {
     const when = ts ? ` — ${new Date(ts).toLocaleString()}` : '';
     return `${name}: ${st.replace('_', ' ')}${when}`;
   }
+    */
 }
