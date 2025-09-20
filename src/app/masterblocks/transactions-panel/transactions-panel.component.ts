@@ -59,35 +59,13 @@ export class TransactionsPanelComponent {
   getEpSteps(ep: any) {
     return ep?.events?.map((e: any) => e.status) ?? ['pending', 'pending', 'pending', 'pending'];
   }
-  getStepTitle(ep: any, stepNr: number) {
-    const e = ep?.events?.[stepNr];
-    return e ? `${e.name}: ${e.status}` : `Step ${stepNr + 1}: pending`;
+
+  getStepTitle(ep: TxExecutionPart, i: number): string {
+    const e = ep.events?.[i];
+    if (!e) return `Step ${i + 1}: pending`;
+    const when = e.timestamp ? new Date(e.timestamp).toLocaleString() : '';
+    const status = e.status.replace('_', ' ');
+    return when ? `${e.name}: ${status} — ${when}` : `${e.name}: ${status}`;
   }
 
-  /*
-  public getEpSteps(ep: TxExecutionPart): EpEventStatus[] {
-    // Prefer explicit per-event statuses if backend provides them
-    if (this.hasEvents(ep)) {
-      return (ep as any).events.map((e: EpEvent) => e?.status ?? 'pending');
-    }
-
-    // Fallback with only known field(s)
-    if (ep.isRevert === true) {
-      // We know it failed, but not at which step → mark first as failed, rest pending
-      return ['failed', 'pending', 'pending', 'pending'];
-    }
-
-    // Unknown granularity: show neutral pending for all
-    //return ['pending', 'pending', 'pending', 'pending'];
-    return ['success', 'in_progress', 'pending', 'pending'];
-  }
-
-  public getStepTitle(ep: TxExecutionPart, i: number, st: EpEventStatus): string {
-    const has = this.hasEvents(ep);
-    const name = has && (ep as any).events?.[i]?.name ? (ep as any).events[i]!.name : `Step ${i + 1}`;
-    const ts = has ? (ep as any).events?.[i]?.timestamp : undefined;
-    const when = ts ? ` — ${new Date(ts).toLocaleString()}` : '';
-    return `${name}: ${st.replace('_', ' ')}${when}`;
-  }
-    */
 }

@@ -20,6 +20,13 @@ export class MasterBlockComponent {
     public dialogRef: MatDialogRef<MasterBlockComponent>
   ) { }
 
+  // For the "copy to clipboard" feature
+  copied: boolean | null = null;
+  onCopied(success: boolean) {
+    this.copied = success;
+    setTimeout(() => (this.copied = null), 1500);  // Show a message for 1.5s
+  }
+
   // Close the dialog when Enter is pressed
   @HostListener('document:keydown.enter', ['$event'])
   onEnterKey(event: KeyboardEvent) {

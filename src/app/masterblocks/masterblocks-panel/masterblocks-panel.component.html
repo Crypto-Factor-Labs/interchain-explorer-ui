@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <!-- Right Column: Hash -->
+        <!-- Column: Hash -->
         <div class="column column-right">
           <div class="field">
             <div class="label">Hash</div>
@@ -45,7 +45,17 @@
           </div>
         </div>
 
-        <!-- Third Column: Expand Button -->
+        <!-- Column: #Tx -->
+        <div class="column column-right">
+          <div class="field">
+            <div class="label">#Tx</div>
+            <div class="value">
+              <span class="gradient-text" style="padding-left: 7px">{{ block.tx_count }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column: Expand Button -->
         <div class="column column-button">
           <a class="gradient-btn expand-toggle-btn" (click)="togglePartialBlocks.emit(block.block_hash)">
             <span class="btn-content">

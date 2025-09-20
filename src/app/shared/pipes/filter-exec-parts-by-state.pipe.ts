@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TransactionStateEnum } from '../../shared/interfaces/transaction-state.enum.js';
+import { TransactionStateEnum } from '../../shared/enums/transaction-state.enum.js';
 import { TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
 
 @Pipe({ name: 'filterExecPartsByState', standalone: true, pure: true })

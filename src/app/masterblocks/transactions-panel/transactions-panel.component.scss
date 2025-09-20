@@ -298,9 +298,10 @@
   --c-fill-connector: #{lighten($byzantine-blue, 5%)};
   --c-fill-inprog: #{$jordy-blue}; // in-progress
   --c-fill-inprog-conn: #{darken($jordy-blue, 5%)};
-  --c-warn: #f59e0b; // failed / revert
+  --c-fill-failed: white; // failed / revert
   --c-fill-pulse: #{rgba($jordy-blue, .50)};
   --c-check: white;
+  --c-cross: red;
 }
 
 .ep-progress .step {
@@ -311,6 +312,7 @@
 
 // Base dot: inner-fill via padding + background-clip
 .ep-progress .dot {
+  position: relative;
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -327,7 +329,6 @@
 .ep-progress .step.done .dot {
   border-color: var(--c-fill-border);
   box-shadow: inset 0 0 0 999px var(--c-fill);
-  position: relative;
 }
 
 // Show a checkmark inside the dot
@@ -346,8 +347,24 @@
 
 /* FAILED / REVERT */
 .ep-progress .step.failed .dot {
-  border-color: var(--c-warn);
-  box-shadow: inset 0 0 0 999px var(--c-warn);
+  border-color: var(--c-fill-failed);
+  box-shadow: inset 0 0 0 999px var(--c-fill-failed);
+}
+
+// Show an “X” inside the dot
+.ep-progress .step.failed .dot::after {
+  content: "";
+  position: absolute;
+  width: 9px; // tweak 8–10px to taste
+  height: 9px;
+  left: 50%;
+  top: 50%; // size of the cross inside the dot
+  transform: translate(-50%, -50%) rotate(45deg);
+  // Rotate a “+” into an “×”: draw a plus using two background bars; rotation turns it into an X
+  background:
+    linear-gradient(var(--c-cross), var(--c-cross)) center / 100% 2px no-repeat,
+    linear-gradient(var(--c-cross), var(--c-cross)) center / 2px 100% no-repeat;
+  border-radius: 0;
 }
 
 /* IN PROGRESS: filled center + pulsing ring */

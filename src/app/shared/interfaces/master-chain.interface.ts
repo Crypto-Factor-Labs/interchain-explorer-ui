@@ -6,6 +6,7 @@ export interface MasterChainBlock {
   timestamp: string;
   merkle_root: string;
   block_mint_transaction: string;
+  tx_count: number;
   indexed_at: string;
   partialBlocks: PartialChainBlock[];  // Array of PartialChainBlock data
 }

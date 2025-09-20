@@ -1,4 +1,4 @@
-import { TransactionStateEnum } from '../interfaces/transaction-state.enum.js';
+import { TransactionStateEnum } from '../../shared/enums/transaction-state.enum.js';
 
 export function getChainImage(chainId: string | number | null | undefined): string {
   const DEFAULT_IMG = 'assets/images/interchain_logo.png';

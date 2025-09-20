@@ -9,8 +9,7 @@ export type ChainEventStatus =
 export interface ChainEventDto {
   name: string;
   status: ChainEventStatus;
-  startedAt?: string;   // ISO
-  finishedAt?: string;  // ISO
+  timestamp?: string;   // ISO
 }
 
 // Tuple of exactly 4 items
