@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  dapp:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/prod.Dockerfile
+    ports:
+      - "4200:4200"
