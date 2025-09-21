@@ -36,6 +36,6 @@ export class ConfigService {
   }
 
   get appPollFreq(): number {
-    return this.config.APP_POLL_FREQ;
+    return parseInt(this.config.APP_POLL_FREQ);
   }
 }
