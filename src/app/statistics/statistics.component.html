@@ -1,0 +1,67 @@
+<div class="panel">
+  <div class="stats-panel">
+    <div class="stats-columns">
+      <!-- CFR-data -->
+      <div class="column">
+        <div class="cell">
+          <div class="cell-content">
+            <img class="cell-image" src="..\assets\images\CFR_token.png" alt="CFR-token" />
+            <div class="cell-info">
+              <div class="cell-heading">CFR PRICE</div>
+              <span class="info-value">$ {{ statistics?.cfr_price_usd }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell-heading"><i class="fa-solid fa-globe icon-heading"></i>CRYPTO FACTOR MARKET CAP</div>
+          <span class="cell-value">$ {{ statistics?.cfr_tvl_usd }}</span>
+        </div>
+      </div>
+      <!-- CFR price chart -->
+      <div class="column">
+        <div class="cell chart-cell">
+          <div class="chart-wrapper">
+            <canvas #cfrPriceChart width="200" height="100" style="display: block; width: 100%; height: 100%;"></canvas>
+            <!-- Overlay a <select> to change the “minutes” window -->
+            <select class="chart-selector" [value]="windowMins" (change)="onWindowChange($event)">
+              <option value="60">Last 60m</option>
+              <option value="120" selected>Last 2h</option>
+              <option value="240">Last 4h</option>
+              <option value="480">Last 8h</option>
+              <option value="720">Last 12h</option>
+              <option value="1440">Last 1d</option>
+              <option value="2880">Last 2d</option>
+            </select>
+          </div>
+          <!-- Don't use the second cell (for now?) -->
+          <!--<div class="cell">
+          </div>-->
+        </div>
+      </div>
+      <!-- Transaction-data -->
+      <div class="column">
+        <div class="cell">
+          <div class="cell-heading"><i class="fa-solid fa-server icon-heading"></i>TRANSACTIONS</div>
+          <div class="cell-info-as-row">
+            <div class="info-pair">
+              <span class="info-label">Total:</span>
+              <span class="info-value">{{ txStats.nrOfTx() }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell-heading"><i class="fa-solid fa-gauge icon-heading"></i>BLOCK SPEED (average)</div>
+          <div class="cell-info-as-row">
+            <div class="info-pair">
+              <span class="info-label">Last 24 hours:</span>
+              <span class="info-value">{{ statistics?.avg_block_speed_24hr }}</span>
+            </div>
+            <div class="info-pair">
+              <span class="info-label">Last 30 days:</span>
+              <span class="info-value">{{ statistics?.avg_block_speed_30d }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

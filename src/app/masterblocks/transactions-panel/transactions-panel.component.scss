@@ -1,0 +1,474 @@
+@import '../../shared/shared-panel';
+
+:host {
+  --logo-pane-size: 40px; // Tx logo-pane, EP logo-pane is set later
+  --logo-size: 24px; // Tx logo-img, EP logo-img is set later
+  --logo-gap: 12px;
+
+  // Column widths for the both the .tx-item grid and the .execution-part-row grid
+  --logo-col-width: var(--logo-pane-size); // Set to logo-pane-size of Tx, even when a smaller size is set for EPs later
+  --hash-col-width: 125px;
+  --height-col-width: 125px;
+  --info-col-width: minmax(180px, 1fr); // flexes to fill
+}
+
+/* Header & status icon */
+.panel-header {
+  @extend %panel-header;
+}
+
+.panel-header h2 {
+  @extend %panel-title;
+}
+
+.status-icon {
+  @extend %status-icon;
+}
+
+.value {
+  @extend %value;
+}
+
+/* Scrollable list + consistent gaps only between items */
+.transactions-list {
+  @extend %scroll-list;
+  @extend %list-gap;
+  --panel-card-gap: 0px;
+  // remove the inherited top spacer
+  --panel-scroll-mt: 0px;
+  --panel-scroll-pt: 0px;
+}
+
+/* Each transaction row is a flat GRID card with a number of areas (columns) */
+.tx-item {
+  @extend %panel-card-grid;
+  --col-logo: var(--logo-col-width);
+  --col-hash: var(--hash-col-width);
+  --col-height: var(--height-col-width);
+  --col-info: var(--info-col-width);
+  --col-exp: max-content;
+  grid-template-areas: "tx-logo tx-hash tx-height tx-info tx-expand";
+  grid-template-columns:
+    var(--col-logo) var(--col-hash) var(--col-height) var(--col-info) var(--col-exp);
+  column-gap: var(--logo-gap);
+  row-gap: 6px;
+  align-items: start;
+  justify-items: stretch;
+  --panel-card-padding: 9px 10px;
+}
+
+.tx-item:last-child {
+  @extend %panel-card-last;
+}
+
+/* Map the area for the logo */
+.tx-item .tx-logo-pane {
+  @extend %logo-pane;
+  grid-area: tx-logo;
+}
+
+.tx-item .tx-logo-img {
+  @extend %logo-img;
+}
+
+/* Map the area for the tx hash (label above value) */
+.tx-hash {
+  grid-area: tx-hash;
+  display: grid;
+  grid-template-rows: auto auto; // label above value
+  min-width: 0;
+  row-gap: 0px;
+}
+
+.tx-hash .label {
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.tx-hash .value {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.tx-height {
+  grid-area: tx-height;
+  display: grid;
+  grid-template-rows: auto auto;
+  min-width: 0;
+  row-gap: 0;
+}
+
+.tx-height .label {
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.tx-height .value {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden; // prevent pushing the info column
+  text-overflow: ellipsis;
+}
+
+/* Map the area for the info section */
+.tx-info {
+  grid-area: tx-info;
+  align-self: center;
+  justify-self: stretch;
+  display: grid;
+  place-items: center;
+}
+
+.tx-info .state-stack {
+  display: grid;
+  grid-auto-rows: min-content;
+  row-gap: 2px; // space between label and value
+  text-align: center;
+}
+
+.tx-info .label {
+  font-weight: 600;
+}
+
+.tx-info .value {
+  font-size: 16px;
+}
+
+/* Map the area for the Expand-button */
+.tx-expander {
+  grid-area: tx-expand;
+  align-self: start;
+}
+
+/* Reusable gradient text */
+.gradient-text {
+  @extend %gradient-text;
+}
+
+/* Pagination */
+.pagination-bar {
+  @extend %pagination-bar;
+}
+
+/* Optional empty state */
+.empty-state {
+  opacity: .7;
+  padding: 12px;
+  text-align: center;
+}
+
+/*
+ * --- ExecutionParts below the row --- 
+ */
+
+.ep-anim-wrapper {
+  grid-column: 1 / -1;
+}
+
+.execution-parts-section {
+  --logo-pane-size: 32px;
+  --logo-size: 20px;
+  margin-top: 5px;
+}
+
+.execution-part-row {
+  display: grid;
+  grid-template-areas: "ep-logo ep-hash ep-height ep-progress";
+  // Use the same columns as the Tx row for alignment.
+  // Note: col-info is used for ep-progress.
+  grid-template-columns: var(--col-logo) var(--col-hash) var(--col-height) var(--col-info);
+  align-items: center;
+  column-gap: var(--logo-gap, 12px);
+  padding: 4px 0px 2px 0px;
+  margin-bottom: 3px;
+  background: var(--partial-bg, #181a23);
+  border-radius: 8px;
+}
+
+.execution-part-row .ep-logo-pane {
+  @extend %logo-pane;
+  grid-area: ep-logo;
+  //margin-inline: auto;
+  margin-left: 5px;
+  background: linear-gradient(to right, $rich-black, black);
+}
+
+.execution-part-row .ep-logo-img {
+  @extend %logo-img;
+  object-fit: contain;
+}
+
+.ep-hash {
+  grid-area: ep-hash;
+  min-width: 0;
+  padding-top: 3px;
+}
+
+/* label + badge on one line */
+.ep-hash .label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ep-hash .value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ep-height {
+  grid-area: ep-height;
+  min-width: 0;
+  text-align: left;
+  padding-top: 3px;
+}
+
+.ep-height .value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ensure expand button keeps fixed width only, not pagination */
+.expand-toggle-btn {
+  --btn-width: 66px;
+}
+
+/* badges */
+.badge-state {
+  @extend %badge;
+  background-image: linear-gradient(90deg, $ultramarine, $byzantine-blue);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset;
+  margin-bottom: 3px;
+  margin-top: -3px;
+}
+
+.badge-revert {
+  @extend %badge;
+  background: #f59e0b;
+  color: #0b0e14;
+  letter-spacing: 0.2pt;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  --badge-px: 10px;
+  --badge-py-top: 3px;
+  --badge-py-bottom: 2px;
+}
+
+/* EP typography — smaller than Tx */
+.execution-parts-section {
+  --ep-label-size: 13px;
+  --ep-value-size: 15px;
+  --ep-line-height: 1;
+}
+
+.execution-parts-section .label {
+  font-size: var(--ep-label-size);
+}
+
+.execution-parts-section .value {
+  font-size: var(--ep-value-size);
+  line-height: var(--ep-line-height);
+}
+
+/* (optional) keep the Revert badge in proportion *
+.execution-parts-section .badge-revert {
+  --badge-font: 9px;
+}
+*/
+
+/* 
+ * --- Progress micro-tracker (4 steps) --- 
+ */
+.ep-progress {
+  grid-area: ep-progress;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 24px;
+  gap: 10px;
+  min-width: 120px; // stays compact; grows if col-info is wider
+
+  // Palette hooks
+  --c-neutral: rgba(255, 255, 255, .22);
+  --c-fill: #{$byzantine-blue}; // success / active;
+  --c-fill-border: #{lighten($byzantine-blue, 12%)};
+  --c-fill-connector: #{lighten($byzantine-blue, 5%)};
+  --c-fill-inprog: #{$jordy-blue}; // in-progress
+  --c-fill-inprog-conn: #{darken($jordy-blue, 5%)};
+  --c-fill-failed: white; // failed / revert
+  --c-fill-pulse: #{rgba($jordy-blue, .50)};
+  --c-check: white;
+  --c-cross: red;
+}
+
+.ep-progress .step {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+// Base dot: inner-fill via padding + background-clip
+.ep-progress .dot {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2px solid var(--c-neutral);
+  margin-left: -3px; // space before dot
+  padding: 2px; // creates an inner circle area
+  background-clip: content-box; // background only fills the inner area
+  background-color: transparent; // default (pending)
+}
+
+/* SUCCESS */
+.ep-progress .step.done .dot {
+  border-color: var(--c-fill-border);
+  box-shadow: inset 0 0 0 999px var(--c-fill);
+}
+
+// Show a checkmark inside the dot
+.ep-progress .step.done .dot::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 2px;
+  border-left: 2px solid var(--c-check);
+  border-bottom: 2px solid var(--c-check);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%) rotate(-45deg); // center and rotate
+  pointer-events: none;
+}
+
+/* FAILED / REVERT */
+.ep-progress .step.failed .dot {
+  border-color: var(--c-fill-failed);
+  box-shadow: inset 0 0 0 999px var(--c-fill-failed);
+}
+
+// Show an “X” inside the dot
+.ep-progress .step.failed .dot::after {
+  content: "";
+  position: absolute;
+  width: 9px; // tweak 8–10px to taste
+  height: 9px;
+  left: 50%;
+  top: 50%; // size of the cross inside the dot
+  transform: translate(-50%, -50%) rotate(45deg);
+  // Rotate a “+” into an “×”: draw a plus using two background bars; rotation turns it into an X
+  background:
+    linear-gradient(var(--c-cross), var(--c-cross)) center / 100% 2px no-repeat,
+    linear-gradient(var(--c-cross), var(--c-cross)) center / 2px 100% no-repeat;
+  border-radius: 0;
+}
+
+/* IN PROGRESS: filled center + pulsing ring */
+.ep-progress .step.inprog .dot {
+  border-color: var(--c-fill-inprog);
+  // [0] inset solid fill, [1] outer ring (starts at 0)
+  box-shadow: inset 0 0 0 999px var(--c-fill-inprog), 0 0 0 0 var(--c-fill-pulse);
+  animation: epPulse 1.2s ease-in-out infinite;
+}
+
+// Animate only the SECOND shadow (outer ring)
+@keyframes epPulse {
+
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 999px var(--c-fill), 0 0 0 0 var(--c-fill-pulse);
+  }
+
+  50% {
+    box-shadow: inset 0 0 0 999px var(--c-fill-inprog), 0 0 0 3px var(--c-fill-pulse);
+  }
+}
+
+// Base connector (to the next step)
+.ep-progress .conn {
+  width: 30px;
+  height: 2px;
+  margin-left: 6px; // space after dot
+  background: var(--c-neutral);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+// The colored fill that grows left -> right
+.ep-progress .conn .fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  background: var(--c-fill-connector);
+  transition: width 180ms ease-out;
+}
+
+// No connector after the last step
+.ep-progress .step:last-child .conn {
+  display: none;
+}
+
+// State-driven fill widths
+.ep-progress .step.done .conn .fill {
+  width: 100%;
+}
+
+.ep-progress .step.inprog .conn .fill {
+  background: var(--c-fill-inprog-conn);
+  width: 40%;
+}
+
+// Partial
+.ep-progress .step.pending .conn .fill {
+  width: 0%;
+}
+
+.ep-progress .step.failed .conn .fill {
+  width: 0%;
+}
+
+// Let partial fill pulsate
+@keyframes epConnectorPulse {
+
+  0%,
+  100% {
+    width: 15%;
+  }
+
+  50% {
+    width: 35%;
+  }
+}
+
+.ep-progress .step.inprog .conn .fill {
+  animation: epConnectorPulse 1.2s ease-in-out infinite;
+}
+
+/* DEBUG - visualise the grid
+ * Enable by adding the class "debug-grid" to the transactions-list element
+ */
+
+.debug-grid .tx-item {
+  outline: 1px dashed #555;
+  background: rgba(80, 80, 80, .08);
+}
+
+.debug-grid .tx-item>* {
+  outline: 1px dashed rgba(81, 245, 11, 0.6);
+}
+
+.debug-grid .execution-part-row {
+  outline: 1px dashed #555;
+  background: rgba(80, 80, 80, .08);
+}
+
+.debug-grid .execution-part-row>* {
+  outline: 1px dashed rgba(245, 158, 11, .6);
+}

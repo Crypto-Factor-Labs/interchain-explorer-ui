@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { ConfigService } from './config.service';
+import { SearchBarComponent } from './searchbar/searchbar.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterModule, SearchBarComponent, StatisticsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'explorer-ui';
+  title = 'INTERCHAIN Explorer';
+
+  // The constructor of ConfigService will run, which validates the configuration
+  constructor(private config: ConfigService) { }
 }

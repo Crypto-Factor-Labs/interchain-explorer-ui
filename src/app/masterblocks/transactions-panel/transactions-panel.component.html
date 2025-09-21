@@ -1,0 +1,126 @@
+<div class="panel panel-right panel-with-pagination">
+  <div class="panel-header">
+    <h2><span *ngIf="currentPage === 1">Latest </span>Transactions</h2>
+    <i class="status-icon fa" [ngClass]="pollingActive ? 'fa-sync fa-spin' : 'fa-pause-circle'"
+      (click)="togglePolling.emit()" [title]="pollingActive ? 'Auto-refresh ON' : 'Auto-refresh OFF'"></i>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- Transaction list, use "transactions-list debug-grid" to show the grid -->
+  <!-- Add template ref for scroll-into-view -->
+  <div class="transactions-list" #txListRef>
+    <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
+
+      <!-- Logo-area -->
+      <div class="tx-logo-pane">
+        <img class="tx-logo-img" [src]="getChainImage(tx.chainId)" alt="Interchain Logo" />
+      </div>
+
+      <!-- Hash (stacked: label over value) -->
+      <div class="tx-hash">
+        <div class="label">Hash</div>
+        <div class="value">{{ tx.tx_hash | truncateMiddle: 6 }}</div>
+      </div>
+
+      <!-- Height (stacked: label over value) -->
+      <div class="tx-height">
+        <div class="label">Master Block</div>
+        <div class="value">{{ !tx.masterBlockHeight && tx.masterBlockHeight !== '0' ? '\u00A0—' :
+          'M-' + tx.masterBlockHeight }}</div>
+      </div>
+
+      <!-- Info-area -->
+      <div class="tx-info">
+        <div class="state-stack">
+          <div class="label">State</div>
+          <span class="badge-state">{{ tx.state | txStateWord }}</span>
+        </div>
+      </div>
+
+      <!-- Expand-button area -->
+      <div class="tx-expander">
+        <a class="gradient-btn expand-toggle-btn" (click)="toggleExecutionParts.emit(tx.tx_hash)">
+          <span class="btn-content">
+            <i class="fa" [ngClass]="{
+                   'fa-expand': !expandedTx[tx.tx_hash],
+                   'fa-compress': expandedTx[tx.tx_hash],
+                   'rotate-clockwise': !expandedTx[tx.tx_hash],
+                   'rotate-counterclockwise': expandedTx[tx.tx_hash]
+                 }" style="margin-right: 7px;">
+            </i>
+            {{ expandedTx[tx.tx_hash] ? 'Collapse' : 'Expand' }}
+          </span>
+        </a>
+      </div>
+
+      <!-- Expanded ExecutionParts (full width under the row) using animation -->
+      <div *ngIf="expandedTx[tx.tx_hash]" class="ep-anim-wrapper"
+        [@expandCollapse]="{ value: 'open', params: { enter: '360ms', leave: '260ms' } }"
+        (@expandCollapse.done)="onExpandDone($event)">
+        <!-- Use "execution-parts-section debug-grid" to show the grid (or set it at Tx-level)-->
+        <div class="execution-parts-section" @staggerItems>
+          <!-- The ExecutionParts are filtered by whether the state is related to a revert or not -->
+          <div class="execution-part-row"
+            *ngFor="let ep of (tx.executionParts | filterExecPartsByState: tx.state); trackBy: trackByPart">
+            <div class="ep-logo-pane">
+              <img class="ep-logo-img"
+                [src]="ep.chainId != null ? getChainImage(ep.chainId) : 'assets/images/interchain_logo.png'"
+                alt="Chain Logo" />
+            </div>
+
+            <!-- Hash (stacked: label over truncated value) -->
+            <div class="ep-hash">
+              <div class="label-row">
+                <div class="label">Hash</div>
+                <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
+              </div>
+              <div class="value">{{ ep.hash | truncateMiddle: 6 }}</div>
+            </div>
+
+            <!-- Height -->
+            <div class="ep-height">
+              <div class="label">Partial Block</div>
+              <div class="value">{{ !ep.partialBlockHeight && ep.partialBlockHeight !== '0' ? '\u00A0—' :
+                ('Z-' + ep.partialBlockHeight + '-' + ep.chainId) }}</div>
+            </div>
+
+            <!-- Progress (4-step micro-tracker) -->
+            <div class="ep-progress" role="group" aria-label="Execution progress">
+              <div class="step" *ngFor="let st of getEpSteps(ep); let stepNr = index" [class.done]="st === 'success'"
+                [class.inprog]="st === 'in_progress'" [class.pending]="st === 'pending' || st === 'skipped'"
+                [class.failed]="st === 'failed' || st === 'revert'"
+                [attr.aria-current]="st === 'in_progress' ? 'step' : null" [attr.title]="getStepTitle(ep, stepNr)">
+                <span class="dot"></span>
+                <span class="conn"><span class="fill"></span></span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-bar">
+    <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
+      <span class="btn-content">« First</span>
+    </button>
+    <button class="gradient-btn" (click)="pageChange.emit(currentPage - 1)" [disabled]="currentPage === 1">
+      <span class="btn-content">← Prev</span>
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button class="gradient-btn" (click)="pageChange.emit(currentPage + 1)" [disabled]="currentPage === totalPages">
+      <span class="btn-content">Next →</span>
+    </button>
+    <button class="gradient-btn" (click)="pageChange.emit(totalPages)" [disabled]="currentPage === totalPages">
+      <span class="btn-content">Last »</span>
+    </button>
+  </div>
+</div>

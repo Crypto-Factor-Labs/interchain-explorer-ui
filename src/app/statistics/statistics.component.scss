@@ -1,0 +1,135 @@
+@import '../../cf_color_palette';
+
+// Make the panel as wide as necessary and center it
+:host .panel {
+  margin: 15px 20px -5px 20px;
+  padding: 10px 5px;
+  height: 130px;
+}
+
+.stats-panel {
+  width: 100%;
+  box-sizing: border-box;
+
+  .stats-columns {
+    display: flex; // Each column will naturally divide the width equally
+    align-items: stretch; // make all columns stretch full-height
+  }
+
+  .column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #444; // Vertical separator
+
+    // Remove the right border on the last column
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  .cell {
+    position: relative; // Needed for positioning the pseudo-element
+    padding: 10px;
+    padding-left: 20px;
+    font-size: 14px;
+    color: $alice-blue;
+
+    .cell-content {
+      display: flex;
+      align-items: center; // vertically center image and text
+    }
+
+    .cell-image {
+      max-width: 40px;
+      margin-left: 5px;
+      margin-right: 15px;
+    }
+
+    .cell-heading {
+      display: flex;
+      align-items: center; // Align the icon and the text
+      color: $byzantine-blue;
+      font-size: 12px;
+      font-weight: bold;
+      padding-bottom: 7px;
+
+      .icon-heading {
+        font-size: 20px;
+        margin-right: 8px;
+      }
+    }
+
+    .cell-value {
+      margin-left: 28px;
+    }
+
+    .cell-info-as-row {
+      display: flex; // Arrange items in a row
+      align-items: center; // Vertically center the items
+
+      .info-pair {
+        display: flex; // Ensure each pair is also inline
+        align-items: center;
+        margin-right: 20px; // Space between each pair
+
+        .info-label {
+          color: $charcoal;
+          font-weight: bold;
+          margin-right: 0.5rem; // Space between label and value
+        }
+      }
+    }
+  }
+
+  .cell.chart-cell {
+    flex: 1; // take all remaining vertical space
+    padding: 0; // remove top/bottom padding
+    padding-left: 10px; // keep left padding if desired
+  }
+
+  // For cells that aren’t the last cell in the column, add a pseudo-element as border
+  .cell:not(:last-child)::after {
+    content: ''; // Make sure that the pseudo-element is displayed
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    width: calc(100% - 20px); // Leave space to the left and right
+    border-bottom: 1px solid #444;
+  }
+}
+
+// Styling for the Chart
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.chart-wrapper canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* position the selector atop the chart */
+.chart-selector {
+  position: absolute;
+  bottom: 6px;
+  left: 1px;
+  z-index: 10; // above the canvas
+  background: $ultramarine;
+  color: $glaucous;
+  border: 1px solid $charcoal;
+  border-radius: 4px;
+  padding: 2px 2px;
+  font-size: 0.5rem;
+
+  &:focus {
+    outline: none;
+    border-color: $byzantine-blue;
+  }
+}

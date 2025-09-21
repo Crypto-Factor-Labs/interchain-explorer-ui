@@ -1,0 +1,82 @@
+@import '../../shared/shared-panel';
+
+.panel-header {
+  @extend %panel-header;
+}
+
+.status-icon {
+  @extend %status-icon;
+}
+
+.blocks-list {
+  @extend %scroll-list;
+  @extend %list-gap;
+}
+
+.block-item {
+  @extend %panel-card;
+}
+
+.block-item:first-child {
+  @extend %panel-card-first;
+}
+
+.block-item:last-child {
+  @extend %panel-card-last;
+}
+
+.block-columns {
+  @extend %panel-columns;
+}
+
+.column-left {
+  @extend %col-left;
+}
+
+.column-right {
+  @extend %col-right;
+  margin-left: -5px;
+}
+
+.left-column-content {
+  @extend %inline-media;
+}
+
+.logo-pane {
+  @extend %logo-pane;
+}
+
+.logo-img {
+  @extend %logo-img;
+}
+
+/* height + timeAgo stack tighter */
+.block-info {
+  @extend %info-stack; // keeps side-by-side with the logo
+  --field-mt: 3px;
+  --field-mb: 5px;
+}
+
+.field {
+  @extend %field;
+}
+
+.value {
+  @extend %value;
+}
+
+.gradient-text {
+  @extend %gradient-text;
+}
+
+.partial-blocks-section {
+  @extend %partial-section;
+}
+
+.partial-block-info {
+  @extend %partial-row;
+}
+
+.pagination-bar {
+  @extend %pagination-bar;
+}

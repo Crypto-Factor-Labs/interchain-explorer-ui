@@ -1,0 +1,33 @@
+@import '../../cf_color_palette';
+
+/* Layout only (unchanged) */
+.blocks-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.panels-container {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+
+  >* {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+// Panel-specific tuning via CSS vars
+/* The MasterBlocks-panel simply uses the defaults from the parent that are set in _shared-panel.scss,
+ * so no specific vars are needed here.
+app-masterblocks-panel {
+}
+*/
+
+/* If necessary, tweaks for the Transactions-panel can be made here by assigning different vars
+app-transactions-panel {
+  /* e.g., --panel-card-padding: 8px 12px; *
+}
+*/

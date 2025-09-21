@@ -1,1 +1,246 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'cf_color_palette.scss';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+body {
+  background-color: $charcoal;
+  font-family: 'Roboto', sans-serif;
+}
+
+// No margins for the body, so the title-panel is fully stretched
+html,
+body {
+  margin: 0;
+}
+
+/* Panel style: black background, rounded corners, and shadow */
+.panel {
+  flex: 1;
+  background-color: black;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative; // Make sure the panels are shown on top of the background image
+  z-index: 10;
+
+  // Disable text selection for the entire panel
+  @extend .no-select;
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none; // Safari
+  -moz-user-select: none; // Firefox
+  -ms-user-select: none; // IE/Edge
+}
+
+/* Can be used to select text in the panel 
+ * Example: <span class="selectable-text">Some text</span>
+ */
+.selectable-text {
+  user-select: text;
+  -webkit-user-select: text; // Safari
+  -moz-user-select: text; // Firefox
+  -ms-user-select: text; // IE/Edge
+}
+
+/* Panel header styling */
+.panel h2 {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 0px;
+  padding-left: 8px;
+  color: $byzantine-blue;
+}
+
+.panel-with-pagination {
+  display: flex;
+  flex-direction: column;
+  height: 440px;
+}
+
+.pagination-bar {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 2px solid #444;
+  background: black;
+  gap: 10px;
+
+  .page-info {
+    padding-top: 7px;
+    margin: 0 10px;
+    font-size: 0.9rem;
+    color: $jordy-blue;
+  }
+}
+
+/* Dialog title styling */
+.dialog-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 5px;
+
+  .logo-pane {
+    width: 36px;
+    height: 36px;
+  }
+
+  .title-text {
+    flex-grow: 1;
+  }
+
+  .close-icon {
+    font-size: 20px;
+    color: $glaucous;
+    cursor: pointer;
+    padding-right: 5px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $powder-blue;
+    }
+  }
+
+  h2 {
+    //font-size: 22px;
+    font-weight: bold;
+    padding-left: 0px;
+  }
+}
+
+/* Close-button Styling */
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+
+  .close-btn {
+    display: inline-block;
+    cursor: pointer;
+    padding: 2px; // Determines the border thickness
+    border-radius: 8px;
+    background: linear-gradient(90deg, $jordy-blue, $byzantine-blue);
+    margin-left: auto;
+    margin-right: auto;
+
+    .btn-content {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px; // Slightly smaller to reveal the gradient border
+      padding: 6px 12px;
+      color: $powder-blue;
+      background-color: $rich-black;
+      font-size: 14px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .btn-content:hover {
+      color: $alice-blue;
+      background-color: $byzantine-blue;
+    }
+
+    // Don't show focus, because it interferes with the gradient style
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// Is still used by the Masterblocks-panel (for margin-right mainly).
+// Can be removed if not needed anymore.
+.logo-pane {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(to right, $oxford-blue, $rich-black);
+  position: relative; // To position the logo inside it
+  border-radius: 8px;
+  margin-right: 10px;
+
+  .logo-img {
+    // Center the image
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Container that holds a list of fields */
+.fields-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+  padding-right: 15px;
+  gap: 10px; // Space between each field
+}
+
+/* Each field: a vertical stack of label and value */
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label styling: for the field title */
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  color: $charcoal;
+  margin-bottom: 4px; // Spacing between label and value
+}
+
+/* Value styling: for the actual content *
+.value {
+  color: $powder-blue;
+}
+
+/* Separator line */
+.separator {
+  border-top: 2px solid #444;
+  margin: 10px 0; // Space above and below the line
+}
+
+/* Gradient text effect */
+.gradient-text {
+  display: inline-block;
+  background: linear-gradient(90deg, $byzantine-blue, $ultramarine);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Clickable values */
+.clickable {
+  cursor: pointer;
+  position: relative; // Needed for positioning the bottom border
+  display: inline-block; // Ensure it's inline and takes the correct width
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Mimic the underline using a bottom border */
+.clickable:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: $byzantine-blue;
+}
+
+/* General error-style */
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+/* Backdrop for when a dialog is shown */
+.custom-light-backdrop {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(4px) brightness(1.3) !important;
+}
