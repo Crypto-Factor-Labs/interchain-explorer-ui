@@ -28,6 +28,8 @@ export class TransactionsPanelComponent {
   @Input() currentPage = 1;
   @Input() totalPages = 1;
   @Input() pollingActive = true;
+  @Input() masterBlockHash: string | null = null;  // for filtering
+  @Input() masterBlockHeight: string | null = null;
 
   @Input() expandedTx: Record<string, boolean> = {};
   @Input() getChainImage!: (chainId: number | string) => string;
@@ -38,7 +40,7 @@ export class TransactionsPanelComponent {
   @Output() openTx = new EventEmitter<Tx>();
   @Output() pageChange = new EventEmitter<number>();
 
-  // trackBy for parts (fallback to index)
+  // trackBy for ExecutionParts (fallback to index)
   trackByPart = (i: number, ep: TxExecutionPart) => ep.id ?? i;
 
   @ViewChild('txListRef') listRef?: ElementRef<HTMLDivElement>;

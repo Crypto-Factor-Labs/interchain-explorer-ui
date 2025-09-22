@@ -21,6 +21,14 @@
   @extend %panel-title;
 }
 
+.hash-mini {
+  font-size: 0.9em; // smaller than the h2
+  font-weight: 500;
+  opacity: .85;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  margin-left: 5pt;
+}
+
 .status-icon {
   @extend %status-icon;
 }

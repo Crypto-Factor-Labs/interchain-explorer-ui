@@ -5,13 +5,15 @@
       [totalPages]="totalPages" [pollingActive]="pollingActive" [getChainImage]="getChainImage"
       [trackByBlockHash]="trackByBlockHash" (togglePolling)="togglePolling()"
       (openMasterBlock)="showMasterBlockData($event)" (openPartialBlock)="showPartialBlockData($event)"
-      (togglePartialBlocks)="togglePartialBlocks($event)" (pageChange)="goToPage($event)">
+      (togglePartialBlocks)="togglePartialBlocks($event)" (pageChange)="goToPage($event)"
+      (filterByMasterBlock)="onSelectMasterBlockForTxFilter($event)">
     </app-masterblocks-panel>
 
     <!-- Right Panel: List with Transactions and ExecutionParts -->
     <app-transactions-panel [transactions]="transactions" [expandedTx]="expandedTx" [currentPage]="txPage"
       [totalPages]="txTotalPages" [pollingActive]="txPollingActive" [getChainImage]="getChainImage"
-      [trackByTxHash]="trackByTxHash" (togglePolling)="onTxTogglePolling()" (openTx)="openTxDialog($event)"
+      [trackByTxHash]="trackByTxHash" [masterBlockHash]="masterBlockHash" [masterBlockHeight]="masterBlockHeight"
+      (togglePolling)="onTxTogglePolling()" (openTx)="openTxDialog($event)"
       (toggleExecutionParts)="toggleTxExecutionParts($event)" (pageChange)="goToTxPage($event)">
     </app-transactions-panel>
   </div>

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConfigService } from '../../config.service';
 import { PricePoint } from '../interfaces/statistics.interface.js';
-import { ChainEvents } from '../interfaces/chain-events.interface.js';
 import {
   TxDto, TxExecutionPartDto, TxListDto,
   Tx, TxExecutionPart, TxFetchResult,
@@ -70,12 +69,16 @@ export class BackendService {
   /*
    * Methods to retrieve Transactions
    */
-  getTransactions(nr: number, skip = 0, includeParts = false, includeEvents = false): Observable<TxFetchResult> {
-    const params = new HttpParams()
+  getTransactions(nr: number, skip = 0, includeParts = false, includeEvents = false, masterBlockHash?: string): Observable<TxFetchResult> {
+    let params = new HttpParams()
       .set('nr', String(nr))
       .set('skip', String(skip))
       .set('includeParts', String(includeParts))
       .set('includeEvents', String(includeEvents));
+
+    if (masterBlockHash) {
+      params = params.set('masterBlockHash', masterBlockHash);
+    }
 
     // Also the `sender` and `operator` parameters can be added if needed
     // params = params.set('sender', sender).set('operator', operator);

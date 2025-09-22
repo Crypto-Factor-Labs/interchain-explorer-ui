@@ -45,12 +45,16 @@
           </div>
         </div>
 
-        <!-- Column: #Tx -->
+        <!-- Column: #Tx - clicking on the number filters the Transactions-list -->
         <div class="column column-right">
           <div class="field">
             <div class="label">#Tx</div>
             <div class="value">
-              <span class="gradient-text" style="padding-left: 7px">{{ block.tx_count }}</span>
+              <button class="tx-count-btn gradient-text" [disabled]="!block.tx_count"
+                (click)="onTxCountClick($event, block)" title="Filter transactions of this Master Block"
+                style="padding-left: 7px">
+                {{ block.tx_count }}
+              </button>
             </div>
           </div>
         </div>

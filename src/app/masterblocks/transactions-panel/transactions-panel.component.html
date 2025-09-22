@@ -1,6 +1,14 @@
 <div class="panel panel-right panel-with-pagination">
   <div class="panel-header">
-    <h2><span *ngIf="currentPage === 1">Latest </span>Transactions</h2>
+    <h2 *ngIf="!masterBlockHash">
+      <span *ngIf="currentPage === 1">Latest </span>Transactions
+    </h2>
+    <h2 *ngIf="masterBlockHash">
+      Transactions of M-{{ masterBlockHeight }}
+      <span class="hash-mini">({{ masterBlockHash | truncateMiddle: 6 }})</span>
+    </h2>
+
+    <!-- Auto-refresh indicator -->
     <i class="status-icon fa" [ngClass]="pollingActive ? 'fa-sync fa-spin' : 'fa-pause-circle'"
       (click)="togglePolling.emit()" [title]="pollingActive ? 'Auto-refresh ON' : 'Auto-refresh OFF'"></i>
   </div>

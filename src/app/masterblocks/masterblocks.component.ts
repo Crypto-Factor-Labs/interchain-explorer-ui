@@ -44,6 +44,8 @@ export class MasterBlocksComponent implements OnInit {
 
   /* ---------------- Transactions state ---------------- */
   transactions: Tx[] = [];
+  masterBlockHash: string | null = null;
+  masterBlockHeight: string | null = null;
   expandedTx: Record<string, boolean> = {};
   txPage = 1;
   txTotalPages = 1;
@@ -169,16 +171,25 @@ export class MasterBlocksComponent implements OnInit {
 
   private txStats = inject(TxStatsService);
 
+  onMasterBlockFilterChange(hash: string | null) {
+    this.masterBlockHash = hash;
+    this.expandedTx = {};     // collapse rows on filter change
+    //this.txPage = 1;
+    this.refreshTx();
+  }
+
   /** Start polling page 1 for transactions */
   refreshTx(): void {
     this.txPage = 1;
-    this.txPollingActive = true;
+
+    // Poll only when no filter is active
+    this.txPollingActive = !this.masterBlockHash;
     clearTimeout(this.txPollingTimeout);
 
     this.subs.add(
       this.fetchTxData(0, true)
-        .pipe(  // Update the total number of transactions in the Statistics using a Signal
-          tap(res => this.txStats.setNrOfTx(res?.total ?? 0)))
+        .pipe(  // When NOT filtered, update the total number of transactions in the Statistics using a Signal
+          tap(res => { if (!this.masterBlockHash) this.txStats.setNrOfTx(res?.total ?? 0); }))
         .subscribe(res => {
           if (res) {
             this.transactions = res.transactions;
@@ -186,7 +197,7 @@ export class MasterBlocksComponent implements OnInit {
           } else {
             this.transactions = [];
             this.txTotalPages = 1;
-            this.txStats.setNrOfTx(0);  // Keep Stats consistent on empty
+            if (!this.masterBlockHash) this.txStats.setNrOfTx(0);  // Keep Stats consistent on empty
           }
           this.scheduleNextTxPoll();
         })
@@ -217,25 +228,45 @@ export class MasterBlocksComponent implements OnInit {
     );
   }
 
-  /** Toggle transactions auto-refresh */
+  /** Toggle auto-refresh; if a filter is active, clear it and go live on page 1 */
   onTxTogglePolling(): void {
+    if (this.masterBlockHash) {
+      // Clear filter → return to live stream on page 1
+      this.masterBlockHash = null;
+      this.masterBlockHeight = null;
+      this.expandedTx = {};
+      this.refreshTx();  // sets txPollingActive = true (since no filter)
+      return;
+    }
+
+    // Normal toggle when unfiltered
     if (this.txPollingActive) {
       this.txPollingActive = false;
       clearTimeout(this.txPollingTimeout);
     } else {
-      this.refreshTx();
+      this.refreshTx(); // resumes polling on page 1
     }
+  }
+
+  onSelectMasterBlockForTxFilter(sel: { hash: string; height: string }) {
+    this.masterBlockHash = sel.hash;
+    this.masterBlockHeight = sel.height;
+    this.expandedTx = {};
+    this.txPage = 1;
+    this.refreshTx();
   }
 
   private scheduleNextTxPoll(): void {
     clearTimeout(this.txPollingTimeout);
+    if (!this.txPollingActive) return;
+
     this.txPollingTimeout = setTimeout(() => this.refreshTx(), this.pollingFreq);
   }
 
   /** Backend adapter for transactions list ({ total, items }) */
   private fetchTxData(skip: number, shouldPoll: boolean): Observable<TxFetchResult | null> {
     return this.backendService
-      .getTransactions(this.pageSize, skip, true, true)
+      .getTransactions(this.pageSize, skip, true, true, this.masterBlockHash ?? undefined)
       .pipe(
         catchError(err => {
           console.error('Error loading transactions:', err);
