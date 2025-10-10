@@ -5,7 +5,7 @@
     </h2>
     <h2 *ngIf="masterBlockHash">
       Transactions of M-{{ masterBlockHeight }}
-      <span class="hash-mini">({{ masterBlockHash | truncateMiddle: 6 }})</span>
+      <span class="hash-text" style="margin-left: 5px">({{ masterBlockHash | truncateMiddle: 8 }})</span>
     </h2>
 
     <!-- Auto-refresh indicator -->
@@ -28,7 +28,7 @@
       <!-- Hash (stacked: label over value) -->
       <div class="tx-hash">
         <div class="label">Hash</div>
-        <div class="value">{{ tx.tx_hash | truncateMiddle: 6 }}</div>
+        <div class="value hash-text">{{ tx.tx_hash | truncateMiddle: 6 }}</div>
       </div>
 
       <!-- Height (stacked: label over value) -->
