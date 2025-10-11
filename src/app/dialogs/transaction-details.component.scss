@@ -1,4 +1,4 @@
-@import '../../cf_color_palette.scss';
+@import '../shared/cf_color_palette.scss';
 
 .hash-row {
   display: flex;
@@ -24,7 +24,42 @@
   border-radius: 4px;
 }
 
-.label.subtle {
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  padding: .1rem .5rem;
+  border-radius: .5rem;
+  font-size: .75rem;
+  line-height: 1.4;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.badge-outline {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+}
+
+.badge-success {
+  background: rgba(46, 204, 113, .15);
+  color: #2ecc71;
+}
+
+.badge-failure {
+  background: rgba(231, 76, 60, .15);
+  color: #e74c3c;
+}
+
+.badge-pending {
+  background: rgba(241, 196, 15, .15);
+  color: #f1c40f;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.muted {
   opacity: .6;
-  margin: 0 .25rem;
 }

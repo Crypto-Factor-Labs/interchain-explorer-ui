@@ -2,8 +2,9 @@
   <app-transaction-details [tx]="tx"></app-transaction-details>
 
   <ng-container dialog-actions>
-    <a class="close-btn" [routerLink]="['/tx', tx.transactionHash]" (click)="dialogRef.close()">
-      <span class="btn-content">Open full page</span>
-    </a>
+    <button class="link-btn" [cdkCopyToClipboard]="tx.transactionHash">Copy hash</button>
+    <a class="link-btn" [routerLink]="['/tx', tx.transactionHash]" (click)="dialogRef.close()">Open full page</a>
+    <a class="link-btn" *ngIf="tx.includedInMasterBlock" [routerLink]="['/block', tx.includedInMasterBlock]"
+      (click)="dialogRef.close()">Open master block</a>
   </ng-container>
 </app-dialog-shell>

@@ -6,6 +6,7 @@
     <div class="title-text">
       <h2>{{ title }}</h2>
     </div>
+    <ng-content select="[dialog-header-extra]"></ng-content> <!-- (optional) -->
     <div class="close-icon" (click)="close.emit()"><i class="fa-solid fa-square-xmark"></i></div>
   </div>
 

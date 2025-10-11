@@ -1,4 +1,4 @@
-@import '../cf_color_palette.scss';
+@import './shared/cf_color_palette.scss';
 
 .background-layer {
   position: fixed;
@@ -10,23 +10,6 @@
   pointer-events: none;
 }
 
-/*
-.background-layer {
-  position: fixed;
-  //top: 0;
-  //left: 0;
-  width: 100vw;
-  height: 100vh;
-  //background-image: url("/assets/images/CFR_emblem_round.png");
-  background-image: url("/assets/images/background.png");
-  background-size: 100%;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  z-index: 0;
-  filter: brightness(1.5) contrast(0.75);
-}
-*/
 .title-panel {
   display: flex;
   align-items: center;

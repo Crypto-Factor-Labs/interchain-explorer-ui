@@ -1,6 +1,7 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
+import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { DialogShellComponent } from '../shared/dialog/dialog-shell.component';
 import { TransactionDetailsComponent } from './transaction-details.component';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
@@ -9,7 +10,7 @@ import type { Transaction } from '../shared/interfaces/transaction.interface';
   selector: 'app-transaction-dialog',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [RouterModule, DialogShellComponent, TransactionDetailsComponent],
+  imports: [DialogShellComponent, TransactionDetailsComponent, RouterModule, CdkCopyToClipboard],
   templateUrl: './transaction.dialog.html',
 })
 export class TransactionDialogComponent {
