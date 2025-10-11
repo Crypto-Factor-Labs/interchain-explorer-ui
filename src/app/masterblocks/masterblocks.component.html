@@ -13,7 +13,7 @@
     <app-transactions-panel [transactions]="transactions" [expandedTx]="expandedTx" [currentPage]="txPage"
       [totalPages]="txTotalPages" [pollingActive]="txPollingActive" [getChainImage]="getChainImage"
       [trackByTxHash]="trackByTxHash" [masterBlockHash]="masterBlockHash" [masterBlockHeight]="masterBlockHeight"
-      (togglePolling)="onTxTogglePolling()" (openTx)="openTxDialog($event)"
+      (togglePolling)="onTxTogglePolling()" (openTransaction)="showTransactionData($event)"
       (toggleExecutionParts)="toggleTxExecutionParts($event)" (pageChange)="goToTxPage($event)">
     </app-transactions-panel>
   </div>

@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { AnimationEvent as NgAnimationEvent } from '@angular/animations';
 import { SHARED_IMPORTS } from '../../shared/shared-standalone.js';
-import { Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
+import { Transaction, Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
 import { expandCollapse, staggerItems } from '../masterblocks.animations.js';
 import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
 
@@ -37,7 +37,7 @@ export class TransactionsPanelComponent {
 
   @Output() togglePolling = new EventEmitter<void>();
   @Output() toggleExecutionParts = new EventEmitter<string>();
-  @Output() openTx = new EventEmitter<Tx>();
+  @Output() openTransaction = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
 
   // trackBy for ExecutionParts (fallback to index)
@@ -69,5 +69,4 @@ export class TransactionsPanelComponent {
     const status = e.status.replace('_', ' ');
     return when ? `${e.name}: ${status} — ${when}` : `${e.name}: ${status}`;
   }
-
 }

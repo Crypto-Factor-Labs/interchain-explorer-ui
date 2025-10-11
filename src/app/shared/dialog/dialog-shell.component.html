@@ -1,0 +1,24 @@
+<div class="panel">
+  <div class="dialog-title">
+    <div class="logo-pane">
+      <img *ngIf="logoSrc" [src]="logoSrc" [alt]="logoAlt" class="logo-img" style="width:36px;height:36px;" />
+    </div>
+    <div class="title-text">
+      <h2>{{ title }}</h2>
+    </div>
+    <div class="close-icon" (click)="close.emit()"><i class="fa-solid fa-square-xmark"></i></div>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="fields-container">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="button-wrapper">
+    <a class="close-btn" (click)="close.emit()" autofocus><span class="btn-content">Close</span></a>
+    <ng-content select="[dialog-actions]"></ng-content>
+  </div>
+</div>

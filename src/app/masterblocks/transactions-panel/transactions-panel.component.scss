@@ -7,8 +7,8 @@
 
   // Column widths for the both the .tx-item grid and the .execution-part-row grid
   --logo-col-width: var(--logo-pane-size); // Set to logo-pane-size of Tx, even when a smaller size is set for EPs later
-  --hash-col-width: 125px;
-  --height-col-width: 125px;
+  --hash-col-width: 140px;
+  --height-col-width: 110px;
   --info-col-width: minmax(180px, 1fr); // flexes to fill
 }
 

@@ -1,0 +1,61 @@
+<div class="field">
+  <div class="label">Hash</div>
+  <div class="value hash-row">
+    <code class="mono">{{ txHash }}</code>
+    <button type="button" class="icon-btn" [cdkCopyToClipboard]="txHash" aria-label="Copy transaction hash"
+      title="Copy transaction hash">
+      <i class="fa-solid fa-copy"></i>
+    </button>
+  </div>
+</div>
+
+<div class="field">
+  <div class="label">From</div>
+  <div class="value"><span class="mono">{{ tx.sourceSender }}</span></div>
+</div>
+
+<div class="field">
+  <div class="label">Source Chain</div>
+  <div class="value">{{ tx.sourceChainId }} <span class="label subtle">/ Epoch</span> {{ tx.sourceChainMempoolEpoch }}
+  </div>
+</div>
+
+<div class="field">
+  <div class="label">State Validator</div>
+  <div class="value"><span class="mono">{{ tx.stateValidator }}</span></div>
+</div>
+
+<div class="field">
+  <div class="label">Master Block</div>
+  <div class="value">{{ tx.masterBlockHeight }}</div>
+</div>
+
+<div class="field">
+  <div class="label">MB Hash</div>
+  <div class="value"><span class="mono">{{ tx.includedInMasterBlock }}</span></div>
+</div>
+
+<div class="field">
+  <div class="label">MB Tx Index</div>
+  <div class="value">{{ tx.masterBlockTxIndex }}</div>
+</div>
+
+<div class="field">
+  <div class="label">Validation State</div>
+  <div class="value">{{ tx.state | txStateWord }}</div>
+</div>
+
+<div class="field">
+  <div class="label">Result</div>
+  <div class="value">{{ tx.result }}</div>
+</div>
+
+<div class="field">
+  <div class="label">Encodable Type</div>
+  <div class="value">{{ tx.encodableType }}</div>
+</div>
+
+<div class="field">
+  <div class="label">Execution Parts</div>
+  <div class="value">{{ execPartsCount }}</div>
+</div>

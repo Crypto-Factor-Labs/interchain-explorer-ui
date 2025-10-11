@@ -28,7 +28,13 @@
       <!-- Hash (stacked: label over value) -->
       <div class="tx-hash">
         <div class="label">Hash</div>
-        <div class="value hash-text">{{ tx.tx_hash | truncateMiddle: 6 }}</div>
+        <div class="value hash-text">
+          <!-- Only emit the hash, so that the full transaction data can be fetched -->
+          <span class="gradient-text clickable" title="{{ tx.tx_hash }}"
+            (click)="$event.stopPropagation(); openTransaction.emit(tx.tx_hash)">
+            {{ tx.tx_hash | truncateMiddle: 6 }}
+          </span>
+        </div>
       </div>
 
       <!-- Height (stacked: label over value) -->
@@ -83,7 +89,9 @@
                 <div class="label">Hash</div>
                 <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
               </div>
-              <div class="value">{{ ep.hash | truncateMiddle: 6 }}</div>
+              <div class="value" title="{{ ep.hash }}">
+                {{ ep.hash | truncateMiddle: 6 }}
+              </div>
             </div>
 
             <!-- Height -->

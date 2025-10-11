@@ -1,0 +1,19 @@
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import type { MasterChainBlock } from '../shared/interfaces/master-chain.interface';
+import { DialogShellComponent } from '../shared/dialog/dialog-shell.component';
+import { MasterBlockDetailsComponent } from './master-block-details.component';
+
+@Component({
+  selector: 'app-masterblock-dialog',
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  imports: [DialogShellComponent, MasterBlockDetailsComponent],
+  templateUrl: './masterblock.dialog.html',
+})
+export class MasterBlockDialogComponent {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public masterBlock: MasterChainBlock,
+    public dialogRef: MatDialogRef<MasterBlockDialogComponent>
+  ) { }
+}

@@ -1,0 +1,9 @@
+<app-dialog-shell title="Transaction" (close)="dialogRef.close()">
+  <app-transaction-details [tx]="tx"></app-transaction-details>
+
+  <ng-container dialog-actions>
+    <a class="close-btn" [routerLink]="['/tx', tx.transactionHash]" (click)="dialogRef.close()">
+      <span class="btn-content">Open full page</span>
+    </a>
+  </ng-container>
+</app-dialog-shell>

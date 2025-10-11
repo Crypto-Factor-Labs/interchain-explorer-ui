@@ -91,7 +91,7 @@ export interface Transaction {
   executionParts: ExecutionPart[];
   revertExecutionPart?: ExecutionPart;
 
-  state: TriState; // validation state
+  state: number; // validation state
   includedInMasterBlock: string;
   masterBlockHeight: string; // decimal string
   masterBlockTxIndex: number;

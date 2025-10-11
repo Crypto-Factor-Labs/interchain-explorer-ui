@@ -38,7 +38,8 @@
           <div class="field">
             <div class="label">Hash</div>
             <div class="value">
-              <span class="gradient-text clickable" (click)="openMasterBlock.emit(block)">
+              <span class="gradient-text clickable" title="{{ block.block_hash }}"
+                (click)="openMasterBlock.emit(block)">
                 {{ block.block_hash | truncateMiddle: 8 }}
               </span>
             </div>
@@ -110,7 +111,8 @@
               <div class="field">
                 <div class="label">Hash</div>
                 <div class="value">
-                  <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
+                  <span class="gradient-text clickable" title="{{ partialBlock.block_hash }}"
+                    (click)="openPartialBlock.emit(partialBlock)">
                     {{ partialBlock.block_hash | truncateMiddle: 8 }}
                   </span>
                 </div>

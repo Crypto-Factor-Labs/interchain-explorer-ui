@@ -1,20 +1,21 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { BackendService } from '../shared/services/backend.service';
 import { DialogService } from '../shared/services/dialog.service';
-import { MasterBlockComponent } from '../masterblock/masterblock.component';
+import { MasterBlockDialogComponent } from '../dialogs/masterblock.dialog';
 import { MasterChainBlock } from '../shared/interfaces/master-chain.interface'
-import { PartialBlockComponent } from '../partialblock/partialblock.component';
+import { PartialBlockDialogComponent } from '../dialogs/partialblock.dialog';
 import { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
-import { Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
+import { Transaction, Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
 import { getChainImage as utilGetChainImage } from '../shared/utils/common.utils';
 import { MasterBlocksPanelComponent } from './masterblocks-panel/masterblocks-panel.component';
 import { TransactionsPanelComponent } from './transactions-panel/transactions-panel.component';
 import { TxStatsService } from '../statistics/tx-stats.service';
 import BN from 'bn.js';
+import { TransactionDialogComponent } from '../dialogs/transaction.dialog';
 
 interface FetchResult {
   blocks: MasterChainBlock[];
@@ -160,12 +161,20 @@ export class MasterBlocksComponent implements OnInit {
   }
 
   showMasterBlockData(block: MasterChainBlock): void {
-    this.dialogService.openDialog(MasterBlockComponent, block);
+    this.dialogService.openDialog(MasterBlockDialogComponent, block);
   }
 
   showPartialBlockData(block: PartialChainBlock): void {
-    this.dialogService.openDialog(PartialBlockComponent, block);
+    this.dialogService.openDialog(PartialBlockDialogComponent, block);
   }
+
+  //  showMasterBlockData(block: MasterChainBlock): void {
+  //    this.dialogService.openDialog(MasterBlockComponent, block);
+  //  }
+
+  //showPartialBlockData(block: PartialChainBlock): void {
+  //  this.dialogService.openDialog(PartialBlockComponent, block);
+  //}
 
   /* ================= Transactions ================= */
 
@@ -282,12 +291,12 @@ export class MasterBlocksComponent implements OnInit {
   /** TrackBy for tx list */
   trackByTxHash = (_: number, tx: Tx) => tx.tx_hash;
 
-  /** Open a transaction dialog (wire to your existing component if any) */
-  openTxDialog(tx: Tx): void {
-    // If you have a TransactionComponent, do:
-    // this.dialogService.openDialog(TransactionComponent, tx);
-    // For now, keep it safe:
-    this.dialogService.openDialog(PartialBlockComponent, tx); // replace with your real TX component
-    // Or simply: console.log('TX:', tx);
+  /** Open a transaction dialog */
+  showTransactionData(hash: string) {
+    this.backendService.getTransaction(hash).pipe(take(1)).subscribe({
+      next: (fullTx) => this.dialogService.openDialog(TransactionDialogComponent, fullTx),
+      error: (err) => console.error('Failed to load transaction', hash, err),
+    });
   }
+
 }
