@@ -260,3 +260,47 @@ body {
   opacity: .9;
   white-space: nowrap;
 }
+
+// Copy-icon button used on a panel
+.panel .icon-btn i {
+  line-height: 1;
+  font-size: 16px;
+  color: currentColor;
+  transition: color .2s ease, transform .15s ease;
+}
+
+.panel .icon-btn:hover {
+  color: $powder-blue; // different color on hover
+}
+
+// Success feedback: tint + tiny pulse
+.panel .icon-btn.copied {
+  color: #2ecc71; // success color
+  transform: scale(1.1);
+}
+
+// Error feedback
+.panel .icon-btn.copy-error {
+  color: #e74c3c; // error color
+}
+
+// Micro-shake for error feedback
+@keyframes shake-x {
+  25% {
+    transform: translateX(1.5px)
+  }
+
+  50% {
+    transform: translateX(-1.5px)
+  }
+
+  75% {
+    transform: translateX(1.5px)
+  }
+}
+
+.panel .icon-btn.copy-error i {
+  --shake-duration: 0.2s;
+  --shake-iterations: 1.5;
+  animation: shake-x var(--shake-duration) ease-in-out var(--shake-iterations);
+}

@@ -1,10 +1,10 @@
 <div class="panel">
   <div class="dialog-title">
     <div class="logo-pane">
-      <img *ngIf="logoSrc" [src]="logoSrc" [alt]="logoAlt" class="logo-img" style="width:36px;height:36px;" />
+      <img *ngIf="logoSrc" [src]="logoSrc" [alt]="logoAlt" class="logo-img" />
     </div>
     <div class="title-text">
-      <h2>{{ title }}</h2>
+      <h2>{{ dialogTitle }}</h2>
     </div>
     <ng-content select="[dialog-header-extra]"></ng-content> <!-- (optional) -->
     <div class="close-icon" (click)="close.emit()"><i class="fa-solid fa-square-xmark"></i></div>

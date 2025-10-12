@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./dialog-shell.component.scss'],
 })
 export class DialogShellComponent {
-  @Input() title = '';
+  @Input() dialogTitle = '';
   @Input() logoSrc = 'assets/images/interchain_logo.png';
   @Input() logoAlt = 'Interchain Logo';
 

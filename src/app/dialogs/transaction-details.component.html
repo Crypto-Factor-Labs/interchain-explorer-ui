@@ -3,10 +3,7 @@
   <div class="label">Hash</div>
   <div class="value hash-row">
     <code class="mono">{{ hash }}</code>
-    <button type="button" class="icon-btn" [cdkCopyToClipboard]="hash" aria-label="Copy transaction hash"
-      title="Copy transaction hash">
-      <i class="fa-solid fa-copy"></i>
-    </button>
+    <app-copy-icon [value]="hash"> </app-copy-icon>
   </div>
 </div>
 
@@ -67,6 +64,6 @@
 <div class="field">
   <div class="label">#Execution Parts</div>
   <div class="value">
-    {{ tx.executionParts?.length || 0 }}
+    {{ tx.executionParts.length }}
   </div>
 </div>

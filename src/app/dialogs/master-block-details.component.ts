@@ -11,10 +11,4 @@ import type { MasterChainBlock } from '../shared/interfaces/master-chain.interfa
 })
 export class MasterBlockDetailsComponent {
   @Input({ required: true }) masterBlock!: MasterChainBlock;
-
-  copied: boolean | null = null;
-  onCopied(success: boolean) {
-    this.copied = success;
-    setTimeout(() => (this.copied = null), 1500);
-  }
 }

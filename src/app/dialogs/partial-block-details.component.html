@@ -8,7 +8,10 @@
 </div>
 <div class="field">
   <div class="label">Hash</div>
-  <div class="value">{{ partialBlock.block_hash }}</div>
+  <div class="value hash-row">
+    <code class="mono">{{ partialBlock.block_hash }}</code>
+    <app-copy-icon [value]="partialBlock.block_hash"></app-copy-icon>
+  </div>
 </div>
 <div class="field">
   <div class="label">MasterBlock Hash</div>

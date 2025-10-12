@@ -6,6 +6,7 @@ import { FilterExecPartsByStatePipe } from './pipes/filter-exec-parts-by-state.p
 import { TxStateWordPipe } from './pipes/state-to-word.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { TruncateMiddlePipe } from './pipes/truncate-middle.pipe';
+import { CopyIconComponent } from '../shared/utils/copy-icon.component';
 
 export const SHARED_IMPORTS = [
   CommonModule,
@@ -16,4 +17,5 @@ export const SHARED_IMPORTS = [
   TxStateWordPipe,
   TimeAgoPipe,
   TruncateMiddlePipe,
+  CopyIconComponent,
 ];

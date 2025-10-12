@@ -7,12 +7,7 @@
   <div class="label">Hash</div>
   <div class="value hash-row">
     <code class="mono">{{ masterBlock.block_hash }}</code>
-    <button type="button" class="icon-btn" [cdkCopyToClipboard]="masterBlock.block_hash"
-      (cdkCopyToClipboardCopied)="onCopied($event)" aria-label="Copy block hash" title="Copy block hash">
-      <i class="fa-solid fa-copy"></i>
-    </button>
-    <span class="copied" *ngIf="copied === true">Copied!</span>
-    <span class="copied error" *ngIf="copied === false">Copy failed</span>
+    <app-copy-icon [value]="masterBlock.block_hash"></app-copy-icon>
   </div>
 </div>
 
