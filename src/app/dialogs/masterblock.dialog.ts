@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import type { MasterChainBlock } from '../shared/interfaces/master-chain.interface';
 import { DialogShellComponent } from '../shared/dialog/dialog-shell.component';
 import { MasterBlockDetailsComponent } from './master-block-details.component';
+import { getChainImage } from '../shared/utils/common.utils';
 
 @Component({
   selector: 'app-masterblock-dialog',
@@ -16,4 +17,8 @@ export class MasterBlockDialogComponent {
     @Inject(MAT_DIALOG_DATA) public masterBlock: MasterChainBlock,
     public dialogRef: MatDialogRef<MasterBlockDialogComponent>
   ) { }
+
+  get logoSrc(): string {
+    return getChainImage(null);  // Default MasterChain image
+  }
 }

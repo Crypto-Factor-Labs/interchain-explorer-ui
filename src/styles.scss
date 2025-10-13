@@ -313,3 +313,32 @@ body {
   --badge-py-top: 3px;
   --badge-py-bottom: 2px;
 }
+
+/* Style the SnackBar via its container */
+.mat-mdc-snack-bar-container.snack-error {
+  --mdc-snackbar-container-color: #6e282a; // background
+  --mdc-snackbar-supporting-text-color: #ff6b6b;
+  --mdc-snackbar-container-shape: 10px; // border radius
+
+  /* Extras */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  border: 2px solid rgba(255, 107, 107, 0.750);
+  border-radius: 11px;
+}
+
+/* Compact snackbar variant */
+.mat-mdc-snack-bar-container.snack-compact .mdc-snackbar__surface {
+  min-width: 0; // default is ~344px
+  max-width: 180px;
+  width: auto; // shrink to fit content
+}
+
+// Make sure text wraps instead of forcing width
+.mat-mdc-snack-bar-container.snack-compact .mdc-snackbar__label {
+  white-space: normal;
+}
+
+// Action button text color
+.mat-mdc-snack-bar-container.snack-error .mat-mdc-snack-bar-action .mdc-button__label {
+  color: #fdc4c4;
+}

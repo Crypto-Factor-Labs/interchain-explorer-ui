@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BackendService } from '../../shared/services/backend.service';
-import { DialogService } from './dialog.service';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MasterBlockComponent } from '../../masterblock/masterblock.component';
-import { PartialBlockComponent } from '../../partialblock/partialblock.component';
+import { BackendService } from './backend.service';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
   constructor(
+    private router: Router,
     private backend: BackendService,
-    private dialog: DialogService,
     private snackBar: MatSnackBar
   ) { }
 
@@ -22,7 +20,7 @@ export class SearchService {
     this.backend.getMasterBlock(trimmedHash).subscribe({
       next: (block) => {
         if (block && block.block_hash) {
-          this.dialog.openDialog(MasterBlockComponent, block);
+          this.router.navigate([{ outlets: { modal: ['block', hash] } }]);
         } else {
           this.tryPartialBlock(trimmedHash);
         }
@@ -35,7 +33,7 @@ export class SearchService {
     this.backend.getPartialBlock(hash).subscribe({
       next: (partialBlock) => {
         if (partialBlock && partialBlock.block_hash) {
-          this.dialog.openDialog(PartialBlockComponent, partialBlock);
+          this.router.navigate([{ outlets: { modal: ['pblock', hash] } }]);
         } else {
           this.showNotFound();
         }
@@ -45,11 +43,12 @@ export class SearchService {
   }
 
   private showNotFound(): void {
-    this.snackBar.open('Block not found', 'Dismiss', {
-      duration: 4000,
-      panelClass: ['snack-error'],
+    this.snackBar.open('🔎 No block found', undefined, {
+      duration: 3500,
+      panelClass: ['snack-error', 'snack-compact'],
       horizontalPosition: 'right',
-      verticalPosition: 'top'
+      verticalPosition: 'top',
     });
   }
+
 }
