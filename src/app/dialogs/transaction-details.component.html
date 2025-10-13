@@ -19,10 +19,15 @@
 <div class="field">
   <div class="label">Result</div>
   <div class="value">
-    <span class="badge" [class.badge-success]="tx.result === 1" [class.badge-failure]="tx.result === 0"
-      [class.badge-pending]="tx.result === 2">
-      {{ tx.result === 1 ? 'Success' : tx.result === 0 ? 'Failed' : 'Pending' }}
+    <span class="result-badge" [ngClass]="triStateClass(tx.result)">
+      {{ triStateLabel(tx.result) }}
     </span>
+    <!-- Icons need improvement
+    <span class="result-badge" [ngClass]="triStateClass(tx.result)">
+      <i class="fa-solid" [ngClass]="triStateIcon(tx.result)"></i>
+      {{ triStateLabel(tx.result) }}
+    </span>
+    -->
   </div>
 </div>
 

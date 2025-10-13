@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./panel.component.scss'],
 })
 export class PanelComponent {
-  @Input() title = '';
+  @Input() panelTitle = '';
   @Input() logoSrc?: string;
   @Input() logoAlt = 'Logo';
 }

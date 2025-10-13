@@ -314,6 +314,37 @@ body {
   --badge-py-bottom: 2px;
 }
 
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: .1rem .5rem;
+  border-radius: .5rem;
+  font-size: .75rem;
+  line-height: 1.2;
+  border: 2px solid rgba(255, 255, 255, .2);
+  background: transparent;
+}
+
+.result-badge.ok {
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, .35);
+}
+
+.result-badge.pending {
+  color: #f1c40f;
+  border-color: rgba(241, 196, 15, .35);
+}
+
+.result-badge.bad {
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, .35);
+}
+
+.result-badge.unknown {
+  color: #b5b8bf;
+  border-color: rgba(181, 184, 191, .35);
+}
+
 /* Style the SnackBar via its container */
 .mat-mdc-snack-bar-container.snack-error {
   --mdc-snackbar-container-color: #6e282a; // background

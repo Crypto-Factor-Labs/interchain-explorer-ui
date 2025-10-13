@@ -7,34 +7,21 @@ import { of } from 'rxjs';
 import { BackendService } from '../shared/services/backend.service';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
 import { TransactionDetailsComponent } from '../dialogs/transaction-details.component';
+import { PanelComponent } from '../shared/ui/panel.component';
+import { getChainImage } from '../shared/utils/common.utils';
 
 @Component({
   selector: 'app-transaction-page',
   standalone: true,
-  imports: [CommonModule, RouterModule, TransactionDetailsComponent],
-  template: `
-    <div class="page-container">
-      <h1>Transaction</h1>
-
-      <ng-container *ngIf="vm$ | async as vm">
-        <p *ngIf="vm.loading">Loading transaction…</p>
-
-        <div *ngIf="vm.error" class="error-box">
-          Could not load this transaction.
-        </div>
-
-        <app-transaction-details *ngIf="vm.tx" [tx]="vm.tx"></app-transaction-details>
-      </ng-container>
-    </div>
-  `,
-  styles: [`
-    .page-container { max-width: 960px; margin: 0 auto; padding: 16px; }
-    .error-box { margin-top: 12px; padding: 10px 12px; border: 1px solid #c0392b44; color: #e74c3c; border-radius: 6px; }
-  `]
+  imports: [CommonModule, RouterModule, PanelComponent, TransactionDetailsComponent],
+  templateUrl: './transaction-page.component.html',
+  styleUrls: ['./transaction-page.component.scss'],
 })
 export class TransactionPageComponent {
+  getChainImage = getChainImage;
+
   vm$ = this.route.paramMap.pipe(
-    map(params => params.get('hash') ?? ''),
+    map(pm => pm.get('hash') ?? ''),
     switchMap(hash =>
       this.backend.getTransaction(hash).pipe(
         map((tx: Transaction) => ({ loading: false, error: false, tx })),

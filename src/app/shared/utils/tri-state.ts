@@ -37,8 +37,7 @@ export function triStateLabel(v?: TriState | null): string {
 /** CSS modifier class used in chips/badges. */
 export function triStateClass(v?: TriState | null): string {
   if (v === 0 || v === 1 || v === 2) return CLASSES[v];
-  // default to 'pending' for unknown/null
-  return CLASSES[0];
+  return 'unknown';
 }
 
 /** Optional: icon name (Font Awesome). */
