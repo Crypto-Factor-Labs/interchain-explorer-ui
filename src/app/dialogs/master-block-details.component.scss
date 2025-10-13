@@ -1,11 +1,5 @@
 @import '../shared/cf_color_palette.scss';
 
-.hash-row {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-}
-
 .mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   font-size: .95rem;

@@ -1,0 +1,69 @@
+@import '../../shared/cf_color_palette';
+
+:host {
+  display: inline-flex;
+}
+
+// Fixed-size box prevents layout shift on feedback
+.icon-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  color: inherit; // inherit context color (panel/page)
+}
+
+// The glyph follows the container color
+.icon-btn i {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  color: currentColor;
+  transition: color .2s ease, transform .15s ease;
+  transform-origin: center;
+}
+
+.icon-btn:hover {
+  color: $powder-blue;
+}
+
+// Success feedback — scale the glyph (not the container) to avoid row height changes
+.icon-btn.copied {
+  color: #2ecc71;
+}
+
+.icon-btn.copied i {
+  transform: scale(1.1);
+}
+
+// Error feedback
+.icon-btn.copy-error {
+  color: #e74c3c;
+}
+
+// Micro-shake for error feedback
+@keyframes shake-x {
+  25% {
+    transform: translateX(1.5px);
+  }
+
+  50% {
+    transform: translateX(-1.5px);
+  }
+
+  75% {
+    transform: translateX(1.5px);
+  }
+}
+
+.icon-btn.copy-error i {
+  --shake-duration: 0.2s;
+  --shake-iterations: 1.5;
+  animation: shake-x var(--shake-duration) ease-in-out var(--shake-iterations);
+}

@@ -1,25 +1,17 @@
-<div class="panel">
-  <div class="dialog-title">
-    <div class="logo-pane">
-      <img *ngIf="logoSrc" [src]="logoSrc" [alt]="logoAlt" class="logo-img" />
-    </div>
-    <div class="title-text">
-      <h2>{{ dialogTitle }}</h2>
-    </div>
-    <ng-content select="[dialog-header-extra]"></ng-content> <!-- (optional) -->
-    <div class="close-icon" (click)="close.emit()"><i class="fa-solid fa-square-xmark"></i></div>
+<app-panel [title]="dialogTitle" [logoSrc]="logoSrc" [logoAlt]="logoAlt">
+  <!-- right-side close icon in header -->
+  <div class="close-icon" panel-header-extra (click)="close.emit()">
+    <i class="fa-solid fa-square-xmark"></i>
   </div>
 
-  <div class="separator"></div>
+  <!-- dialog content -->
+  <ng-content></ng-content>
 
-  <div class="fields-container">
-    <ng-content></ng-content>
-  </div>
-
-  <div class="separator"></div>
-
-  <div class="button-wrapper">
-    <a class="close-btn" (click)="close.emit()" autofocus><span class="btn-content">Close</span></a>
+  <!-- footer: close button + any extra actions provided by the dialog -->
+  <ng-container panel-actions>
+    <a class="close-btn" (click)="close.emit()" autofocus>
+      <span class="btn-content">Close</span>
+    </a>
     <ng-content select="[dialog-actions]"></ng-content>
-  </div>
-</div>
+  </ng-container>
+</app-panel>

@@ -1,0 +1,54 @@
+@import '../../shared/cf_color_palette';
+
+.panel {
+  --logo-size: 28px;
+  --header-gap: 0px;
+  --row-gap: 20px;
+  --section-gap: 10px;
+  --line-height: 1.5;
+  line-height: var(--line-height);
+}
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: var(--header-gap);
+}
+
+.logo-img {
+  width: var(--logo-size);
+  height: var(--logo-size);
+  object-fit: contain;
+  display: block;
+}
+
+.fields-container {
+  display: grid;
+  row-gap: var(--row-gap);
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 12px;
+}
+
+.label {
+  flex: 0 0 125px;
+  text-align: right;
+}
+
+.value {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: baseline;
+  color: $jordy-blue;
+}
+
+.separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: var(--section-gap) 0;
+}

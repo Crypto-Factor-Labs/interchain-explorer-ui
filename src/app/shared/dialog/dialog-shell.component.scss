@@ -1,119 +1,12 @@
-@import '../../shared/cf_color_palette';
-
 :host {
-  padding: 20px;
+  padding: 20px; // Dialog overlay padding around the panel
 }
 
-// Make the panel as wide as necessary and center it
-:host .panel {
-  width: max-content;
-  margin: 0 auto;
-}
-
-.panel {
-  --logo-size: 32px;
-  --row-gap: 20px; // space between rows
-  --section-gap: 10px; // space around separators
-  --line-height: 1.5; // breathing room per line
-  line-height: var(--line-height);
-}
-
-// Title bar
-.dialog-title {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-  .logo-pane {
-    display: flex;
-    align-items: center;
-    padding-left: 10px
-  }
-
-  .logo-img {
-    width: var(--logo-size);
-    height: var(--logo-size);
-    display: block;
-  }
-
-  .title-text h2 {
-    margin: 0;
-  }
-
-  .close-icon {
-    margin-left: auto;
-    cursor: pointer;
-    line-height: 0;
-  }
-}
-
-.separator {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.12);
-  margin: var(--section-gap) 0;
-}
-
-// Grid/rows container; children (fields) come from the projected content
-.fields-container {
-  display: grid;
-  row-gap: var(--row-gap);
-}
-
-// Two-column field row (label/value) — shared across dialogs
-.field {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-  column-gap: 12px;
-}
-
-.label {
-  flex: 0 0 125px; // fixed column width
-  text-align: right;
-}
-
-.value {
-  flex: 1 1 auto;
-  display: flex; // only the value needs flex for baseline with icons
-  align-items: baseline;
-  color: $jordy-blue;
-}
-
-// Normalize icon buttons anywhere inside the dialog shell
-.panel .icon-btn {
-  border: 0;
-  background: transparent;
+// Close icon is dialog-specific
+.dialog-title .close-icon {
+  margin-left: auto;
   cursor: pointer;
-  padding: 0;
+  line-height: 0;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  line-height: 0;
 }
-
-// Ensure the Font Awesome glyph itself renders with height
-.panel .icon-btn i {
-  display: inline-block;
-  font-size: 16px;
-  line-height: 1;
-}
-
-/* Hash-row layout used in details */
-.panel .hash-row {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-}
-
-// Footer
-.button-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-// If monospace/code looks a hair high/low, normalize it
-//.mono, code.mono {
-//  line-height: 1.2;
-//}
