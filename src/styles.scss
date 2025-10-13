@@ -304,3 +304,48 @@ body {
   --shake-iterations: 1.5;
   animation: shake-x var(--shake-duration) ease-in-out var(--shake-iterations);
 }
+
+/* Base badge */
+%badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  /* sizing tokens */
+  --badge-px: 12px; // left and right
+  --badge-py-top: 6px;
+  --badge-py-bottom: 3px;
+  --badge-font: 10px;
+  --badge-radius: 9999px;
+
+  padding: var(--badge-py-top) var(--badge-px) var(--badge-py-bottom);
+  border-radius: var(--badge-radius);
+  font-size: var(--badge-font);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: .5px;
+  white-space: nowrap;
+  color: $alice-blue;
+  opacity: 0.9;
+}
+
+.badge-state {
+  @extend %badge;
+  background-image: linear-gradient(90deg, $ultramarine, $byzantine-blue);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset;
+  margin-bottom: 3px;
+  margin-top: -3px;
+}
+
+.badge-revert {
+  @extend %badge;
+  background: #f59e0b;
+  color: #0b0e14;
+  letter-spacing: 0.2pt;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  --badge-px: 10px;
+  --badge-py-top: 3px;
+  --badge-py-bottom: 2px;
+}

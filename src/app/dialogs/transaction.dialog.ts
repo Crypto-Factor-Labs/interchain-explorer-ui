@@ -5,6 +5,7 @@ import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { DialogShellComponent } from '../shared/dialog/dialog-shell.component';
 import { TransactionDetailsComponent } from './transaction-details.component';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
+import { getChainImage } from '../shared/utils/common.utils';
 
 @Component({
   selector: 'app-transaction-dialog',
@@ -18,4 +19,8 @@ export class TransactionDialogComponent {
     @Inject(MAT_DIALOG_DATA) public tx: Transaction,
     public dialogRef: MatDialogRef<TransactionDialogComponent>
   ) { }
+
+  get logoSrc(): string {
+    return getChainImage(this.tx.sourceChainId);
+  }
 }

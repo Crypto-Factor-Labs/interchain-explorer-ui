@@ -1,8 +1,8 @@
-<app-dialog-shell dialogTitle="Transaction" (close)="dialogRef.close()">
+<app-dialog-shell dialogTitle="Transaction" [logoSrc]="logoSrc" [logoAlt]="'Chain ' + tx.sourceChainId"
+  (close)="dialogRef.close()">
   <app-transaction-details [tx]="tx"></app-transaction-details>
 
   <ng-container dialog-actions>
-    <button class="link-btn" [cdkCopyToClipboard]="tx.transactionHash">Copy hash</button>
     <a class="link-btn" [routerLink]="['/tx', tx.transactionHash]" (click)="dialogRef.close()">Open full page</a>
     <a class="link-btn" *ngIf="tx.includedInMasterBlock" [routerLink]="['/block', tx.includedInMasterBlock]"
       (click)="dialogRef.close()">Open master block</a>

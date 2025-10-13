@@ -7,7 +7,15 @@
   </div>
 </div>
 
-<!-- Result / Validation state -->
+<!-- State -->
+<div class="field">
+  <div class="label">State</div>
+  <div class="value">
+    <span class="badge-state">{{ tx.state | txStateWord }}</span>
+  </div>
+</div>
+
+<!-- Result -->
 <div class="field">
   <div class="label">Result</div>
   <div class="value">
@@ -15,8 +23,6 @@
       [class.badge-pending]="tx.result === 2">
       {{ tx.result === 1 ? 'Success' : tx.result === 0 ? 'Failed' : 'Pending' }}
     </span>
-    <span class="muted"> • </span>
-    <span class="badge badge-outline">{{ tx.state | txStateWord }}</span>
   </div>
 </div>
 
