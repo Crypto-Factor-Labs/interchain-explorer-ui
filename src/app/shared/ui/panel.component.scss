@@ -7,6 +7,14 @@
   --section-gap: 10px;
   --line-height: 1.5;
   line-height: var(--line-height);
+
+  /* Tokens for fonts of Labels and Values */
+  --label-font: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, sans-serif;
+  --label-weight: bold;
+  --label-color: #{$charcoal};
+
+  --value-font: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --value-size: .95rem;
 }
 
 .dialog-title {
@@ -36,15 +44,47 @@
 }
 
 .label {
+  font-family: var(--label-font);
+  font-weight: var(--label-weight);
+  color: var(--label-color);
   flex: 0 0 125px;
   text-align: right;
 }
 
+// Inline label for value rows, visually like the left column label
+.inline-label {
+  font-family: var(--label-font); // override the monospace from .value
+  font-weight: var(--label-weight);
+  color: var(--label-color); // override the color from .value
+  margin-left: 10px;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
 .value {
+  font-family: var(--value-font);
+  font-size: var(--value-size);
   flex: 1 1 auto;
   display: flex;
   align-items: baseline;
   color: $jordy-blue;
+}
+
+// Opt-out when needed (use as "value no-mono")
+.value.no-mono {
+  font-family: var(--label-font);
+}
+
+// Badges should use label font, not mono
+.badge-result,
+.badge-state {
+  font-family: var(--label-font);
+  font-weight: normal;
+}
+
+.badge-state {
+  font-size: 9pt;
+  padding-bottom: 5px;
 }
 
 .separator {

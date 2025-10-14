@@ -114,12 +114,13 @@ export class BackendService {
   private mapTransactionFull = (dto: any): Transaction => ({
     version: dto.version,
     format: dto.format,
-    transactionHash: dto.transactionHash ?? dto.tx_hash ?? dto.hash,
+    transactionHash: dto.transactionHash,
     nonce: dto.nonce,
     sourceSender: dto.sourceSender,
     sourceChainId: dto.sourceChainId,
     sourceChainMempoolEpoch: dto.sourceChainMempoolEpoch,
     stateValidator: dto.stateValidator,
+    stateValidationResult: dto.stateValidationResult,
 
     executionParts: Array.isArray(dto.executionParts) ? dto.executionParts.map(this.mapExecPartFull) : [],
     revertExecutionPart: dto.revertExecutionPart ? this.mapExecPartFull(dto.revertExecutionPart) : undefined,

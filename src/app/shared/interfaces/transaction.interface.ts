@@ -87,6 +87,7 @@ export interface Transaction {
   sourceChainId: number;
   sourceChainMempoolEpoch: number;
   stateValidator: string;
+  stateValidationResult: ValidationResult;
 
   executionParts: ExecutionPart[];
   revertExecutionPart?: ExecutionPart;

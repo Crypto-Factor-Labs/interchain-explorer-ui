@@ -10,7 +10,7 @@
 <!-- State -->
 <div class="field">
   <div class="label">State</div>
-  <div class="value">
+  <div class="value no-mono">
     <span class="badge-state">{{ tx.state | txStateWord }}</span>
   </div>
 </div>
@@ -18,12 +18,12 @@
 <!-- Result -->
 <div class="field">
   <div class="label">Result</div>
-  <div class="value">
-    <span class="result-badge" [ngClass]="triStateClass(tx.result)">
+  <div class="value no-mono">
+    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
       {{ triStateLabel(tx.result) }}
     </span>
     <!-- Icons need improvement
-    <span class="result-badge" [ngClass]="triStateClass(tx.result)">
+    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
       <i class="fa-solid" [ngClass]="triStateIcon(tx.result)"></i>
       {{ triStateLabel(tx.result) }}
     </span>
@@ -33,36 +33,33 @@
 
 <!-- Sender / Validator -->
 <div class="field">
-  <div class="label">From</div>
-  <div class="value"><span class="mono">{{ tx.sourceSender }}</span></div>
-</div>
-<div class="field">
   <div class="label">State Validator</div>
-  <div class="value"><span class="mono">{{ tx.stateValidator }}</span></div>
+  <div class="value value--with-action">
+    <span class="mono">{{ tx.stateValidator }}</span>
+    <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
+      {{ triStateLabel(tx.stateValidationResult) }}
+    </span>
+  </div>
 </div>
 
-<!-- Source chain -->
+<!-- Source Chain -->
 <div class="field">
   <div class="label">Source Chain</div>
   <div class="value">
     {{ tx.sourceChainId }}
-    <span class="muted">/ Epoch </span>{{ tx.sourceChainMempoolEpoch }}
+    <span class="inline-label">| &nbsp;Epoch</span>
+    {{ tx.sourceChainMempoolEpoch }}
   </div>
 </div>
 
-<!-- Master block linking -->
+<!-- MasterBlock linking -->
 <div class="field" *ngIf="tx.masterBlockHeight">
   <div class="label">Master Block</div>
-  <div class="value">
-    <a class="link" *ngIf="hasMB" [routerLink]="['/block', tx.includedInMasterBlock]">
-      {{ tx.masterBlockHeight }}
-    </a>
-    <span *ngIf="!hasMB">{{ tx.masterBlockHeight }}</span>
-  </div>
+  <div class="value">M-{{ tx.masterBlockHeight }}</div>
 </div>
 <div class="field" *ngIf="hasMB">
   <div class="label">MB Hash</div>
-  <div class="value mono">{{ tx.includedInMasterBlock }}</div>
+  <div class="value">{{ tx.includedInMasterBlock }}</div>
 </div>
 
 <!-- Index within MB -->

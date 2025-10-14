@@ -3,7 +3,7 @@
 .background-layer {
   position: fixed;
   inset: 0;
-  background: linear-gradient(to bottom, $ultramarine, $byzantine-blue);
+  background: linear-gradient(to bottom, $ultramarine, darken($byzantine-blue, 40%));
   background-attachment: fixed;
   z-index: 0;
   filter: brightness(1.1) contrast(0.9);
@@ -28,6 +28,7 @@
 .logo {
   height: 50px;
   width: auto;
+  cursor: pointer;
 }
 
 .title-text {

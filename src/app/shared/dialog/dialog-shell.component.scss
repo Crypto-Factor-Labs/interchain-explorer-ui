@@ -10,3 +10,22 @@
   display: inline-flex;
   align-items: center;
 }
+
+// Make all dialog value cells monospace
+.panel .value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .95rem;
+  font-variant-ligatures: none;
+  font-variant-numeric: tabular-nums; // nice for numbers
+}
+
+// Inherit the same font for <code> */
+.panel .value code {
+  font: inherit;
+}
+
+// Make it easy to override monospace when needed
+.panel .value.no-mono {
+  font-family: inherit;
+  font-variant-numeric: normal;
+}

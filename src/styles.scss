@@ -280,12 +280,12 @@ body {
   --badge-px: 12px; // left and right
   --badge-py-top: 6px;
   --badge-py-bottom: 3px;
-  --badge-font: 10px;
+  --badge-font-size: 10px;
   --badge-radius: 9999px;
 
   padding: var(--badge-py-top) var(--badge-px) var(--badge-py-bottom);
   border-radius: var(--badge-radius);
-  font-size: var(--badge-font);
+  font-size: var(--badge-font-size);
   line-height: 1;
   font-weight: 500;
   letter-spacing: .5px;
@@ -314,35 +314,36 @@ body {
   --badge-py-bottom: 2px;
 }
 
-.result-badge {
+.badge-result {
   display: inline-flex;
   align-items: center;
   padding: .1rem .5rem;
   border-radius: .5rem;
+  font-family: var(--label-font); // is defined in panel.component.scss
   font-size: .75rem;
   line-height: 1.2;
   border: 2px solid rgba(255, 255, 255, .2);
   background: transparent;
-}
 
-.result-badge.ok {
-  color: #2ecc71;
-  border-color: rgba(46, 204, 113, .35);
-}
+  &.ok {
+    color: #2ecc71;
+    border-color: rgba(46, 204, 113, .35);
+  }
 
-.result-badge.pending {
-  color: #f1c40f;
-  border-color: rgba(241, 196, 15, .35);
-}
+  &.pending {
+    color: #f1c40f;
+    border-color: rgba(241, 196, 15, .35);
+  }
 
-.result-badge.bad {
-  color: #e74c3c;
-  border-color: rgba(231, 76, 60, .35);
-}
+  &.bad {
+    color: #e74c3c;
+    border-color: rgba(231, 76, 60, .35);
+  }
 
-.result-badge.unknown {
-  color: #b5b8bf;
-  border-color: rgba(181, 184, 191, .35);
+  &.unknown {
+    color: #b5b8bf;
+    border-color: rgba(181, 184, 191, .35);
+  }
 }
 
 /* Style the SnackBar via its container */
