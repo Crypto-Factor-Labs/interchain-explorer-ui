@@ -360,7 +360,7 @@ body {
 /* Compact snackbar variant */
 .mat-mdc-snack-bar-container.snack-compact .mdc-snackbar__surface {
   min-width: 0; // default is ~344px
-  max-width: 180px;
+  max-width: 360px;
   width: auto; // shrink to fit content
 }
 
