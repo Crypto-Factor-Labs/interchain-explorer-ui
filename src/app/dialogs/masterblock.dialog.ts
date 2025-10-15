@@ -1,7 +1,7 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import type { MasterChainBlock } from '../shared/interfaces/master-chain.interface';
-import { DialogShellComponent } from '../shared/dialog/dialog-shell.component';
+import { DialogShellComponent } from '../shared/ui/dialog-shell.component';
 import { MasterBlockDetailsComponent } from './masterblock-details.component';
 import { getChainImage } from '../shared/utils/common.utils';
 
