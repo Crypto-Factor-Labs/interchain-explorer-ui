@@ -3,11 +3,11 @@ import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import type { MasterChainBlock } from '../shared/interfaces/master-chain.interface';
 
 @Component({
-  selector: 'app-master-block-details',
+  selector: 'app-masterblock-details',
   standalone: true,
   imports: [...SHARED_IMPORTS],
-  templateUrl: './master-block-details.component.html',
-  styleUrls: ['./master-block-details.component.scss'],
+  templateUrl: './masterblock-details.component.html',
+  styleUrls: ['./masterblock-details.component.scss'],
 })
 export class MasterBlockDetailsComponent {
   @Input({ required: true }) masterBlock!: MasterChainBlock;

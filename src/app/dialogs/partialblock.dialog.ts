@@ -1,7 +1,7 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogShellComponent } from '../shared/dialog/dialog-shell.component';
-import { PartialBlockDetailsComponent } from './partial-block-details.component';
+import { PartialBlockDetailsComponent } from './partialblock-details.component';
 import type { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
 import { getChainImage } from '../shared/utils/common.utils';
 

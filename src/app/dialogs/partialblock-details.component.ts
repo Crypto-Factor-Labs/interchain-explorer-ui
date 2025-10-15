@@ -3,11 +3,11 @@ import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import type { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
 
 @Component({
-  selector: 'app-partial-block-details',
+  selector: 'app-partialblock-details',
   standalone: true,
   imports: [...SHARED_IMPORTS],
-  templateUrl: './partial-block-details.component.html',
-  styleUrls: ['./partial-block-details.component.scss'],
+  templateUrl: './partialblock-details.component.html',
+  styleUrls: ['./partialblock-details.component.scss'],
 })
 export class PartialBlockDetailsComponent {
   @Input({ required: true }) partialBlock!: PartialChainBlock;
