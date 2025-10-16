@@ -1,0 +1,60 @@
+<div class="details-grid">
+  <div class="field">
+    <div class="label">
+      <span *ngIf="isRevert" class="badge-revert" aria-label="Revert ExecutionPart">Revert</span>
+      <span style="margin-left: 10pt">Hash</span>
+    </div>
+    <div class="value">{{ ep.hash }}</div>
+  </div>
+
+  <div class="field">
+    <div class="label">Status</div>
+    <div class="value">{{ statusLabel }}</div>
+  </div>
+
+  <!-- Index within transaction -->
+  <div class="field">
+    <div class="label">Index</div>
+    <div class="value">{{ ep.transactionExecutionPartIndex | asDash }}</div>
+  </div>
+
+  <!-- Chain -->
+  <div class="field">
+    <div class="label">Chain ID</div>
+    <div class="value">{{ ep.chainId }}</div>
+  </div>
+
+  <!-- Operator -->
+  <div class="field">
+    <div class="label">Operator</div>
+    <div class="value">{{ ep.operatorAddress | asDash }}</div>
+  </div>
+
+  <!-- Sender -->
+  <div class="field">
+    <div class="label">Sender</div>
+    <div class="value">{{ ep.senderAddress | asDash }}</div>
+  </div>
+
+  <!-- Partial block -->
+  <div class="field">
+    <div class="label">Partial Block</div>
+    <div class="value">
+      <!-- height and index in one compact line; tweak if you prefer separate rows -->
+      {{ ep.partialBlockHeight | asDash }}
+      <span *ngIf="ep?.partialBlockPartIndex !== undefined">:{{ ep.partialBlockPartIndex }}</span>
+      <span *ngIf="ep?.includedInPartialBlock" style="opacity:.75; margin-left:.5rem;">
+        ({{ ep.includedInPartialBlock }})
+      </span>
+    </div>
+  </div>
+
+  <!-- Optional: Execution signature (useful for debugging) -->
+  <div class="field">
+    <div class="label">Exec Signature</div>
+    <div class="value" style="word-break: break-all;">
+      {{ ep.executionSignature | asDash }}
+    </div>
+  </div>
+
+</div>

@@ -1,10 +1,10 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { DialogShellComponent } from '../shared/ui/dialog-shell.component';
-import { TransactionDetailsComponent } from './transaction-details.component';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
+import { TransactionDetailsComponent } from './transaction-details.component';
 import { getChainImage } from '../shared/utils/common.utils';
 
 @Component({

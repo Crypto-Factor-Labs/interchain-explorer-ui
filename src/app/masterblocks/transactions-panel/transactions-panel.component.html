@@ -89,8 +89,12 @@
                 <div class="label">Hash</div>
                 <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
               </div>
-              <div class="value" title="{{ ep.hash }}">
-                {{ ep.hash | truncateMiddle: 6 }}
+              <div class="value hash-text" title="{{ ep.hash }}">
+                <!-- Only emit the hash, so that the full transaction data can be fetched -->
+                <span class="gradient-text clickable" title="{{ ep.hash }}"
+                  (click)="$event.stopPropagation(); openExecPart.emit({tx_hash: tx.tx_hash, ep_hash: ep.hash})">
+                  {{ ep.hash | truncateMiddle: 6 }}
+                </span>
               </div>
             </div>
 

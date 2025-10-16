@@ -150,6 +150,7 @@ export class BackendService {
     chainId: dto.chainId,
     executionSignature: dto.executionSignature,
     hash: dto.hash,
+    isRevert: dto.isRevert,
     operatorAddress: dto.operatorAddress,
     senderAddress: dto.senderAddress,
     includedInPartialBlock:

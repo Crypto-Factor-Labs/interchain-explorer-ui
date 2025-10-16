@@ -14,7 +14,8 @@
       [totalPages]="txTotalPages" [pollingActive]="txPollingActive" [getChainImage]="getChainImage"
       [trackByTxHash]="trackByTxHash" [masterBlockHash]="masterBlockHash" [masterBlockHeight]="masterBlockHeight"
       (togglePolling)="onTxTogglePolling()" (openTransaction)="showTransactionData($event)"
-      (toggleExecutionParts)="toggleTxExecutionParts($event)" (pageChange)="goToTxPage($event)">
+      (toggleExecutionParts)="toggleTxExecutionParts($event)"
+      (openExecPart)="showExecutionPartData($event.tx_hash, $event.ep_hash)" (pageChange)="goToTxPage($event)">
     </app-transactions-panel>
   </div>
 </div>

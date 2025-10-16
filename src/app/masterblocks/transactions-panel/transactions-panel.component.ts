@@ -40,6 +40,8 @@ export class TransactionsPanelComponent {
   @Output() openTransaction = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
 
+  @Output() openExecPart = new EventEmitter<{ tx_hash: string, ep_hash: string }>();
+
   // trackBy for ExecutionParts (fallback to index)
   trackByPart = (i: number, ep: TxExecutionPart) => ep.id ?? i;
 

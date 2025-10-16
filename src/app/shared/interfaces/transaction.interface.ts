@@ -54,6 +54,7 @@ export interface ExecutionPartBase {
   chainId: number;
   executionSignature: string;
   hash: string;
+  isRevert: boolean;
   operatorAddress: string;
   senderAddress: string;
   includedInPartialBlock: string;

@@ -9,13 +9,14 @@ import { MasterBlockDialogComponent } from '../dialogs/masterblock.dialog';
 import { MasterChainBlock } from '../shared/interfaces/master-chain.interface'
 import { PartialBlockDialogComponent } from '../dialogs/partialblock.dialog';
 import { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
-import { Transaction, Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
+import { ExecutionPart, Transaction, Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
 import { getChainImage as utilGetChainImage } from '../shared/utils/common.utils';
 import { MasterBlocksPanelComponent } from './masterblocks-panel/masterblocks-panel.component';
 import { TransactionsPanelComponent } from './transactions-panel/transactions-panel.component';
 import { TxStatsService } from '../statistics/tx-stats.service';
 import BN from 'bn.js';
 import { TransactionDialogComponent } from '../dialogs/transaction.dialog';
+import { ExecutionPartDialogComponent } from '../dialogs/execution-part.dialog';
 
 interface FetchResult {
   blocks: MasterChainBlock[];
@@ -168,14 +169,6 @@ export class MasterBlocksComponent implements OnInit {
     this.dialogService.openDialog(PartialBlockDialogComponent, block);
   }
 
-  //  showMasterBlockData(block: MasterChainBlock): void {
-  //    this.dialogService.openDialog(MasterBlockComponent, block);
-  //  }
-
-  //showPartialBlockData(block: PartialChainBlock): void {
-  //  this.dialogService.openDialog(PartialBlockComponent, block);
-  //}
-
   /* ================= Transactions ================= */
 
   private txStats = inject(TxStatsService);
@@ -288,10 +281,10 @@ export class MasterBlocksComponent implements OnInit {
   toggleTxExecutionParts = (hash: string) =>
     (this.expandedTx[hash] = !this.expandedTx[hash]);
 
-  /** TrackBy for tx list */
+  /** TrackBy for Tx-list */
   trackByTxHash = (_: number, tx: Tx) => tx.tx_hash;
 
-  /** Open a transaction dialog */
+  /** Open a Transaction dialog */
   showTransactionData(hash: string) {
     this.backendService.getTransaction(hash).pipe(take(1)).subscribe({
       next: (fullTx) => this.dialogService.openDialog(TransactionDialogComponent, fullTx),
@@ -299,4 +292,29 @@ export class MasterBlocksComponent implements OnInit {
     });
   }
 
+  /** Open an ExecutionPart dialog 
+    * Note that also the Tx-hash is passed, so that the full transaction can be fetched
+    * and the applicable ExecutionPart can be found within it.
+    */
+  showExecutionPartData(tx_hash: string, ep_hash: string) {
+    this.backendService.getTransaction(tx_hash).pipe(take(1)).subscribe({
+      next: (fullTx: Transaction) => {
+        const ep = findExecutionPartOfTx(fullTx, ep_hash);
+        if (!ep) return console.warn('EP not found', { tx_hash, ep_hash });
+        this.dialogService.openDialog(ExecutionPartDialogComponent, ep);
+      },
+      error: (err) => console.error('Failed to load transaction', tx_hash, err),
+    });
+  }
 }
+
+// Helper function to find an ExecutionPart by its hash within a Transaction
+function findExecutionPartOfTx(tx: Transaction, ep_hash: string): ExecutionPart | null {
+  if (!tx || !ep_hash) return null;
+  const hit = tx.executionParts?.find(p => p?.hash === ep_hash);
+  if (hit) return hit;
+  if (tx.revertExecutionPart?.hash === ep_hash) return tx.revertExecutionPart;
+  return null;
+}
+
+
