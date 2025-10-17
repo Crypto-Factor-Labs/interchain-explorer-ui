@@ -11,7 +11,7 @@ type EP = CoreEP & { isRevert?: boolean };
   standalone: true,
   imports: [CommonModule, ...SHARED_IMPORTS],
   templateUrl: './execution-part-details.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./execution-part-details.component.scss'],
 })
 export class ExecutionPartDetailsComponent {
   @Input({ required: true }) ep!: EP;

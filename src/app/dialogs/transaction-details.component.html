@@ -54,8 +54,8 @@
 
 <!-- MasterBlock linking -->
 <div class="field" *ngIf="tx.masterBlockHeight">
-  <div class="label">Master Block</div>
-  <div class="value">M-{{ tx.masterBlockHeight }}</div>
+  <div class="label">MB Height</div>
+  <div class="value">{{ tx.masterBlockHeight }}</div>
 </div>
 <div class="field" *ngIf="hasMB">
   <div class="label">MB Hash</div>
@@ -68,9 +68,9 @@
   <div class="value">{{ tx.masterBlockTxIndex }}</div>
 </div>
 
-<!-- Execution parts -->
+<!-- ExecutionParts -->
 <div class="field">
-  <div class="label">#Execution Parts</div>
+  <div class="label">#ExecutionParts</div>
   <div class="value">
     {{ tx.executionParts.length }}
   </div>

@@ -8,7 +8,6 @@ import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
   imports: [CommonModule, CdkCopyToClipboard],
   template: `
     <span class="icon-btn"
-    (click)="debugClick()"
           [class.copied]="copiedState"
           [class.copy-error]="errorState"
           [cdkCopyToClipboard]="value"
@@ -56,7 +55,4 @@ export class CopyIconComponent {
       this.timer = setTimeout(() => (this.errorState = false), this.feedbackMs);
     }
   }
-
-  debugClick() { console.log('[copy-icon] click'); }
-
 }

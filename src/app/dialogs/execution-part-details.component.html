@@ -1,11 +1,16 @@
 <div class="details-grid">
+  <!-- Hash with copy button -->
   <div class="field">
     <div class="label">
-      <span *ngIf="isRevert" class="badge-revert" aria-label="Revert ExecutionPart">Revert</span>
+      <span *ngIf="isRevert" class="badge-revert" aria-label="Revert">Revert</span>
       <span style="margin-left: 10pt">Hash</span>
     </div>
-    <div class="value">{{ ep.hash }}</div>
+    <div class="value value--with-action">
+      <code class="mono">{{ ep.hash }}</code>
+      <app-copy-icon [value]="ep.hash"></app-copy-icon>
+    </div>
   </div>
+
 
   <div class="field">
     <div class="label">Status</div>
