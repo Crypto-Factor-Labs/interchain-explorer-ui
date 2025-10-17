@@ -6,5 +6,7 @@
   <app-panel *ngIf="vm.tx as tx" panelTitle="Transaction" [logoSrc]="getChainImage(tx.sourceChainId)"
     [logoAlt]="'Chain ' + tx.sourceChainId">
     <app-transaction-details [tx]="tx"></app-transaction-details>
+    <app-tx-execution-parts [epList]="tx.executionParts" [revertEp]="tx.revertExecutionPart">
+    </app-tx-execution-parts>
   </app-panel>
 </div>

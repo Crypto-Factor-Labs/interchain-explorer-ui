@@ -1,0 +1,41 @@
+<!-- Normal execution parts -->
+<section *ngFor="let ep of epList; trackBy: trackByHash" class="ep-section">
+  <button type="button" class="ep-header" (click)="toggleEP(ep.hash); $event.stopPropagation()"
+    [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash">
+    <span class="left">
+      <span class="hash mono">{{ shortHash(ep.hash) }}</span>
+      <span class="meta">#{{ ep.transactionExecutionPartIndex }} · chain {{ ep.chainId }}</span>
+      <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
+    </span>
+    <span class="right">
+      <i class="fa-solid" [class.fa-chevron-down]="!isOpen(ep.hash)" [class.fa-chevron-up]="isOpen(ep.hash)"></i>
+    </span>
+  </button>
+
+  <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)">
+    <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)">
+      <app-execution-part-details [ep]="ep"></app-execution-part-details>
+    </div>
+  </div>
+</section>
+
+<!-- Optional: Revert EP as a separate section at the end -->
+<section *ngIf="revertEp as rep" class="ep-section ep-section--revert">
+  <button type="button" class="ep-header" (click)="toggleEP(rep.hash); $event.stopPropagation()"
+    [attr.aria-expanded]="isOpen(rep.hash)" [attr.aria-controls]="'ep-' + rep.hash">
+    <span class="left">
+      <span class="hash mono">{{ shortHash(rep.hash) }}</span>
+      <span class="meta">revert · chain {{ rep.chainId }}</span>
+      <span class="badge-revert">Revert</span>
+    </span>
+    <span class="right">
+      <i class="fa-solid" [class.fa-chevron-down]="!isOpen(rep.hash)" [class.fa-chevron-up]="isOpen(rep.hash)"></i>
+    </span>
+  </button>
+
+  <div class="ep-body" [id]="'ep-' + rep.hash" *ngIf="isOpen(rep.hash)">
+    <div class="ep-body" [id]="'ep-' + rep.hash" *ngIf="isOpen(rep.hash)">
+      <app-execution-part-details [ep]="rep"></app-execution-part-details>
+    </div>
+  </div>
+</section>

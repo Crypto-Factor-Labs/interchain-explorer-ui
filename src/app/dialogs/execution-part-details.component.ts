@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { ExecutionPart as CoreEP } from '../shared/interfaces/transaction.interface';
 
@@ -18,6 +19,8 @@ export class ExecutionPartDetailsComponent {
   @Input({ required: true }) ep!: EP;
   @Output() openTx = new EventEmitter<void>();
 
+  constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
+
   get isRevert() { return !!this.ep?.isRevert; }
 
   // TEMPORARY: naive status derivation
@@ -32,4 +35,7 @@ export class ExecutionPartDetailsComponent {
     return '—';
   }
 
+  get showOpenTxIcon(): boolean {
+    return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
+  }
 }
