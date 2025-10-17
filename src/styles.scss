@@ -269,6 +269,37 @@ body {
   white-space: nowrap;
 }
 
+/* Icon button styling, for example for the copy-icons */
+// Base utility for icon-like triggers (both <button> and <a>)
+.icon-btn {
+  border: 0; // harmless on <a>, needed on <button>
+  background: transparent; // idem
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  color: inherit; // inherit context color (panel/page)
+  text-decoration: none; // ensures <a> doesn't underline
+}
+
+// The glyph follows the container color
+.icon-btn i {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  color: currentColor;
+  transition: color .2s ease, transform .15s ease;
+  transform-origin: center;
+}
+
+.icon-btn:hover {
+  color: $powder-blue;
+}
+
 /* Base badge */
 %badge {
   display: inline-flex;

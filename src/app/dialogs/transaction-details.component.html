@@ -4,6 +4,13 @@
   <div class="value value--with-action">
     <code class="mono">{{ hash }}</code>
     <app-copy-icon [value]="hash"> </app-copy-icon>
+
+    <!-- Icon to jump to the Tx-page
+     The icon is only shown in the Tx-dialog, not on the Tx-page -->
+    <a *ngIf="showOpenTxIcon" [routerLink]="['/tx', tx.transactionHash]" class="icon-btn" title="Open transaction page"
+      aria-label="Open transaction page" style="margin-left: -3pt;" (click)="openTx.emit()">
+      <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
+    </a>
   </div>
 </div>
 

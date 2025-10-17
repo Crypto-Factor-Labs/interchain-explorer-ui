@@ -4,35 +4,7 @@
   display: inline-flex;
 }
 
-// Fixed-size box prevents layout shift on feedback
-.icon-btn {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  color: inherit; // inherit context color (panel/page)
-}
-
-// The glyph follows the container color
-.icon-btn i {
-  display: inline-block;
-  font-size: 16px;
-  line-height: 1;
-  color: currentColor;
-  transition: color .2s ease, transform .15s ease;
-  transform-origin: center;
-}
-
-.icon-btn:hover {
-  color: $powder-blue;
-}
-
+// Base styling for the icon button is inherited from shared styles.
 // Success feedback — scale the glyph (not the container) to avoid row height changes
 .icon-btn.copied {
   color: #2ecc71;

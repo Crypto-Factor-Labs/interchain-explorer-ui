@@ -11,6 +11,21 @@
     </div>
   </div>
 
+  <!-- Tx hash -->
+  <div class="field">
+    <div class="label">Tx Hash</div>
+    <div class="value value--with-action">
+      <code class="mono">{{ ep.transactionHash }}</code>
+      <app-copy-icon [value]="ep.transactionHash"></app-copy-icon>
+
+      <!-- Icon to jump to the Tx-page -->
+      <a [routerLink]="['/tx', ep.transactionHash]" class="icon-btn" title="Open transaction page"
+        aria-label="Open transaction page" (click)="openTx.emit()"
+        style="margin-left: -3pt; display:inline-flex; align-items:center;">
+        <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
 
   <div class="field">
     <div class="label">Status</div>

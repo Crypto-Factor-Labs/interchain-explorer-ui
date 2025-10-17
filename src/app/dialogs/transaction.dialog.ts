@@ -1,5 +1,4 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogShellComponent } from '../shared/ui/dialog-shell.component';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
@@ -10,7 +9,7 @@ import { getChainImage } from '../shared/utils/common.utils';
   selector: 'app-transaction-dialog',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [DialogShellComponent, TransactionDetailsComponent, RouterModule],
+  imports: [DialogShellComponent, TransactionDetailsComponent],
   templateUrl: './transaction.dialog.html',
 })
 export class TransactionDialogComponent {

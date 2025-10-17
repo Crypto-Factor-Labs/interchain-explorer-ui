@@ -1,5 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { ExecutionPart as CoreEP } from '../shared/interfaces/transaction.interface';
 
@@ -9,12 +10,13 @@ type EP = CoreEP & { isRevert?: boolean };
 @Component({
   selector: 'app-execution-part-details',
   standalone: true,
-  imports: [CommonModule, ...SHARED_IMPORTS],
+  imports: [CommonModule, RouterModule, ...SHARED_IMPORTS],
   templateUrl: './execution-part-details.component.html',
   styleUrls: ['./execution-part-details.component.scss'],
 })
 export class ExecutionPartDetailsComponent {
   @Input({ required: true }) ep!: EP;
+  @Output() openTx = new EventEmitter<void>();
 
   get isRevert() { return !!this.ep?.isRevert; }
 
