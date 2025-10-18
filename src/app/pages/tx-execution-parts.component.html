@@ -1,3 +1,8 @@
+<h3 class="ep-heading">
+  ExecutionParts
+  <span *ngIf="epList?.length" class="ep-count">({{ epList?.length }})</span>
+</h3>
+
 <!-- Only render sections when we actually have EPs -->
 <ng-container *ngIf="epList?.length as count; else none">
   <!-- Normal EPs -->

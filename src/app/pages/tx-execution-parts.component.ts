@@ -8,6 +8,7 @@ import { ExecutionPartDetailsComponent } from '../dialogs/execution-part-details
   standalone: true,
   imports: [CommonModule, ExecutionPartDetailsComponent],
   templateUrl: './tx-execution-parts.component.html',
+  styleUrls: ['./tx-execution-parts.component.scss'],
 })
 export class TxExecutionPartsComponent {
   // Backing fields + guards so nothing crashes if inputs arrive out of order

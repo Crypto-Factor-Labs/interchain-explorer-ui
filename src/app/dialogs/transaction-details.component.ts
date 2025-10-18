@@ -14,6 +14,7 @@ import { triStateLabel, triStateClass, triStateIcon } from '../shared/utils/tri-
 })
 export class TransactionDetailsComponent {
   @Input({ required: true }) tx!: Transaction;
+  @Input() showExecPartsCount = false;
   @Output() openTx = new EventEmitter<void>();
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
@@ -28,4 +29,9 @@ export class TransactionDetailsComponent {
   get showOpenTxIcon(): boolean {
     return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
   }
+
+  onBeforeNavigate() {
+    this.dialogRef?.close(); // closes if we're in a dialog; no-op on the page
+  }
+
 }

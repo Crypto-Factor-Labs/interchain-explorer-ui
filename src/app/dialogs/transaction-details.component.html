@@ -7,10 +7,8 @@
 
     <!-- Icon to jump to the Tx-page
      The icon is only shown in the Tx-dialog, not on the Tx-page -->
-    <a *ngIf="showOpenTxIcon" [routerLink]="['/tx', tx.transactionHash]" class="icon-btn" title="Open transaction page"
-      aria-label="Open transaction page" style="margin-left: -3pt;" (click)="openTx.emit()">
-      <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
-    </a>
+    <app-open-tx-page-icon [txHash]="tx.transactionHash" (beforeNavigate)="onBeforeNavigate()">
+    </app-open-tx-page-icon>
   </div>
 </div>
 
@@ -76,9 +74,13 @@
 </div>
 
 <!-- ExecutionParts -->
-<div class="field">
+<div class="field" *ngIf="showExecPartsCount">
   <div class="label">#ExecutionParts</div>
-  <div class="value">
+  <div class="value value--with-action">
     {{ tx.executionParts.length }}
+    <!-- Icon to jump to the Tx-page
+   The icon is only shown in the Tx-dialog, not on the Tx-page -->
+    <app-open-tx-page-icon [txHash]="tx.transactionHash" (beforeNavigate)="onBeforeNavigate()" style="margin-left: 5pt">
+    </app-open-tx-page-icon>
   </div>
 </div>

@@ -4,40 +4,6 @@
   padding: 16px;
 }
 
-/* ExecutionPart Styles */
-.ep-section {
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: .5rem;
-  margin: .5rem 0;
-}
-
-.ep-header {
-  width: 100%;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: .5rem .75rem;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-}
-
-.ep-header .left {
-  display: inline-flex;
-  gap: .5rem;
-  align-items: center;
-}
-
-.ep-header .meta {
-  opacity: .7;
-  font-size: .9em;
-}
-
-.ep-body {
-  padding: .5rem .75rem .75rem;
-}
-
 .error-box {
   margin-top: 12px;
   padding: 10px 12px;

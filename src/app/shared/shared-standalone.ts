@@ -8,6 +8,7 @@ import { TxStateWordPipe } from './pipes/state-to-word.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { TruncateMiddlePipe } from './pipes/truncate-middle.pipe';
 import { CopyIconComponent } from '../shared/utils/copy-icon.component';
+import { OpenTxPageIconComponent } from '../shared/utils/open-tx-page-icon.component';
 
 export const SHARED_IMPORTS = [
   CommonModule,
@@ -20,4 +21,5 @@ export const SHARED_IMPORTS = [
   TimeAgoPipe,
   TruncateMiddlePipe,
   CopyIconComponent,
+  OpenTxPageIconComponent,
 ];
