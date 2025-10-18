@@ -20,8 +20,8 @@
 
       <!-- Icon to jump to the Tx-page
      The icon is only shown in the Tx-dialog, not on the Tx-page -->
-      <a *ngIf="showOpenTxIcon" [routerLink]="['/tx', ep.transactionHash]" class="icon-btn"
-        title="Open transaction page" aria-label="Open transaction page" (click)="openTx.emit()"
+      <a *ngIf="showOpenTxIcon" [routerLink]="['/tx', ep.transactionHash]" [queryParams]="{ ep: ep.hash }"
+        class="icon-btn" title="Open transaction page" aria-label="Open transaction page" (click)="openTx.emit()"
         style="margin-left: -3pt; display:inline-flex; align-items:center;">
         <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
       </a>

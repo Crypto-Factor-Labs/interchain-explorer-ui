@@ -36,6 +36,19 @@ export class TransactionPageComponent {
 
   // Track opened ExecutionParts by hash
   opened = new Set<string>();
+  initialOpenEpHash: string | null = null;
+
+  /*
+  ngOnInit() {
+    this.initialOpenEpHash = this.route.snapshot.queryParamMap.get('ep');
+  }
+  */
+  ngOnInit() {
+    const ep = this.route.snapshot.queryParamMap.get('ep');
+    console.debug('[TxPage] queryParam ep =', ep);
+    this.initialOpenEpHash = ep;
+  }
+
 
   toggleEP(hash: string) {
     if (!hash) return;
