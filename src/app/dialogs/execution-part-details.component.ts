@@ -23,7 +23,7 @@ export class ExecutionPartDetailsComponent {
 
   get isRevert() { return !!this.ep?.isRevert; }
 
-  // TEMPORARY: naive status derivation
+  // TEMPORARY: naive status derivation, to be replaced later by 'dots' (?)
   get statusLabel(): string {
     const ep = this.ep;
     if (!ep) return '—';

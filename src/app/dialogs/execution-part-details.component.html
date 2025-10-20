@@ -35,7 +35,7 @@
 
   <!-- Index within transaction -->
   <div class="field">
-    <div class="label">Index</div>
+    <div class="label">Index in Tx</div>
     <div class="value">{{ ep.transactionExecutionPartIndex | asDash }}</div>
   </div>
 
@@ -60,13 +60,20 @@
   <!-- Partial block -->
   <div class="field">
     <div class="label">Partial Block</div>
-    <div class="value">
-      <!-- height and index in one compact line; tweak if you prefer separate rows -->
+
+    <div class="value value--with-action">
       {{ ep.partialBlockHeight | asDash }}
-      <span *ngIf="ep?.partialBlockPartIndex !== undefined">:{{ ep.partialBlockPartIndex }}</span>
-      <span *ngIf="ep?.includedInPartialBlock" style="opacity:.75; margin-left:.5rem;">
-        ({{ ep.includedInPartialBlock }})
-      </span>
+
+      <ng-container *ngIf="ep.partialBlockPartIndex !== undefined">
+        <span class="inline-label">|</span>
+        <span>#{{ ep.partialBlockPartIndex }}</span>
+      </ng-container>
+
+      <ng-container *ngIf="ep.includedInPartialBlock as pbHash">
+        <span class="inline-label">|</span>
+        <span>{{ pbHash }}</span>
+        <app-copy-icon [value]="pbHash"></app-copy-icon>
+      </ng-container>
     </div>
   </div>
 

@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 import { AnimationEvent as NgAnimationEvent } from '@angular/animations';
 import { SHARED_IMPORTS } from '../../shared/shared-standalone.js';
 import { Transaction, Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
-import { expandCollapse, staggerItems } from '../masterblocks.animations.js';
+import { expandCollapse, staggerItems } from '../../shared/utils/animations.js';
 import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
 
 // --- Progress helper types (local, non-exported) ---

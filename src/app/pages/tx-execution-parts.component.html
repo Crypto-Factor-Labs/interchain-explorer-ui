@@ -8,27 +8,29 @@
   <!-- Normal EPs -->
   <section *ngFor="let ep of epList; trackBy: trackByHash" class="ep-section">
     <div class="ep-header" [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash">
-      <span class="left">
+      <span class="left" role="button" tabindex="0" (click)="toggleEP(ep.hash)" (keydown.enter)="toggleEP(ep.hash)"
+        (keydown.space)="toggleEP(ep.hash)" [attr.aria-expanded]="isOpen(ep.hash)"
+        [attr.aria-controls]="'ep-' + ep.hash">
         <img class="chain-logo" [src]="logoSrc(ep.chainId)" [alt]="'Chain ' + ep.chainId" />
         <span class="value">#{{ ep.transactionExecutionPartIndex }}</span>
 
         <span class="value value--with-action" title="{{ ep.hash }}">
           {{ ep.hash | truncateMiddle: 8 }}
 
-          <!-- Only the chevron is interactive -->
+          <!-- chevron stays directly after the hash -->
           <button type="button" class="icon-btn chevron-btn" (click)="toggleEP(ep.hash); $event.stopPropagation()"
             [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash"
             [attr.aria-label]="'Toggle details for ' + (ep.hash | truncateMiddle: 8)" title="Expand/collapse">
             <i class="fa-solid fa-chevron-down chevron"></i>
           </button>
-
         </span>
 
         <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
       </span>
     </div>
 
-    <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)">
+    <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)"
+      [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
       <app-execution-part-details [ep]="ep"></app-execution-part-details>
     </div>
   </section>
@@ -47,7 +49,8 @@
       </span>
     </button>
 
-    <div class="ep-body" [id]="'ep-' + rep.hash" *ngIf="isOpen(rep.hash)">
+    <div class="ep-body" [id]="'ep-' + rep.hash" *ngIf="isOpen(rep.hash)"
+      [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
       <app-execution-part-details [ep]="rep"></app-execution-part-details>
     </div>
   </section>
