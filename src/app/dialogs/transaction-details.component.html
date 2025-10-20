@@ -1,8 +1,7 @@
 <!-- Hash -->
 <div class="field">
   <div class="label">Hash</div>
-  <div class="value value--with-action">
-    <code class="mono">{{ hash }}</code>
+  <div class="value value--with-action">{{ hash }}
     <app-copy-icon [value]="hash"> </app-copy-icon>
 
     <!-- Icon to jump to the Tx-page
@@ -64,7 +63,9 @@
 </div>
 <div class="field" *ngIf="hasMB">
   <div class="label">MB Hash</div>
-  <div class="value">{{ tx.includedInMasterBlock }}</div>
+  <div class="value value--with-action">{{ tx.includedInMasterBlock }}
+    <app-copy-icon [value]="tx.includedInMasterBlock"> </app-copy-icon>
+  </div>
 </div>
 
 <!-- Index within MB -->

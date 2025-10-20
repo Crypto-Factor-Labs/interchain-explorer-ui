@@ -7,17 +7,26 @@
 <ng-container *ngIf="epList?.length as count; else none">
   <!-- Normal EPs -->
   <section *ngFor="let ep of epList; trackBy: trackByHash" class="ep-section">
-    <button type="button" class="ep-header" (click)="toggleEP(ep.hash); $event.stopPropagation()"
-      [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash">
+    <div class="ep-header" [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash">
       <span class="left">
-        <span class="hash mono">{{ shortHash(ep.hash) }}</span>
-        <span class="meta">#{{ ep.transactionExecutionPartIndex }} · chain {{ ep.chainId }}</span>
+        <img class="chain-logo" [src]="logoSrc(ep.chainId)" [alt]="'Chain ' + ep.chainId" />
+        <span class="value">#{{ ep.transactionExecutionPartIndex }}</span>
+
+        <span class="value value--with-action" title="{{ ep.hash }}">
+          {{ ep.hash | truncateMiddle: 8 }}
+
+          <!-- Only the chevron is interactive -->
+          <button type="button" class="icon-btn chevron-btn" (click)="toggleEP(ep.hash); $event.stopPropagation()"
+            [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash"
+            [attr.aria-label]="'Toggle details for ' + (ep.hash | truncateMiddle: 8)" title="Expand/collapse">
+            <i class="fa-solid fa-chevron-down chevron"></i>
+          </button>
+
+        </span>
+
         <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
       </span>
-      <span class="right">
-        <i class="fa-solid" [class.fa-chevron-down]="!isOpen(ep.hash)" [class.fa-chevron-up]="isOpen(ep.hash)"></i>
-      </span>
-    </button>
+    </div>
 
     <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)">
       <app-execution-part-details [ep]="ep"></app-execution-part-details>
@@ -29,7 +38,7 @@
     <button type="button" class="ep-header" (click)="toggleEP(rep.hash); $event.stopPropagation()"
       [attr.aria-expanded]="isOpen(rep.hash)" [attr.aria-controls]="'ep-' + rep.hash">
       <span class="left">
-        <span class="hash mono">{{ shortHash(rep.hash) }}</span>
+        <span class="hash mono">{{ rep.hash | truncateMiddle: 8 }}</span>
         <span class="meta">revert · chain {{ rep.chainId }}</span>
         <span class="badge-revert">Revert</span>
       </span>
@@ -46,5 +55,5 @@
 
 <ng-template #none>
   <!-- Optional: placeholder while tx loads or when there are no EPs -->
-  <em style="opacity:.7;">No execution parts.</em>
+  <em style="opacity:.7;">No ExecutionParts.</em>
 </ng-template>

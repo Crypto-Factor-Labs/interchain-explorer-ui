@@ -1,12 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import type { ExecutionPart } from '../shared/interfaces/transaction.interface';
+import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { ExecutionPartDetailsComponent } from '../dialogs/execution-part-details.component';
+import { getChainImage } from '../shared/utils/common.utils';
 
 @Component({
   selector: 'app-tx-execution-parts',
   standalone: true,
-  imports: [CommonModule, ExecutionPartDetailsComponent],
+  imports: [CommonModule, ExecutionPartDetailsComponent, ...SHARED_IMPORTS],
   templateUrl: './tx-execution-parts.component.html',
   styleUrls: ['./tx-execution-parts.component.scss'],
 })
@@ -61,9 +63,9 @@ export class TxExecutionPartsComponent {
     return this.opened.has(hash);
   }
 
-  shortHash(h: string, len = 8) {
-    return !h ? '—' : h.length <= len ? h : `${h.slice(0, len)}…`;
-  }
-
   trackByHash = (_: number, ep: { hash: string }) => ep.hash;
+
+  logoSrc(chainId: number): string {
+    return getChainImage(chainId);
+  }
 }
