@@ -19,6 +19,6 @@ export class SearchBarComponent {
   }
 
   onSearch() {
-    this.searchService.searchBlock(this.searchHash);
+    this.searchService.search(this.searchHash);
   }
 }

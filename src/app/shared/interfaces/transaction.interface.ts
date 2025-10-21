@@ -54,6 +54,7 @@ export interface ExecutionPartBase {
   chainId: number;
   executionSignature: string;
   hash: string;
+  isRevert: boolean;
   operatorAddress: string;
   senderAddress: string;
   includedInPartialBlock: string;
@@ -87,11 +88,12 @@ export interface Transaction {
   sourceChainId: number;
   sourceChainMempoolEpoch: number;
   stateValidator: string;
+  stateValidationResult: ValidationResult;
 
   executionParts: ExecutionPart[];
   revertExecutionPart?: ExecutionPart;
 
-  state: TriState; // validation state
+  state: number; // validation state
   includedInMasterBlock: string;
   masterBlockHeight: string; // decimal string
   masterBlockTxIndex: number;

@@ -1,0 +1,88 @@
+<div class="details-grid">
+  <!-- Hash with copy button -->
+  <div class="field">
+    <div class="label">
+      <span *ngIf="isRevert" class="badge-revert" aria-label="Revert">Revert</span>
+      <span style="margin-left: 10pt">Hash</span>
+    </div>
+    <div class="value value--with-action">
+      <code class="mono">{{ ep.hash }}</code>
+      <app-copy-icon [value]="ep.hash"></app-copy-icon>
+    </div>
+  </div>
+
+  <!-- Tx hash -->
+  <div class="field">
+    <div class="label">Tx Hash</div>
+    <div class="value value--with-action">
+      <code class="mono">{{ ep.transactionHash }}</code>
+      <app-copy-icon [value]="ep.transactionHash"></app-copy-icon>
+
+      <!-- Icon to jump to the Tx-page
+     The icon is only shown in the Tx-dialog, not on the Tx-page -->
+      <a *ngIf="showOpenTxIcon" [routerLink]="['/tx', ep.transactionHash]" [queryParams]="{ ep: ep.hash }"
+        class="icon-btn" title="Open transaction page" aria-label="Open transaction page" (click)="openTx.emit()"
+        style="margin-left: -3pt; display:inline-flex; align-items:center;">
+        <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="label">Status</div>
+    <div class="value">{{ statusLabel }}</div>
+  </div>
+
+  <!-- Index within transaction -->
+  <div class="field">
+    <div class="label">Index in Tx</div>
+    <div class="value">{{ ep.transactionExecutionPartIndex | asDash }}</div>
+  </div>
+
+  <!-- Chain -->
+  <div class="field">
+    <div class="label">Chain ID</div>
+    <div class="value">{{ ep.chainId }}</div>
+  </div>
+
+  <!-- Operator -->
+  <div class="field">
+    <div class="label">Operator</div>
+    <div class="value">{{ ep.operatorAddress | asDash }}</div>
+  </div>
+
+  <!-- Sender -->
+  <div class="field">
+    <div class="label">Sender</div>
+    <div class="value">{{ ep.senderAddress | asDash }}</div>
+  </div>
+
+  <!-- Partial block -->
+  <div class="field">
+    <div class="label">Partial Block</div>
+
+    <div class="value value--with-action">
+      {{ ep.partialBlockHeight | asDash }}
+
+      <ng-container *ngIf="ep.partialBlockPartIndex !== undefined">
+        <span class="inline-label">|</span>
+        <span>#{{ ep.partialBlockPartIndex }}</span>
+      </ng-container>
+
+      <ng-container *ngIf="ep.includedInPartialBlock as pbHash">
+        <span class="inline-label">|</span>
+        <span>{{ pbHash }}</span>
+        <app-copy-icon [value]="pbHash"></app-copy-icon>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Optional: Execution signature (useful for debugging) -->
+  <div class="field">
+    <div class="label">Exec Signature</div>
+    <div class="value" style="word-break: break-all;">
+      {{ ep.executionSignature | asDash }}
+    </div>
+  </div>
+
+</div>

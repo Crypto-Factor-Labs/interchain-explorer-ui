@@ -1,0 +1,23 @@
+<div class="panel">
+  <div class="dialog-title">
+    <div class="logo-pane" *ngIf="logoSrc">
+      <img [src]="logoSrc" [alt]="logoAlt" class="logo-img" />
+    </div>
+    <div class="title-text">
+      <h2>{{ panelTitle }}</h2>
+    </div>
+    <ng-content select="[panel-header-extra]"></ng-content>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="fields-container">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="button-wrapper">
+    <ng-content select="[panel-actions]"></ng-content>
+  </div>
+</div>

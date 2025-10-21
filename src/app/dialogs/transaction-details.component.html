@@ -1,0 +1,87 @@
+<!-- Hash -->
+<div class="field">
+  <div class="label">Hash</div>
+  <div class="value value--with-action">{{ hash }}
+    <app-copy-icon [value]="hash"> </app-copy-icon>
+
+    <!-- Icon to jump to the Tx-page
+     The icon is only shown in the Tx-dialog, not on the Tx-page -->
+    <app-open-tx-page-icon [txHash]="tx.transactionHash" (beforeNavigate)="onBeforeNavigate()">
+    </app-open-tx-page-icon>
+  </div>
+</div>
+
+<!-- State -->
+<div class="field">
+  <div class="label">State</div>
+  <div class="value no-mono">
+    <span class="badge-state">{{ tx.state | txStateWord }}</span>
+  </div>
+</div>
+
+<!-- Result -->
+<div class="field">
+  <div class="label">Result</div>
+  <div class="value no-mono">
+    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
+      {{ triStateLabel(tx.result) }}
+    </span>
+    <!-- Icons need improvement
+    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
+      <i class="fa-solid" [ngClass]="triStateIcon(tx.result)"></i>
+      {{ triStateLabel(tx.result) }}
+    </span>
+    -->
+  </div>
+</div>
+
+<!-- Sender / Validator -->
+<div class="field">
+  <div class="label">State Validator</div>
+  <div class="value value--with-action">
+    <span class="mono">{{ tx.stateValidator }}</span>
+    <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
+      {{ triStateLabel(tx.stateValidationResult) }}
+    </span>
+  </div>
+</div>
+
+<!-- Source Chain -->
+<div class="field">
+  <div class="label">Source Chain</div>
+  <div class="value">
+    {{ tx.sourceChainId }}
+    <span class="inline-label">| &nbsp;Epoch</span>
+    {{ tx.sourceChainMempoolEpoch }}
+  </div>
+</div>
+
+<!-- MasterBlock linking -->
+<div class="field" *ngIf="tx.masterBlockHeight">
+  <div class="label">MB Height</div>
+  <div class="value">{{ tx.masterBlockHeight }}</div>
+</div>
+<div class="field" *ngIf="hasMB">
+  <div class="label">MB Hash</div>
+  <div class="value value--with-action">{{ tx.includedInMasterBlock }}
+    <app-copy-icon [value]="tx.includedInMasterBlock"> </app-copy-icon>
+  </div>
+</div>
+
+<!-- Index within MB -->
+<div class="field" *ngIf="tx.masterBlockTxIndex !== null && tx.masterBlockTxIndex !== undefined">
+  <div class="label">MB Tx Index</div>
+  <div class="value">{{ tx.masterBlockTxIndex }}</div>
+</div>
+
+<!-- ExecutionParts -->
+<div class="field" *ngIf="showExecPartsCount">
+  <div class="label">#ExecutionParts</div>
+  <div class="value value--with-action">
+    {{ tx.executionParts.length }}
+    <!-- Icon to jump to the Tx-page
+   The icon is only shown in the Tx-dialog, not on the Tx-page -->
+    <app-open-tx-page-icon [txHash]="tx.transactionHash" (beforeNavigate)="onBeforeNavigate()" style="margin-left: 5pt">
+    </app-open-tx-page-icon>
+  </div>
+</div>

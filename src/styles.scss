@@ -1,5 +1,10 @@
-@import 'cf_color_palette.scss';
+@import '../src/app/shared/cf_color_palette.scss';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+
+// Global font for monospace text, for example for hashes
+:root {
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
 
 body {
   background-color: $charcoal;
@@ -193,9 +198,12 @@ body {
   margin-bottom: 4px; // Spacing between label and value
 }
 
-/* Value styling: for the actual content *
-.value {
-  color: $powder-blue;
+// Shouldn't .value also be here?
+
+.value--with-action {
+  display: flex;
+  align-items: center; // Overrides baseline
+  gap: .5rem;
 }
 
 /* Separator line */
@@ -243,4 +251,157 @@ body {
 .custom-light-backdrop {
   background-color: rgba(255, 255, 255, 0.2) !important;
   backdrop-filter: blur(4px) brightness(1.3) !important;
+}
+
+/* Generic font utilities */
+.font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums; // aligned digits
+  //letter-spacing: 0.01em;
+}
+
+/* Purpose-specific presets */
+.hash-text {
+  @extend .font-mono;
+  font-size: 0.9em;
+  font-weight: 500;
+  opacity: .9;
+  white-space: nowrap;
+}
+
+/* Icon button styling, for example for the copy-icons */
+// Base utility for icon-like triggers (both <button> and <a>)
+.icon-btn {
+  border: 0; // harmless on <a>, needed on <button>
+  background: transparent; // idem
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  color: inherit; // inherit context color (panel/page)
+  text-decoration: none; // ensures <a> doesn't underline
+}
+
+// The glyph follows the container color
+.icon-btn i {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  color: currentColor;
+  transition: color .2s ease, transform .15s ease;
+  transform-origin: center;
+}
+
+.icon-btn:hover {
+  color: $powder-blue;
+}
+
+/* Base badge */
+%badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  /* sizing tokens */
+  --badge-px: 12px; // left and right
+  --badge-py-top: 6px;
+  --badge-py-bottom: 3px;
+  --badge-font-size: 10px;
+  --badge-radius: 9999px;
+
+  padding: var(--badge-py-top) var(--badge-px) var(--badge-py-bottom);
+  border-radius: var(--badge-radius);
+  font-size: var(--badge-font-size);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: .5px;
+  white-space: nowrap;
+  color: $alice-blue;
+  opacity: 0.9;
+}
+
+.badge-state {
+  @extend %badge;
+  background-image: linear-gradient(90deg, $ultramarine, $byzantine-blue);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset;
+  margin-bottom: 3px;
+  margin-top: -3px;
+}
+
+.badge-revert {
+  @extend %badge;
+  background: #f59e0b;
+  color: #0b0e14;
+  letter-spacing: 0.2pt;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  --badge-px: 10px;
+  --badge-py-top: 3px;
+  --badge-py-bottom: 2px;
+}
+
+.badge-result {
+  display: inline-flex;
+  align-items: center;
+  padding: .1rem .5rem;
+  border-radius: .5rem;
+  font-family: var(--label-font); // is defined in panel.component.scss
+  font-size: .75rem;
+  line-height: 1.2;
+  border: 2px solid rgba(255, 255, 255, .2);
+  background: transparent;
+
+  &.ok {
+    color: #2ecc71;
+    border-color: rgba(46, 204, 113, .35);
+  }
+
+  &.pending {
+    color: #f1c40f;
+    border-color: rgba(241, 196, 15, .35);
+  }
+
+  &.bad {
+    color: #e74c3c;
+    border-color: rgba(231, 76, 60, .35);
+  }
+
+  &.unknown {
+    color: #b5b8bf;
+    border-color: rgba(181, 184, 191, .35);
+  }
+}
+
+/* Style the SnackBar via its container */
+.mat-mdc-snack-bar-container.snack-error {
+  --mdc-snackbar-container-color: #6e282a; // background
+  --mdc-snackbar-supporting-text-color: #ff6b6b;
+  --mdc-snackbar-container-shape: 10px; // border radius
+
+  /* Extras */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  border: 2px solid rgba(255, 107, 107, 0.750);
+  border-radius: 11px;
+}
+
+/* Compact snackbar variant */
+.mat-mdc-snack-bar-container.snack-compact .mdc-snackbar__surface {
+  min-width: 0; // default is ~344px
+  max-width: 360px;
+  width: auto; // shrink to fit content
+}
+
+// Make sure text wraps instead of forcing width
+.mat-mdc-snack-bar-container.snack-compact .mdc-snackbar__label {
+  white-space: normal;
+}
+
+// Action button text color
+.mat-mdc-snack-bar-container.snack-error .mat-mdc-snack-bar-action .mdc-button__label {
+  color: #fdc4c4;
 }

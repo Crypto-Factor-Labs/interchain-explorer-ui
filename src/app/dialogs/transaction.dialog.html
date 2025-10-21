@@ -1,0 +1,7 @@
+<app-dialog-shell dialogTitle="Transaction" [logoSrc]="logoSrc" [logoAlt]="'Chain ' + tx.sourceChainId"
+  (close)="dialogRef.close()">
+  <app-transaction-details [tx]="tx" [showExecPartsCount]="true" (openTx)="dialogRef.close()"></app-transaction-details>
+
+  <ng-container dialog-actions>
+  </ng-container>
+</app-dialog-shell>

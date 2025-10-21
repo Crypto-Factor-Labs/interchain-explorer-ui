@@ -1,7 +1,10 @@
 <div class="background-layer"></div>
 
 <div class="title-panel no-select">
-  <img src="/assets/images/CFR_logo_light_transparent.png" alt="CFR-logo" class="logo" />
+  <a class="logo-link" [routerLink]="['/']" aria-label="Go to main page">
+    <img src="/assets/images/CFR_logo_light_transparent.png" alt="CFR-logo" class="logo" />
+  </a>
+
   <span class="title-text">INTERCHAIN EXPLORER</span>
   <!-- Show the SearchBar as part of the TitleBar -->
   <app-searchbar></app-searchbar>
@@ -12,4 +15,5 @@
 
 <div class="content-area">
   <router-outlet></router-outlet>
+  <router-outlet name="modal"></router-outlet>
 </div>

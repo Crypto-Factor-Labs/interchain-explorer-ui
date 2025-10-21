@@ -1,0 +1,27 @@
+<div class="field">
+  <div class="label">Height</div>
+  <div class="value">{{ masterBlock.height }}</div>
+</div>
+
+<div class="field">
+  <div class="label">Hash</div>
+  <div class="value value--with-action">
+    <code class="mono">{{ masterBlock.block_hash }}</code>
+    <app-copy-icon [value]="masterBlock.block_hash"></app-copy-icon>
+  </div>
+</div>
+
+<div class="field">
+  <div class="label">Timestamp</div>
+  <div class="value">{{ masterBlock.timestamp }}</div>
+</div>
+
+<div class="field">
+  <div class="label">Merkle Root</div>
+  <div class="value">{{ masterBlock.merkle_root }}</div>
+</div>
+
+<div class="field">
+  <div class="label">Mint Transaction</div>
+  <div class="value">{{ masterBlock.block_mint_transaction }}</div>
+</div>

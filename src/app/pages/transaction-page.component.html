@@ -1,0 +1,13 @@
+<div class="page-container" *ngIf="vm$ | async as vm">
+  <ng-container *ngIf="vm.loading">Loading transaction…</ng-container>
+
+  <div *ngIf="vm.error" class="error-box">Could not load this transaction.</div>
+
+  <app-panel *ngIf="vm.tx as tx" panelTitle="Transaction" [logoSrc]="getChainImage(tx.sourceChainId)"
+    [logoAlt]="'Chain ' + tx.sourceChainId">
+    <app-transaction-details [tx]="tx"></app-transaction-details>
+    <app-tx-execution-parts [epList]="tx?.executionParts" [revertEp]="tx?.revertExecutionPart"
+      [initialOpenEpHash]="initialOpenEpHash">
+    </app-tx-execution-parts>
+  </app-panel>
+</div>

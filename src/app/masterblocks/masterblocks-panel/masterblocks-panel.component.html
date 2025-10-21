@@ -38,19 +38,24 @@
           <div class="field">
             <div class="label">Hash</div>
             <div class="value">
-              <span class="gradient-text clickable" (click)="openMasterBlock.emit(block)">
+              <span class="gradient-text clickable" title="{{ block.block_hash }}"
+                (click)="openMasterBlock.emit(block)">
                 {{ block.block_hash | truncateMiddle: 8 }}
               </span>
             </div>
           </div>
         </div>
 
-        <!-- Column: #Tx -->
+        <!-- Column: #Tx - clicking on the number filters the Transactions-list -->
         <div class="column column-right">
           <div class="field">
             <div class="label">#Tx</div>
             <div class="value">
-              <span class="gradient-text" style="padding-left: 7px">{{ block.tx_count }}</span>
+              <button class="tx-count-btn gradient-text" [disabled]="!block.tx_count"
+                (click)="onTxCountClick($event, block)" title="Filter transactions of this Master Block"
+                style="padding-left: 7px">
+                {{ block.tx_count }}
+              </button>
             </div>
           </div>
         </div>
@@ -106,7 +111,8 @@
               <div class="field">
                 <div class="label">Hash</div>
                 <div class="value">
-                  <span class="gradient-text clickable" (click)="openPartialBlock.emit(partialBlock)">
+                  <span class="gradient-text clickable" title="{{ partialBlock.block_hash }}"
+                    (click)="openPartialBlock.emit(partialBlock)">
                     {{ partialBlock.block_hash | truncateMiddle: 8 }}
                   </span>
                 </div>

@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { AnimationEvent as NgAnimationEvent } from '@angular/animations';
 import { SHARED_IMPORTS } from '../../shared/shared-standalone.js';
-import { Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
-import { expandCollapse, staggerItems } from '../masterblocks.animations.js';
+import { Transaction, Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
+import { expandCollapse, staggerItems } from '../../shared/utils/animations.js';
 import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
 
 // --- Progress helper types (local, non-exported) ---
@@ -28,6 +28,8 @@ export class TransactionsPanelComponent {
   @Input() currentPage = 1;
   @Input() totalPages = 1;
   @Input() pollingActive = true;
+  @Input() masterBlockHash: string | null = null;  // for filtering
+  @Input() masterBlockHeight: string | null = null;
 
   @Input() expandedTx: Record<string, boolean> = {};
   @Input() getChainImage!: (chainId: number | string) => string;
@@ -35,10 +37,12 @@ export class TransactionsPanelComponent {
 
   @Output() togglePolling = new EventEmitter<void>();
   @Output() toggleExecutionParts = new EventEmitter<string>();
-  @Output() openTx = new EventEmitter<Tx>();
+  @Output() openTransaction = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
 
-  // trackBy for parts (fallback to index)
+  @Output() openExecPart = new EventEmitter<{ tx_hash: string, ep_hash: string }>();
+
+  // trackBy for ExecutionParts (fallback to index)
   trackByPart = (i: number, ep: TxExecutionPart) => ep.id ?? i;
 
   @ViewChild('txListRef') listRef?: ElementRef<HTMLDivElement>;
@@ -67,5 +71,4 @@ export class TransactionsPanelComponent {
     const status = e.status.replace('_', ' ');
     return when ? `${e.name}: ${status} — ${when}` : `${e.name}: ${status}`;
   }
-
 }

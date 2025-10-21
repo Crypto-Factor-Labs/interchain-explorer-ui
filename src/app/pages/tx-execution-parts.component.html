@@ -1,0 +1,62 @@
+<h3 class="ep-heading">
+  ExecutionParts
+  <span *ngIf="epList?.length" class="ep-count">({{ epList?.length }})</span>
+</h3>
+
+<!-- Only render sections when we actually have EPs -->
+<ng-container *ngIf="epList?.length as count; else none">
+  <!-- Normal EPs -->
+  <section *ngFor="let ep of epList; trackBy: trackByHash" class="ep-section">
+    <div class="ep-header" [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash">
+      <span class="left" role="button" tabindex="0" (click)="toggleEP(ep.hash)" (keydown.enter)="toggleEP(ep.hash)"
+        (keydown.space)="toggleEP(ep.hash)" [attr.aria-expanded]="isOpen(ep.hash)"
+        [attr.aria-controls]="'ep-' + ep.hash">
+        <img class="chain-logo" [src]="logoSrc(ep.chainId)" [alt]="'Chain ' + ep.chainId" />
+        <span class="value">#{{ ep.transactionExecutionPartIndex }}</span>
+
+        <span class="value value--with-action" title="{{ ep.hash }}">
+          {{ ep.hash | truncateMiddle: 8 }}
+
+          <!-- chevron stays directly after the hash -->
+          <button type="button" class="icon-btn chevron-btn" (click)="toggleEP(ep.hash); $event.stopPropagation()"
+            [attr.aria-expanded]="isOpen(ep.hash)" [attr.aria-controls]="'ep-' + ep.hash"
+            [attr.aria-label]="'Toggle details for ' + (ep.hash | truncateMiddle: 8)" title="Expand/collapse">
+            <i class="fa-solid fa-chevron-down chevron"></i>
+          </button>
+        </span>
+
+        <span *ngIf="ep.isRevert" class="badge-revert">Revert</span>
+      </span>
+    </div>
+
+    <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)"
+      [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
+      <app-execution-part-details [ep]="ep"></app-execution-part-details>
+    </div>
+  </section>
+
+  <!-- Revert EP at the end -->
+  <section *ngIf="revertEp as rep" class="ep-section ep-section--revert">
+    <button type="button" class="ep-header" (click)="toggleEP(rep.hash); $event.stopPropagation()"
+      [attr.aria-expanded]="isOpen(rep.hash)" [attr.aria-controls]="'ep-' + rep.hash">
+      <span class="left">
+        <span class="hash mono">{{ rep.hash | truncateMiddle: 8 }}</span>
+        <span class="meta">revert · chain {{ rep.chainId }}</span>
+        <span class="badge-revert">Revert</span>
+      </span>
+      <span class="right">
+        <i class="fa-solid" [class.fa-chevron-down]="!isOpen(rep.hash)" [class.fa-chevron-up]="isOpen(rep.hash)"></i>
+      </span>
+    </button>
+
+    <div class="ep-body" [id]="'ep-' + rep.hash" *ngIf="isOpen(rep.hash)"
+      [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
+      <app-execution-part-details [ep]="rep"></app-execution-part-details>
+    </div>
+  </section>
+</ng-container>
+
+<ng-template #none>
+  <!-- Optional: placeholder while tx loads or when there are no EPs -->
+  <em style="opacity:.7;">No ExecutionParts.</em>
+</ng-template>

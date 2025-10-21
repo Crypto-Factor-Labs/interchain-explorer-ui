@@ -1,0 +1,17 @@
+<app-panel [panelTitle]="dialogTitle" [logoSrc]="logoSrc" [logoAlt]="logoAlt">
+  <!-- right-side close icon in header -->
+  <div class="close-icon" panel-header-extra (click)="close.emit()">
+    <i class="fa-solid fa-square-xmark"></i>
+  </div>
+
+  <!-- dialog content -->
+  <ng-content></ng-content>
+
+  <!-- footer: close button + any extra actions provided by the dialog -->
+  <ng-container panel-actions>
+    <a class="close-btn" (click)="close.emit()" autofocus>
+      <span class="btn-content">Close</span>
+    </a>
+    <ng-content select="[dialog-actions]"></ng-content>
+  </ng-container>
+</app-panel>

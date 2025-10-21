@@ -1,0 +1,4 @@
+<app-dialog-shell dialogTitle="Partial Block" [logoSrc]="logoSrc" [logoAlt]="'Chain ' + partialBlock.chain_id"
+  (close)="dialogRef.close()">
+  <app-partialblock-details [partialBlock]="partialBlock"></app-partialblock-details>
+</app-dialog-shell>

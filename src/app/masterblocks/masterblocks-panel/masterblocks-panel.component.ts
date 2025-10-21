@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger, AnimationEvent } from '@angular/animations';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe';
+import { MasterChainBlock } from '../../shared/interfaces/master-chain.interface';
 
 @Component({
   selector: 'app-masterblocks-panel',
@@ -50,10 +51,17 @@ export class MasterBlocksPanelComponent {
   @Output() openPartialBlock = new EventEmitter<any>();
   @Output() togglePartialBlocks = new EventEmitter<string>(); // block_hash
   @Output() pageChange = new EventEmitter<number>(); // new page number
+  @Output() filterByMasterBlock = new EventEmitter<{ hash: string; height: string }>();
 
   // Animation EventHandler: automatically scroll expanded blocks in view
   // Reference to the list container for scrolling
   @ViewChild('blockListRef', { static: false }) listRef?: ElementRef<HTMLDivElement>;
+
+  onTxCountClick(e: MouseEvent, block: MasterChainBlock) {
+    e.stopPropagation(); // don’t toggle the block row if it’s clickable
+    if (!block.tx_count) return;
+    this.filterByMasterBlock.emit({ hash: block.block_hash, height: String(block.height) });
+  }
 
   onExpandDone(e: AnimationEvent) {
     // Only on expand (not collapse)

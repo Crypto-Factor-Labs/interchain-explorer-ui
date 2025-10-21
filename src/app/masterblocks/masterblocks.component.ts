@@ -1,20 +1,22 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, take, tap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { BackendService } from '../shared/services/backend.service';
 import { DialogService } from '../shared/services/dialog.service';
-import { MasterBlockComponent } from '../masterblock/masterblock.component';
+import { MasterBlockDialogComponent } from '../dialogs/masterblock.dialog';
 import { MasterChainBlock } from '../shared/interfaces/master-chain.interface'
-import { PartialBlockComponent } from '../partialblock/partialblock.component';
+import { PartialBlockDialogComponent } from '../dialogs/partialblock.dialog';
 import { PartialChainBlock } from '../shared/interfaces/master-chain.interface';
-import { Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
+import { ExecutionPart, Transaction, Tx, TxFetchResult } from '../shared/interfaces/transaction.interface';
 import { getChainImage as utilGetChainImage } from '../shared/utils/common.utils';
 import { MasterBlocksPanelComponent } from './masterblocks-panel/masterblocks-panel.component';
 import { TransactionsPanelComponent } from './transactions-panel/transactions-panel.component';
 import { TxStatsService } from '../statistics/tx-stats.service';
 import BN from 'bn.js';
+import { TransactionDialogComponent } from '../dialogs/transaction.dialog';
+import { ExecutionPartDialogComponent } from '../dialogs/execution-part.dialog';
 
 interface FetchResult {
   blocks: MasterChainBlock[];
@@ -44,6 +46,8 @@ export class MasterBlocksComponent implements OnInit {
 
   /* ---------------- Transactions state ---------------- */
   transactions: Tx[] = [];
+  masterBlockHash: string | null = null;
+  masterBlockHeight: string | null = null;
   expandedTx: Record<string, boolean> = {};
   txPage = 1;
   txTotalPages = 1;
@@ -158,27 +162,36 @@ export class MasterBlocksComponent implements OnInit {
   }
 
   showMasterBlockData(block: MasterChainBlock): void {
-    this.dialogService.openDialog(MasterBlockComponent, block);
+    this.dialogService.openDialog(MasterBlockDialogComponent, block);
   }
 
   showPartialBlockData(block: PartialChainBlock): void {
-    this.dialogService.openDialog(PartialBlockComponent, block);
+    this.dialogService.openDialog(PartialBlockDialogComponent, block);
   }
 
   /* ================= Transactions ================= */
 
   private txStats = inject(TxStatsService);
 
+  onMasterBlockFilterChange(hash: string | null) {
+    this.masterBlockHash = hash;
+    this.expandedTx = {};     // collapse rows on filter change
+    //this.txPage = 1;
+    this.refreshTx();
+  }
+
   /** Start polling page 1 for transactions */
   refreshTx(): void {
     this.txPage = 1;
-    this.txPollingActive = true;
+
+    // Poll only when no filter is active
+    this.txPollingActive = !this.masterBlockHash;
     clearTimeout(this.txPollingTimeout);
 
     this.subs.add(
       this.fetchTxData(0, true)
-        .pipe(  // Update the total number of transactions in the Statistics using a Signal
-          tap(res => this.txStats.setNrOfTx(res?.total ?? 0)))
+        .pipe(  // When NOT filtered, update the total number of transactions in the Statistics using a Signal
+          tap(res => { if (!this.masterBlockHash) this.txStats.setNrOfTx(res?.total ?? 0); }))
         .subscribe(res => {
           if (res) {
             this.transactions = res.transactions;
@@ -186,7 +199,7 @@ export class MasterBlocksComponent implements OnInit {
           } else {
             this.transactions = [];
             this.txTotalPages = 1;
-            this.txStats.setNrOfTx(0);  // Keep Stats consistent on empty
+            if (!this.masterBlockHash) this.txStats.setNrOfTx(0);  // Keep Stats consistent on empty
           }
           this.scheduleNextTxPoll();
         })
@@ -217,25 +230,45 @@ export class MasterBlocksComponent implements OnInit {
     );
   }
 
-  /** Toggle transactions auto-refresh */
+  /** Toggle auto-refresh; if a filter is active, clear it and go live on page 1 */
   onTxTogglePolling(): void {
+    if (this.masterBlockHash) {
+      // Clear filter → return to live stream on page 1
+      this.masterBlockHash = null;
+      this.masterBlockHeight = null;
+      this.expandedTx = {};
+      this.refreshTx();  // sets txPollingActive = true (since no filter)
+      return;
+    }
+
+    // Normal toggle when unfiltered
     if (this.txPollingActive) {
       this.txPollingActive = false;
       clearTimeout(this.txPollingTimeout);
     } else {
-      this.refreshTx();
+      this.refreshTx(); // resumes polling on page 1
     }
+  }
+
+  onSelectMasterBlockForTxFilter(sel: { hash: string; height: string }) {
+    this.masterBlockHash = sel.hash;
+    this.masterBlockHeight = sel.height;
+    this.expandedTx = {};
+    this.txPage = 1;
+    this.refreshTx();
   }
 
   private scheduleNextTxPoll(): void {
     clearTimeout(this.txPollingTimeout);
+    if (!this.txPollingActive) return;
+
     this.txPollingTimeout = setTimeout(() => this.refreshTx(), this.pollingFreq);
   }
 
   /** Backend adapter for transactions list ({ total, items }) */
   private fetchTxData(skip: number, shouldPoll: boolean): Observable<TxFetchResult | null> {
     return this.backendService
-      .getTransactions(this.pageSize, skip, true, true)
+      .getTransactions(this.pageSize, skip, true, true, this.masterBlockHash ?? undefined)
       .pipe(
         catchError(err => {
           console.error('Error loading transactions:', err);
@@ -248,15 +281,40 @@ export class MasterBlocksComponent implements OnInit {
   toggleTxExecutionParts = (hash: string) =>
     (this.expandedTx[hash] = !this.expandedTx[hash]);
 
-  /** TrackBy for tx list */
+  /** TrackBy for Tx-list */
   trackByTxHash = (_: number, tx: Tx) => tx.tx_hash;
 
-  /** Open a transaction dialog (wire to your existing component if any) */
-  openTxDialog(tx: Tx): void {
-    // If you have a TransactionComponent, do:
-    // this.dialogService.openDialog(TransactionComponent, tx);
-    // For now, keep it safe:
-    this.dialogService.openDialog(PartialBlockComponent, tx); // replace with your real TX component
-    // Or simply: console.log('TX:', tx);
+  /** Open a Transaction dialog */
+  showTransactionData(hash: string) {
+    this.backendService.getTransaction(hash).pipe(take(1)).subscribe({
+      next: (fullTx) => this.dialogService.openDialog(TransactionDialogComponent, fullTx),
+      error: (err) => console.error('Failed to load transaction', hash, err),
+    });
+  }
+
+  /** Open an ExecutionPart dialog 
+    * Note that also the Tx-hash is passed, so that the full transaction can be fetched
+    * and the applicable ExecutionPart can be found within it.
+    */
+  showExecutionPartData(tx_hash: string, ep_hash: string) {
+    this.backendService.getTransaction(tx_hash).pipe(take(1)).subscribe({
+      next: (fullTx: Transaction) => {
+        const ep = findExecutionPartOfTx(fullTx, ep_hash);
+        if (!ep) return console.warn('EP not found', { tx_hash, ep_hash });
+        this.dialogService.openDialog(ExecutionPartDialogComponent, ep);
+      },
+      error: (err) => console.error('Failed to load transaction', tx_hash, err),
+    });
   }
 }
+
+// Helper function to find an ExecutionPart by its hash within a Transaction
+function findExecutionPartOfTx(tx: Transaction, ep_hash: string): ExecutionPart | null {
+  if (!tx || !ep_hash) return null;
+  const hit = tx.executionParts?.find(p => p?.hash === ep_hash);
+  if (hit) return hit;
+  if (tx.revertExecutionPart?.hash === ep_hash) return tx.revertExecutionPart;
+  return null;
+}
+
+

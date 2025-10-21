@@ -1,55 +1,77 @@
 import { Injectable } from '@angular/core';
-import { BackendService } from '../../shared/services/backend.service';
-import { DialogService } from './dialog.service';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MasterBlockComponent } from '../../masterblock/masterblock.component';
-import { PartialBlockComponent } from '../../partialblock/partialblock.component';
+import { firstValueFrom } from 'rxjs';
+import { BackendService } from './backend.service';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
   constructor(
+    private router: Router,
     private backend: BackendService,
-    private dialog: DialogService,
     private snackBar: MatSnackBar
   ) { }
 
-  async searchBlock(hash: string): Promise<void> {
-    const trimmedHash = hash.trim();
-    if (!trimmedHash) return;
+  // Try Tx by hash; if not found, try MasterBlock; then PartialBlock.
+  async search(hash: string): Promise<void> {
+    const trimmed = hash.trim();
+    if (!trimmed) return;
 
-    // First see if the provided hash is from a MasterBlock,
-    // If no block is found, try if it is from a PartialBlock.
-    this.backend.getMasterBlock(trimmedHash).subscribe({
-      next: (block) => {
-        if (block && block.block_hash) {
-          this.dialog.openDialog(MasterBlockComponent, block);
-        } else {
-          this.tryPartialBlock(trimmedHash);
-        }
-      },
-      error: () => this.tryPartialBlock(trimmedHash)
-    });
+    // 1) Transaction (full page)
+    const txFound = await this.tryTransaction(trimmed);
+    if (txFound) return;
+
+    // 2) MasterBlock (modal)
+    const mbFound = await this.tryMasterBlock(trimmed);
+    if (mbFound) return;
+
+    // 3) PartialBlock (modal)
+    const pbFound = await this.tryPartialBlock(trimmed);
+    if (pbFound) return;
+
+    // Nothing matched
+    this.showNotFound();
   }
 
-  private tryPartialBlock(hash: string): void {
-    this.backend.getPartialBlock(hash).subscribe({
-      next: (partialBlock) => {
-        if (partialBlock && partialBlock.block_hash) {
-          this.dialog.openDialog(PartialBlockComponent, partialBlock);
-        } else {
-          this.showNotFound();
-        }
-      },
-      error: () => this.showNotFound()
-    });
+  private async tryTransaction(hash: string): Promise<boolean> {
+    try {
+      const tx = await firstValueFrom(this.backend.getTransaction(hash));
+      if (tx && tx.transactionHash) {
+        await this.router.navigate([{ outlets: { modal: ['tx', hash] } }]);
+        return true;
+      }
+    } catch { /* swallow and fall through */ }
+    return false;
+  }
+
+  private async tryMasterBlock(hash: string): Promise<boolean> {
+    try {
+      const block = await firstValueFrom(this.backend.getMasterBlock(hash));
+      if (block && block.block_hash) {
+        await this.router.navigate([{ outlets: { modal: ['mblock', hash] } }]);
+        return true;
+      }
+    } catch { /* swallow */ }
+    return false;
+  }
+
+  private async tryPartialBlock(hash: string): Promise<boolean> {
+    try {
+      const pblock = await firstValueFrom(this.backend.getPartialBlock(hash));
+      if (pblock && pblock.block_hash) {
+        await this.router.navigate([{ outlets: { modal: ['pblock', hash] } }]);
+        return true;
+      }
+    } catch { /* swallow */ }
+    return false;
   }
 
   private showNotFound(): void {
-    this.snackBar.open('Block not found', 'Dismiss', {
+    this.snackBar.open('🔎 No transaction or block found', undefined, {
       duration: 4000,
-      panelClass: ['snack-error'],
+      panelClass: ['snack-error', 'snack-compact'],
       horizontalPosition: 'right',
-      verticalPosition: 'top'
+      verticalPosition: 'top',
     });
   }
 }

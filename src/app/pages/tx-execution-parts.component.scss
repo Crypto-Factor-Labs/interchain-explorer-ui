@@ -1,0 +1,68 @@
+@import '../shared/cf_color_palette';
+
+/* Heading above the EPs */
+.ep-heading {
+  margin-top: 0pt;
+  margin-bottom: 5pt;
+  color: $byzantine-blue;
+}
+
+.ep-heading .ep-count {
+  font-size: .9em;
+  margin-left: 2pt;
+}
+
+/* Each EP section */
+.ep-section {
+  background: $rich-black;
+  border-radius: .5rem;
+  margin: .5rem 0;
+}
+
+.ep-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem .75rem;
+}
+
+.ep-header .left {
+  display: inline-flex;
+  gap: .75rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+// Make the chevron-icon that opens the EP details a bit smaller and let it rotate
+.chevron {
+  font-size: 12px;
+  line-height: 1;
+  transition: transform .15s ease;
+  transform-origin: center;
+}
+
+// Keep the clickable area comfy
+.chevron-btn {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+}
+
+// Rotate when expanded
+.chevron-btn[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+.chain-logo {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+.index {
+  font-size: .9em;
+}
+
+.hash.mono {
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+}

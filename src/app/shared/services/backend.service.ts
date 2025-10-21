@@ -4,10 +4,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConfigService } from '../../config.service';
 import { PricePoint } from '../interfaces/statistics.interface.js';
-import { ChainEvents } from '../interfaces/chain-events.interface.js';
 import {
   TxDto, TxExecutionPartDto, TxListDto,
   Tx, TxExecutionPart, TxFetchResult,
+  Transaction,
+  ExecutionPart,
 } from '../interfaces/transaction.interface.js';
 
 // TEMPORARY workaround for BN to decimal conversion
@@ -70,12 +71,21 @@ export class BackendService {
   /*
    * Methods to retrieve Transactions
    */
-  getTransactions(nr: number, skip = 0, includeParts = false, includeEvents = false): Observable<TxFetchResult> {
-    const params = new HttpParams()
+  getTransaction(hash: string): Observable<Transaction> {
+    const url = `${this.apiUrl}/masterchain/transaction/${encodeURIComponent(hash)}`;
+    return this.http.get<any>(url).pipe(map(this.mapTransactionFull));
+  }
+
+  getTransactions(nr: number, skip = 0, includeParts = false, includeEvents = false, masterBlockHash?: string): Observable<TxFetchResult> {
+    let params = new HttpParams()
       .set('nr', String(nr))
       .set('skip', String(skip))
       .set('includeParts', String(includeParts))
       .set('includeEvents', String(includeEvents));
+
+    if (masterBlockHash) {
+      params = params.set('masterBlockHash', masterBlockHash);
+    }
 
     // Also the `sender` and `operator` parameters can be added if needed
     // params = params.set('sender', sender).set('operator', operator);
@@ -99,6 +109,63 @@ export class BackendService {
     masterBlockHeight: hexToDec(dto.masterBlockHeight) ?? null,  // TEMPORARY workaround for BN to decimal conversion
     masterBlockTxIndex: dto.masterBlockTxIndex ?? null,
     executionParts: (dto.executionParts ?? []).map(this.mapExecPart),
+  });
+
+  private mapTransactionFull = (dto: any): Transaction => ({
+    version: dto.version,
+    format: dto.format,
+    transactionHash: dto.transactionHash,
+    nonce: dto.nonce,
+    sourceSender: dto.sourceSender,
+    sourceChainId: dto.sourceChainId,
+    sourceChainMempoolEpoch: dto.sourceChainMempoolEpoch,
+    stateValidator: dto.stateValidator,
+    stateValidationResult: dto.stateValidationResult,
+
+    executionParts: Array.isArray(dto.executionParts) ? dto.executionParts.map(this.mapExecPartFull) : [],
+    revertExecutionPart: dto.revertExecutionPart ? this.mapExecPartFull(dto.revertExecutionPart) : undefined,
+
+    state: dto.state,
+    includedInMasterBlock: dto.includedInMasterBlock ?? '',
+    masterBlockHeight:
+      hexToDec(dto.masterBlockHeight) ??
+      (typeof dto.masterBlockHeight === 'number' ? String(dto.masterBlockHeight) : dto.masterBlockHeight ?? null),
+    masterBlockTxIndex: dto.masterBlockTxIndex ?? null,
+
+    // optional events (pass through if present)
+    sourceChainPushEvent: dto.sourceChainPushEvent,
+    stateValidationEvent: dto.stateValidationEvent,
+
+    result: dto.result,
+    encodableType: dto.encodableType,
+  });
+
+  private mapExecPartFull = (dto: any): ExecutionPart => ({
+    // required (ExecutionPartBase)
+    format: dto.format,
+    version: dto.version,
+    transactionExecutionPartIndex:
+      dto.transactionExecutionPartIndex ?? dto.transactionPartIndex ?? dto.partIndex,
+    transactionHash: dto.transactionHash ?? dto.tx_hash,
+    chainId: dto.chainId,
+    executionSignature: dto.executionSignature,
+    hash: dto.hash,
+    isRevert: dto.isRevert,
+    operatorAddress: dto.operatorAddress,
+    senderAddress: dto.senderAddress,
+    includedInPartialBlock:
+      dto.includedInPartialBlock ?? dto.partialBlockHash ?? dto.included_in_partial_block ?? '',
+    partialBlockHeight: hexToDec(dto.partialBlockHeight) ?? "", // TEMPORARY workaround for BN to decimal conversion
+    partialBlockPartIndex: dto.partialBlockPartIndex ?? dto.partIndexInPartialBlock,
+    txnType: dto.txnType,
+
+    // optional events/proofs (pass-through if present)
+    targetChainSchedulingEvent: dto.targetChainSchedulingEvent,
+    targetChainPublishEvent: dto.targetChainPublishEvent,
+    targetChainExecutionEvent: dto.targetChainExecutionEvent,
+    mempoolEpochCommitEvent: dto.mempoolEpochCommitEvent,
+    mempoolEpochConsensusProof: dto.mempoolEpochConsensusProof,
+    mempoolEpochEVMProof: dto.mempoolEpochEVMProof,
   });
 
   private mapExecPart = (dto: TxExecutionPartDto): TxExecutionPart => ({

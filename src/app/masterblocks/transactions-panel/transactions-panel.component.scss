@@ -7,8 +7,8 @@
 
   // Column widths for the both the .tx-item grid and the .execution-part-row grid
   --logo-col-width: var(--logo-pane-size); // Set to logo-pane-size of Tx, even when a smaller size is set for EPs later
-  --hash-col-width: 125px;
-  --height-col-width: 125px;
+  --hash-col-width: 140px;
+  --height-col-width: 110px;
   --info-col-width: minmax(180px, 1fr); // flexes to fill
 }
 
@@ -237,27 +237,6 @@
   --btn-width: 66px;
 }
 
-/* badges */
-.badge-state {
-  @extend %badge;
-  background-image: linear-gradient(90deg, $ultramarine, $byzantine-blue);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset;
-  margin-bottom: 3px;
-  margin-top: -3px;
-}
-
-.badge-revert {
-  @extend %badge;
-  background: #f59e0b;
-  color: #0b0e14;
-  letter-spacing: 0.2pt;
-  margin-left: 5px;
-  margin-bottom: 3px;
-  --badge-px: 10px;
-  --badge-py-top: 3px;
-  --badge-py-bottom: 2px;
-}
-
 /* EP typography — smaller than Tx */
 .execution-parts-section {
   --ep-label-size: 13px;
@@ -273,12 +252,6 @@
   font-size: var(--ep-value-size);
   line-height: var(--ep-line-height);
 }
-
-/* (optional) keep the Revert badge in proportion *
-.execution-parts-section .badge-revert {
-  --badge-font: 9px;
-}
-*/
 
 /* 
  * --- Progress micro-tracker (4 steps) --- 

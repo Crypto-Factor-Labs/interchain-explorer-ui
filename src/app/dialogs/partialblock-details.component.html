@@ -1,0 +1,47 @@
+<div class="field">
+  <div class="label">Chain ID</div>
+  <div class="value">{{ partialBlock.chain_id }}</div>
+</div>
+<div class="field">
+  <div class="label">Height</div>
+  <div class="value">{{ partialBlock.height }}</div>
+</div>
+<div class="field">
+  <div class="label">Hash</div>
+  <div class="value value--with-action">
+    <code class="mono">{{ partialBlock.block_hash }}</code>
+    <app-copy-icon [value]="partialBlock.block_hash"></app-copy-icon>
+  </div>
+</div>
+<div class="field">
+  <div class="label">MasterBlock Hash</div>
+  <div class="value">{{ partialBlock.master_block_hash }}</div>
+</div>
+<div class="field">
+  <div class="label">Mempool Epoch</div>
+  <div class="value">{{ partialBlock.mempool_epoch }}</div>
+</div>
+<div class="field">
+  <div class="label">Txn Root</div>
+  <div class="value">{{ partialBlock.txn_root }}</div>
+</div>
+<div class="field">
+  <div class="label">Source Txn Hash</div>
+  <div class="value">{{ partialBlock.source_txn_hash }}</div>
+</div>
+<div class="field">
+  <div class="label">Commit Txn Hash</div>
+  <div class="value">{{ partialBlock.commit_txn_hash }}</div>
+</div>
+<div class="field">
+  <div class="label">Commit Proof</div>
+  <div class="value">{{ partialBlock.commit_proof }}</div>
+</div>
+<div class="field">
+  <div class="label">Confirmed</div>
+  <div class="value">{{ partialBlock.confirmed }}</div>
+</div>
+<div class="field">
+  <div class="label">Indexed at</div>
+  <div class="value">{{ partialBlock.indexed_at }}</div>
+</div>
