@@ -1,0 +1,33 @@
+<div class="page-container" *ngIf="vm$ | async as vm">
+  <ng-container *ngIf="vm.loading">Loading transactions…</ng-container>
+
+  <div *ngIf="vm.error" class="error-box">Could not load transactions.</div>
+
+  <app-panel *ngIf="!vm.loading" panelTitle="Transactions">
+    <div class="section">
+      <div class="field">
+        <div class="label">Filter</div>
+        <div class="value no-mono">
+          <span class="inline-label">sender:</span>
+          <span class="mono">{{ vm.sender || '— (all)' }}</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Found</div>
+        <div class="value no-mono">
+          <span class="badge-state">{{ vm.txs.length }} txs</span>
+        </div>
+      </div>
+
+      <!-- Simple overview row list (placeholder content) -->
+      <div class="field" *ngFor="let t of vm.txs">
+        <div class="label">{{ t.height ?? '—' }}</div>
+        <div class="value">
+          <span class="mono">{{ t.hash ?? '—' }}</span>
+          <span class="result-badge" [ngClass]="t.ok ? 'good' : 'bad'">{{ t.ok ? 'OK' : 'ERR' }}</span>
+        </div>
+      </div>
+    </div>
+  </app-panel>
+</div>
