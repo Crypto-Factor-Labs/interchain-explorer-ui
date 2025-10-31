@@ -7,7 +7,7 @@ export type TxListItem = {
   tx_hash: string;
   chainId: string;
   masterBlockHeight?: string | number | null;
-  masterBlockIndex?: number | null;
+  masterBlockTxIndex?: number | null;
   state?: number | null;
 };
 

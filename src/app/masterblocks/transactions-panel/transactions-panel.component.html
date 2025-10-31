@@ -4,7 +4,7 @@
       <span *ngIf="currentPage === 1">Latest </span>Transactions
     </h2>
     <h2 *ngIf="masterBlockHash">
-      Transactions of M-{{ masterBlockHeight }}
+      Transactions in block M-{{ masterBlockHeight }}
       <span class="hash-text" style="margin-left: 5px">({{ masterBlockHash | truncateMiddle: 8 }})</span>
     </h2>
 

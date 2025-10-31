@@ -23,6 +23,9 @@
   --panel-card-gap: 0px;
   --panel-scroll-mt: 0px;
   --panel-scroll-pt: 0px;
+
+  margin-left: -15px;
+  margin-right: -15px;
 }
 
 /* Row grid matching your Tx card layout (no expander/EPs here) */
@@ -40,7 +43,7 @@
   row-gap: 6px;
   align-items: start;
   justify-items: stretch;
-  --panel-card-padding: 9px 10px;
+  --panel-card-padding: 10px 10px;
 }
 
 .tx-item:last-child {

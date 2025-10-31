@@ -14,7 +14,7 @@ type Vm = {
   txs: readonly any[];    // uses the mapTx() shape
 };
 
-const PAGE_SIZE = 25; // tweak as you like
+const PAGE_SIZE = 10; // tweak as you like
 
 @Component({
   standalone: true,
@@ -30,15 +30,15 @@ export class TxsPageComponent {
   private readonly backend = inject(BackendService);
 
   readonly vm$: Observable<Vm> = this.route.queryParamMap.pipe(
-    map(q => (q.get('sender')?.trim() || '') || null), // keep showing it in the UI
-    switchMap(sender =>
-      this.backend.getTransactions(PAGE_SIZE /* nr */, 0 /* skip */, false, false /* includeParts/Events */)
-        .pipe(
-          map(res => ({ loading: false, error: null, sender, txs: res.transactions })),
-          startWith({ loading: true, error: null, sender, txs: [] }),
-          catchError(() => of({ loading: false, error: 'Failed to load', sender, txs: [] }))
-        )
-    )
+    map(q => q.get('sender')?.trim() || null),
+    switchMap(senderParam => {
+      const sender = senderParam ?? undefined; // normalize
+      return this.backend.getTransactions(PAGE_SIZE, 0, false, false, undefined, sender).pipe(
+        map(res => ({ loading: false, error: null, sender: senderParam, txs: res.transactions })),
+        startWith({ loading: true, error: null, sender: senderParam, txs: [] }),
+        catchError(() => of({ loading: false, error: 'Failed to load', sender: senderParam, txs: [] }))
+      );
+    })
   );
 
   onOpenTx = (hash: string) => this.router.navigate(['/tx', hash]);
