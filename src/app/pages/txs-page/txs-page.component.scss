@@ -1,5 +1,11 @@
 @import '../../shared/styles/page-shell';
+@import '../../shared/styles/shared-panel';
+
+/* Tighten the footer spacing just on this page */
+:host ::ng-deep .panel>.button-wrapper {
+  margin-top: -10px !important;
+}
 
 .page-container {
-  max-width: 700px;
+  max-width: 675px;
 }

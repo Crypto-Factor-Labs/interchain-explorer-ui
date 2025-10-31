@@ -12,9 +12,12 @@ type Vm = {
   error: string | null;
   sender: string | null;  // read from query param (not used yet)
   txs: readonly any[];    // uses the mapTx() shape
+  page: number;
+  total: number;
+  pages: number;
 };
 
-const PAGE_SIZE = 10; // tweak as you like
+const PAGE_SIZE = 8;
 
 @Component({
   standalone: true,
@@ -30,16 +33,34 @@ export class TxsPageComponent {
   private readonly backend = inject(BackendService);
 
   readonly vm$: Observable<Vm> = this.route.queryParamMap.pipe(
-    map(q => q.get('sender')?.trim() || null),
-    switchMap(senderParam => {
-      const sender = senderParam ?? undefined; // normalize
-      return this.backend.getTransactions(PAGE_SIZE, 0, false, false, undefined, sender).pipe(
-        map(res => ({ loading: false, error: null, sender: senderParam, txs: res.transactions })),
-        startWith({ loading: true, error: null, sender: senderParam, txs: [] }),
-        catchError(() => of({ loading: false, error: 'Failed to load', sender: senderParam, txs: [] }))
+    map(q => {
+      const sender = q.get('sender')?.trim() || null;
+      const page = Math.max(1, Number(q.get('page') || 1) || 1);
+      return { sender, page };
+    }),
+    switchMap(({ sender, page }) => {
+      const s = sender ?? undefined;
+      const skip = (page - 1) * PAGE_SIZE;
+      return this.backend.getTransactions(PAGE_SIZE, skip, false, false, undefined, s).pipe(
+        map(res => {
+          const total = res.total ?? 0;
+          const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+          return { loading: false, error: null, sender, txs: res.transactions, page, total, pages };
+        }),
+        startWith({ loading: true, error: null, sender, txs: [], page, total: 0, pages: 1 }),
+        catchError(() => of({
+          loading: false, error: 'Failed to load', sender: null,
+          txs: [], page, total: 0, pages: 1
+        }))
       );
     })
   );
 
   onOpenTx = (hash: string) => this.router.navigate(['/tx', hash]);
+
+  // Helper to update only the page (keeps sender)
+  gotoPage = (page: number) => {
+    const q = { ...this.route.snapshot.queryParams, page };
+    this.router.navigate([], { relativeTo: this.route, queryParams: q, queryParamsHandling: 'merge' });
+  };
 }

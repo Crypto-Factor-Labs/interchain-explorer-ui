@@ -6,24 +6,25 @@
     <span *ngIf="vm.sender" panel-title-suffix>
       of <span class="hash-text" style="margin-left:2pt">{{ vm.sender }}</span>
     </span>
-    <div class="section">
-      <div class="field">
-        <div class="label">Filter</div>
-        <div class="value no-mono">
-          <span class="inline-label">sender:</span>
-          <span class="mono">{{ vm.sender || '— (all)' }}</span>
-        </div>
-      </div>
 
-      <div class="field">
-        <div class="label">Found</div>
-        <div class="value no-mono">
-          <span class="badge-state">{{ vm.txs.length }} txs</span>
-        </div>
-      </div>
-    </div>
-
+    <!-- Transactions List -->
     <app-txs-list-lite [transactions]="vm.txs" (openTransaction)="onOpenTx($event)">
     </app-txs-list-lite>
+
+    <!-- Pagination in footer -->
+    <div panel-actions *ngIf="vm.pages > 1">
+      <div class="pagination-bar pagination-bar--no-top-border">
+        <button class="gradient-btn" (click)="gotoPage(1)" [disabled]="vm.page === 1"><span class="btn-content">«
+            First</span></button>
+        <button class="gradient-btn" (click)="gotoPage(vm.page - 1)" [disabled]="vm.page === 1"><span
+            class="btn-content">← Prev</span></button>
+        <span class="page-info">Page {{ vm.page }} of {{ vm.pages }}</span>
+        <button class="gradient-btn" (click)="gotoPage(vm.page + 1)" [disabled]="vm.page === vm.pages"><span
+            class="btn-content">Next →</span></button>
+        <button class="gradient-btn" (click)="gotoPage(vm.pages)" [disabled]="vm.page === vm.pages"><span
+            class="btn-content">Last »</span></button>
+      </div>
+    </div>
   </app-panel>
+
 </div>

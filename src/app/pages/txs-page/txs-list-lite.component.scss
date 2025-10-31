@@ -48,6 +48,8 @@
 
 .tx-item:last-child {
   @extend %panel-card-last;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 /* Logo */
@@ -120,15 +122,13 @@
   display: grid;
   grid-template-rows: auto auto;
   min-width: 0;
-  row-gap: 1px;
-
+  row-gap: 0;
   text-align: left;
   justify-items: start;
 }
 
 .tx-index .label {
   font-weight: 600;
-  margin-top: 1px;
   justify-self: start;
   text-align: left;
 }
@@ -140,6 +140,7 @@
   text-overflow: ellipsis;
   justify-self: start;
   text-align: left;
+  margin-top: -4px;
 }
 
 /* State */
