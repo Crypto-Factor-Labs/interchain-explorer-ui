@@ -1,0 +1,173 @@
+@import '../../shared/styles/shared-panel';
+
+:host {
+  --logo-pane-size: 40px;
+  --logo-size: 24px;
+  --logo-gap: 12px;
+
+  --logo-col-width: var(--logo-pane-size);
+  --hash-col-width: 180px;
+  --height-col-width: 110px;
+  --index-col-width: 80px;
+  --state-col-width: 120px;
+}
+
+.value {
+  @extend %value;
+}
+
+/* Scrollable list + consistent gaps only between items */
+.transactions-list {
+  @extend %scroll-list;
+  @extend %list-gap;
+  --panel-card-gap: 0px;
+  --panel-scroll-mt: 0px;
+  --panel-scroll-pt: 0px;
+}
+
+/* Row grid matching your Tx card layout (no expander/EPs here) */
+.tx-item {
+  @extend %panel-card-grid;
+  --col-logo: var(--logo-col-width);
+  --col-hash: var(--hash-col-width);
+  --col-height: var(--height-col-width);
+  --col-index: var(--index-col-width);
+  --col-state: var(--state-col-width);
+
+  grid-template-areas: "tx-logo tx-hash tx-height tx-index tx-state";
+  grid-template-columns: var(--col-logo) var(--col-hash) var(--col-height) var(--col-index) var(--col-state);
+  column-gap: var(--logo-gap);
+  row-gap: 6px;
+  align-items: start;
+  justify-items: stretch;
+  --panel-card-padding: 9px 10px;
+}
+
+.tx-item:last-child {
+  @extend %panel-card-last;
+}
+
+/* Logo */
+.tx-logo-pane {
+  @extend %logo-pane;
+  grid-area: tx-logo;
+}
+
+.tx-logo-img {
+  @extend %logo-img;
+}
+
+/* Hash */
+.tx-hash {
+  grid-area: tx-hash;
+  display: grid;
+  grid-template-rows: auto auto;
+  min-width: 0;
+  row-gap: 0;
+  text-align: left;
+  justify-items: start;
+}
+
+.tx-hash .label {
+  font-weight: 600;
+  justify-self: start;
+  text-align: left;
+}
+
+.tx-hash .value {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  justify-self: start;
+  text-align: left;
+  margin-top: -4px;
+}
+
+/* Height */
+.tx-height {
+  grid-area: tx-height;
+  display: grid;
+  grid-template-rows: auto auto;
+  min-width: 0;
+  row-gap: 0;
+  text-align: left;
+  justify-items: start;
+}
+
+.tx-height .label {
+  font-weight: 600;
+  justify-self: start;
+  text-align: left;
+}
+
+.tx-height .value {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  justify-self: start;
+  text-align: left;
+  margin-top: -4px;
+}
+
+/* Index (within Master Block) */
+.tx-index {
+  grid-area: tx-index;
+  display: grid;
+  grid-template-rows: auto auto;
+  min-width: 0;
+  row-gap: 1px;
+
+  text-align: left;
+  justify-items: start;
+}
+
+.tx-index .label {
+  font-weight: 600;
+  margin-top: 1px;
+  justify-self: start;
+  text-align: left;
+}
+
+.tx-index .value {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  justify-self: start;
+  text-align: left;
+}
+
+/* State */
+.tx-state {
+  grid-area: tx-state;
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 2px;
+  align-self: center;
+  justify-self: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.tx-state .label {
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.tx-state .badge-state {
+  font-size: 8pt;
+  //padding-bottom: 6px;
+}
+
+/* Utilities */
+.gradient-text {
+  @extend %gradient-text;
+}
+
+.empty-state {
+  opacity: .7;
+  padding: 12px;
+  text-align: center;
+}

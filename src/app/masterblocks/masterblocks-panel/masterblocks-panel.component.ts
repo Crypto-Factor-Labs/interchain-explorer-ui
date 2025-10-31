@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger, AnimationEvent } from '@angular/animations';
-import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
-import { TruncateMiddlePipe } from '../../shared/pipes/truncate-middle.pipe';
+import { SHARED_IMPORTS } from '../../shared/shared-standalone';
 import { MasterChainBlock } from '../../shared/interfaces/master-chain.interface';
 
 @Component({
@@ -10,7 +9,7 @@ import { MasterChainBlock } from '../../shared/interfaces/master-chain.interface
   templateUrl: './masterblocks-panel.component.html',
   styleUrls: ['./masterblocks-panel.component.scss'],
   standalone: true,
-  imports: [CommonModule, TimeAgoPipe, TruncateMiddlePipe],
+  imports: [CommonModule, ...SHARED_IMPORTS],
 
   // Animations for expanding/collapsing blocks and staggering partial block info
   animations: [

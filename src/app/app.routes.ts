@@ -4,7 +4,7 @@ import { MasterblockModalRouteComponent } from './dialogs/routes/masterblock-mod
 import { PartialblockModalRouteComponent } from './dialogs/routes/partialblock-modal.route';
 import { TransactionModalRouteComponent } from './dialogs/routes/transaction-modal.route';
 import { TransactionPageComponent } from './pages/transaction-page.component';
-import { TxsPageComponent } from './pages/txs-page.component';
+import { TxsPageComponent } from './pages/txs-page/txs-page.component';
 
 export const routes: Routes = [
   { path: 'masterblocks', component: MasterBlocksComponent },

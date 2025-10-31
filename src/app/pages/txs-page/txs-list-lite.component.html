@@ -1,0 +1,34 @@
+<div class="transactions-list">
+  <div class="tx-item" *ngFor="let tx of transactions; trackBy: trackByTxHash">
+    <div class="tx-logo-pane">
+      <img class="tx-logo-img" [src]="getChainImage(tx.chainId)" alt="Chain Logo" />
+    </div>
+
+    <div class="tx-hash">
+      <div class="label">Hash</div>
+      <div class="value hash-text">
+        <span class="gradient-text clickable" title="{{ tx.tx_hash }}" (click)="openTransaction.emit(tx.tx_hash)">
+          {{ tx.tx_hash | truncateMiddle: 8 }}
+        </span>
+      </div>
+    </div>
+
+    <div class="tx-height">
+      <div class="label">Master Block</div>
+      <div class="value">{{ !tx.masterBlockHeight && tx.masterBlockHeight !== '0' ? '\u00A0—' :
+        tx.masterBlockHeight }}</div>
+    </div>
+
+    <div class="tx-index">
+      <div class="label">Index</div>
+      <div class="value">{{ tx.masterBlockIndex ?? '\u00A0—' }}</div>
+    </div>
+
+    <div class="tx-state">
+      <div class="label">State</div>
+      <span class="badge-state">{{ tx.state | txStateWord }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
+</div>
