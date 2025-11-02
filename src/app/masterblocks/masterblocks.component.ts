@@ -306,6 +306,7 @@ export class MasterBlocksComponent implements OnInit {
       error: (err) => console.error('Failed to load transaction', tx_hash, err),
     });
   }
+
 }
 
 // Helper function to find an ExecutionPart by its hash within a Transaction

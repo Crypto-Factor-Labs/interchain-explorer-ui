@@ -1,18 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import type { ExecutionPart } from '../shared/interfaces/transaction.interface';
-import { SHARED_IMPORTS } from '../shared/shared-standalone';
-import { ExecutionPartDetailsComponent } from '../dialogs/execution-part-details.component';
-import { getChainImage } from '../shared/utils/common.utils';
-import { expandCollapse } from '../shared/utils/animations';
+import type { ExecutionPart } from '../../shared/interfaces/transaction.interface';
+import { SHARED_IMPORTS } from '../../shared/shared-standalone';
+import { ExecutionPartDetailsComponent } from '../../dialogs/execution-part-details.component';
+import { getChainImage } from '../../shared/utils/common.utils';
+import { expandCollapse } from '../../shared/utils/animations';
 
 @Component({
   selector: 'app-tx-execution-parts',
   standalone: true,
   imports: [CommonModule, ExecutionPartDetailsComponent, ...SHARED_IMPORTS],
   animations: [expandCollapse],
-  templateUrl: './tx-execution-parts.component.html',
-  styleUrls: ['./tx-execution-parts.component.scss'],
+  templateUrl: './tx-exec-parts.component.html',
+  styleUrls: ['./tx-exec-parts.component.scss'],
 })
 export class TxExecutionPartsComponent {
   // Backing fields + guards so nothing crashes if inputs arrive out of order

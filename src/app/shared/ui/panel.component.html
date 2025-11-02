@@ -4,7 +4,9 @@
       <img [src]="logoSrc" [alt]="logoAlt" class="logo-img" />
     </div>
     <div class="title-text">
-      <h2>{{ panelTitle }}</h2>
+      <h2 class="panel-title">
+        {{ panelTitle }}<ng-content select="[panel-title-suffix]"></ng-content>
+      </h2>
     </div>
     <ng-content select="[panel-header-extra]"></ng-content>
   </div>

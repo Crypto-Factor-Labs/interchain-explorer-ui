@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { ExecutionPart as CoreEP } from '../shared/interfaces/transaction.interface';
+import { getEvents, getSteps, getStepTitle } from '../shared/utils/ep-progress';
 
 // Allow optional isRevert without touching the core model
 type EP = CoreEP & { isRevert?: boolean };
@@ -38,4 +39,9 @@ export class ExecutionPartDetailsComponent {
   get showOpenTxIcon(): boolean {
     return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
   }
+
+  // Functions to the progress of the Execution Parts: 0 Scheduled, 1 Published, 2 Executed, 3 Finalized/Revert
+  readonly steps = getSteps;
+  readonly stepTitle = getStepTitle;
+  readonly getEvents = getEvents;
 }

@@ -1,0 +1,33 @@
+@import '../../shared/styles/page-shell';
+@import '../../shared/styles/shared-panel';
+
+// Center the panel title on this page
+:host ::ng-deep .panel .panel-title {
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Title suffix tweaks: sender bold & smaller, keep (total) normal */
+:host ::ng-deep .panel-title [panel-title-suffix] .hash-text {
+  font-weight: 700;
+  font-size: 0.9em;
+  margin-left: 4px;
+  line-height: 1.1;
+}
+
+/* space between sender and (total) and ensure normal font */
+:host ::ng-deep .panel-title [panel-title-suffix] .count {
+  margin-left: 10px;
+  font-family: inherit; // not monospace
+  font-size: 16px;
+}
+
+// Tighten the footer spacing just on this page
+:host ::ng-deep .panel>.button-wrapper {
+  margin-top: -10px !important;
+}
+
+.page-container {
+  max-width: 680px;
+}

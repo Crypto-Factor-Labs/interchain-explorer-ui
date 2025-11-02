@@ -35,11 +35,17 @@
   </div>
 </div>
 
-<!-- Sender / Validator -->
+<!-- Sender -->
+<div class="field">
+  <div class="label">Sender</div>
+  <div class="value">{{ tx.sourceSender }}</div>
+</div>
+
+<!-- StateValidator -->
 <div class="field">
   <div class="label">State Validator</div>
   <div class="value value--with-action">
-    <span class="mono">{{ tx.stateValidator }}</span>
+    <span>{{ tx.stateValidator }}</span>
     <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
       {{ triStateLabel(tx.stateValidationResult) }}
     </span>
