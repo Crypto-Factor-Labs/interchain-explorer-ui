@@ -172,6 +172,9 @@ export class BackendService {
     mempoolEpochCommitEvent: dto.mempoolEpochCommitEvent,
     mempoolEpochConsensusProof: dto.mempoolEpochConsensusProof,
     mempoolEpochEVMProof: dto.mempoolEpochEVMProof,
+
+    // Optional: 4-step progress from backend
+    events: Array.isArray(dto.events) && dto.events.length === 4 ? dto.events : undefined,
   });
 
   private mapExecPart = (dto: TxExecutionPartDto): TxExecutionPart => ({
@@ -185,7 +188,6 @@ export class BackendService {
     partialBlockPartIndex: dto.partialBlockPartIndex ?? null,
     // Optional: 4-step progress from backend
     events: Array.isArray(dto.events) && dto.events.length === 4 ? dto.events : undefined,
-
   });
 
   /*

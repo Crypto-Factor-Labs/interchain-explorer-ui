@@ -76,6 +76,9 @@ export interface ExecutionPart extends ExecutionPartBase {
   mempoolEpochCommitEvent?: ChainEvent;
   mempoolEpochConsensusProof?: string;
   mempoolEpochEVMProof?: string;
+
+  // Optional: 4-step progress from backend
+  events?: ChainEvents;
 }
 
 /** Top-level transaction returned by backend. */

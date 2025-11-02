@@ -52,11 +52,6 @@ export class TransactionsPanelComponent {
 
   // -------- Progress helpers (for EP 4-step micro-tracker) --------
 
-  // Narrowing guard: EP has explicit per-event statuses from backend
-  private hasEvents(ep: TxExecutionPart): ep is TxExecutionPart & { events: EpEvent[] } {
-    return Array.isArray((ep as any).events) && (ep as any).events.length === 4;
-  }
-
   /**
    * Returns the 4 statuses that drive the micro-tracker UI.
    */
