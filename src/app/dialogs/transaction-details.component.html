@@ -1,13 +1,18 @@
 <!-- Hash -->
 <div class="field">
   <div class="label">Hash</div>
-  <div class="value value--with-action">{{ hash }}
-    <app-copy-icon [value]="hash"> </app-copy-icon>
+  <div class="value value--with-action">
+    <code class="mono">{{ tx.transactionHash }}</code>
+    <app-copy-icon [value]="tx.transactionHash"></app-copy-icon>
 
-    <!-- Icon to jump to the Tx-page
-     The icon is only shown in the Tx-dialog, not on the Tx-page -->
-    <app-open-tx-page-icon [txHash]="tx.transactionHash" (beforeNavigate)="onBeforeNavigate()">
+    <!-- dialog: show “open full page” -->
+    <app-open-tx-page-icon *ngIf="context === 'dialog'" [txHash]="tx.transactionHash"
+      (beforeNavigate)="onBeforeNavigate()">
     </app-open-tx-page-icon>
+
+    <!-- page: show external explorer link -->
+    <app-tx-external-link *ngIf="context === 'page'" [chainId]="tx.sourceChainId" [txHash]="tx.transactionHash">
+    </app-tx-external-link>
   </div>
 </div>
 

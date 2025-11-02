@@ -305,6 +305,11 @@ body {
   color: $powder-blue;
 }
 
+.icon-btn.disabled {
+  opacity: .5;
+  cursor: default;
+}
+
 /* Base badge */
 %badge {
   display: inline-flex;

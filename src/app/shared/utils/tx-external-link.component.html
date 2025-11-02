@@ -1,0 +1,10 @@
+<!-- Active link -->
+<a *ngIf="url as href" class="icon-btn" [href]="href" target="_blank" rel="noopener noreferrer"
+  [attr.title]="'Open in ' + (name || 'external') + ' explorer'" style="margin-left:-5pt">
+  <i class="fa-solid fa-up-right-from-square"></i>
+</a>
+
+<!-- Disabled (unknown chain / missing hash) -->
+<span *ngIf="!url" class="icon-btn disabled" [attr.title]="'Explorer not configured'" style="margin-left:-5pt">
+  <i class="fa-solid fa-up-right-from-square"></i>
+</span>
