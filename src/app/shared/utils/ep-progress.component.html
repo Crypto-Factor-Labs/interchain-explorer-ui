@@ -1,0 +1,13 @@
+<ng-container *ngIf="events as evs">
+  <div class="ep-progress" role="group" aria-label="Execution progress">
+    <div class="step" *ngFor="let e of evs; index as i" [class.done]="e.status === 'success'"
+      [class.inprog]="e.status === 'in_progress'" [class.pending]="e.status === 'pending' || e.status === 'skipped'"
+      [class.failed]="e.status === 'failed' || e.status === 'revert'" [class.is-clickable]="hasStepTx(i)"
+      [attr.aria-current]="e.status === 'in_progress' ? 'step' : null" [attr.title]="getStepTitle(i)"
+      [attr.aria-label]="getStepTitle(i)" (click)="onStepClick(i, $event)" tabindex="0"
+      (keydown.enter)="onStepClick(i, $event)" (keydown.space)="onStepClick(i, $event)">
+      <span class="dot"></span>
+      <span class="conn"><span class="fill"></span></span>
+    </div>
+  </div>
+</ng-container>

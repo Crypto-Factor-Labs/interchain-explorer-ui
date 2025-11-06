@@ -30,6 +30,10 @@
   align-items: center;
 }
 
+.ep-progress .step.is-clickable .dot {
+  cursor: pointer;
+}
+
 // Base dot: inner-fill via padding + background-clip
 .ep-progress .dot {
   position: relative;

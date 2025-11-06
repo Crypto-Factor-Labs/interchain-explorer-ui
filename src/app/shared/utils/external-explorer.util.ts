@@ -14,11 +14,17 @@ export function buildExternalExplorerUrl(chainId: number | null | undefined, txH
   const cfg = CHAIN_EXPLORERS[chainId];
   if (!cfg) return null;
 
-  const h = normalizeHash(txHash ?? '');
-  if (!h) return null;
+  const hash = normalizeHash(txHash ?? '');
+  if (!hash) return null;
 
   // Example: https://polygonscan.com/tx/0x....
-  return `${cfg.baseUrl}${h}`;
+  return `${cfg.baseUrl}${hash}`;
+}
+
+// Open external explorer in new tab/window
+export function openExternalTx(chainId: number, txHash: string): void {
+  const url = buildExternalExplorerUrl(chainId, txHash);
+  if (url) window.open(url, '_blank', 'noopener');
 }
 
 // Get human readable name for tooltips; null if unknown

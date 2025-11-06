@@ -4,6 +4,7 @@ import { SHARED_IMPORTS } from '../../shared/shared-standalone.js';
 import { Transaction, Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
 import { expandCollapse, staggerItems } from '../../shared/utils/animations.js';
 import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
+import { getEvents } from '../../shared/utils/ep-progress';
 
 // --- Progress helper types (local, non-exported) ---
 type EpEventStatus = 'pending' | 'in_progress' | 'success' | 'failed' | 'revert' | 'skipped';
@@ -50,20 +51,6 @@ export class TransactionsPanelComponent {
     scrollExpandedIntoView(this.listRef, event);
   }
 
-  // -------- Progress helpers (for EP 4-step micro-tracker) --------
-
-  /**
-   * Returns the 4 statuses that drive the micro-tracker UI.
-   */
-  getEpSteps(ep: any) {
-    return ep?.events?.map((e: any) => e.status) ?? ['pending', 'pending', 'pending', 'pending'];
-  }
-
-  getStepTitle(ep: TxExecutionPart, i: number): string {
-    const e = ep.events?.[i];
-    if (!e) return `Step ${i + 1}: pending`;
-    const when = e.timestamp ? new Date(e.timestamp).toLocaleString() : '';
-    const status = e.status.replace('_', ' ');
-    return when ? `${e.name}: ${status} — ${when}` : `${e.name}: ${status}`;
-  }
+  // Expose getEvents util for template
+  public readonly getEvents = getEvents;
 }

@@ -10,6 +10,7 @@ import { TruncateMiddlePipe } from './pipes/truncate-middle.pipe';
 import { CopyIconComponent } from '../shared/utils/copy-icon.component';
 import { OpenTxPageIconComponent } from '../shared/utils/open-tx-page-icon.component';
 import { TxExternalLinkComponent } from '../shared/utils/tx-external-link.component';
+import { EpProgressComponent } from '../shared/utils/ep-progress.component';
 
 export const SHARED_IMPORTS = [
   CommonModule,
@@ -24,4 +25,5 @@ export const SHARED_IMPORTS = [
   CopyIconComponent,
   OpenTxPageIconComponent,
   TxExternalLinkComponent,
+  EpProgressComponent,
 ];

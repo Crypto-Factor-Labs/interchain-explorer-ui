@@ -52,9 +52,4 @@ export class TransactionPageComponent {
     return this.opened.has(hash);
   }
 
-  shortHash(h: string, len = 8): string {
-    if (!h) return '—';
-    return h.length <= len ? h : `${h.slice(0, len)}…`;
-  }
-
 }

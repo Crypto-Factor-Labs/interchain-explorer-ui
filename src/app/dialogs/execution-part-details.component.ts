@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { ExecutionPart as CoreEP } from '../shared/interfaces/transaction.interface';
-import { getEvents, getSteps, getStepTitle } from '../shared/utils/ep-progress';
+import { getEvents, getSteps, getStepTitle, hasStepTx, getStepTxHash } from '../shared/utils/ep-progress';
+import { openExternalTx } from '../shared/utils/external-explorer.util';
 
 // Allow optional isRevert without touching the core model
 type EP = CoreEP & { isRevert?: boolean };
@@ -19,6 +20,7 @@ type EP = CoreEP & { isRevert?: boolean };
 export class ExecutionPartDetailsComponent {
   @Input({ required: true }) ep!: EP;
   @Output() openTx = new EventEmitter<void>();
+  @Output() openExternalTx = new EventEmitter<string>();
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
 
@@ -40,8 +42,15 @@ export class ExecutionPartDetailsComponent {
     return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
   }
 
-  // Functions to the progress of the Execution Parts: 0 Scheduled, 1 Published, 2 Executed, 3 Finalized/Revert
+  // Functions to the progress of the Execution Parts
   readonly steps = getSteps;
   readonly stepTitle = getStepTitle;
   readonly getEvents = getEvents;
+  readonly hasStepTx = hasStepTx;
+
+  readonly onStepClick = (chainId: number, events: any, i: number, ev: Event) => {
+    ev.stopPropagation();
+    const txHash = getStepTxHash(events, i);
+    if (txHash) openExternalTx(chainId, txHash);
+  };
 }

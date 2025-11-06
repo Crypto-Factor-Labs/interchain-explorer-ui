@@ -36,20 +36,10 @@
   <!-- Progress (4-step micro-tracker) -->
   <div class="field">
     <div class="label">Progress</div>
-    <!-- Only render progress if events exist -->
-    <ng-container *ngIf="getEvents(ep) as events">
-      <div class="value" style="justify-content: flex-start; margin-left:-15pt;">
-        <div class="ep-progress" role="group" aria-label="Execution progress">
-          <div class="step" *ngFor="let st of steps(events); let stepNr = index" [class.done]="st === 'success'"
-            [class.inprog]="st === 'in_progress'" [class.pending]="st === 'pending' || st === 'skipped'"
-            [class.failed]="st === 'failed' || st === 'revert'"
-            [attr.aria-current]="st === 'in_progress' ? 'step' : null" [attr.title]="stepTitle(events, stepNr)">
-            <span class="dot"></span>
-            <span class=" conn"><span class="fill"></span></span>
-          </div>
-        </div>
-      </div>
-    </ng-container>
+    <div class="value" style="margin-left: -22px">
+      <app-ep-progress [chainId]="ep.chainId" [events]="ep.events ?? getEvents(ep)" style="justify-self: start">
+      </app-ep-progress>
+    </div>
   </div>
 
   <!-- Index within transaction -->

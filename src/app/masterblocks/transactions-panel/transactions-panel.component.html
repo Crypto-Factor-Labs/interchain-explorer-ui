@@ -106,41 +106,33 @@
             </div>
 
             <!-- Progress (4-step micro-tracker) -->
-            <div class="ep-progress" role="group" aria-label="Execution progress">
-              <div class="step" *ngFor="let st of getEpSteps(ep); let stepNr = index" [class.done]="st === 'success'"
-                [class.inprog]="st === 'in_progress'" [class.pending]="st === 'pending' || st === 'skipped'"
-                [class.failed]="st === 'failed' || st === 'revert'"
-                [attr.aria-current]="st === 'in_progress' ? 'step' : null" [attr.title]="getStepTitle(ep, stepNr)">
-                <span class="dot"></span>
-                <span class="conn"><span class="fill"></span></span>
-              </div>
-            </div>
+            <app-ep-progress [chainId]="ep.chainId" [events]="ep.events ?? getEvents(ep)">
+            </app-ep-progress>
 
           </div>
         </div>
       </div>
+
+      <!-- Empty state -->
+      <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
     </div>
 
-    <!-- Empty state -->
-    <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
+    <!-- Pagination -->
+    <div class="pagination-bar">
+      <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
+        <span class="btn-content">« First</span>
+      </button>
+      <button class="gradient-btn" (click)="pageChange.emit(currentPage - 1)" [disabled]="currentPage === 1">
+        <span class="btn-content">← Prev</span>
+      </button>
+
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+
+      <button class="gradient-btn" (click)="pageChange.emit(currentPage + 1)" [disabled]="currentPage === totalPages">
+        <span class="btn-content">Next →</span>
+      </button>
+      <button class="gradient-btn" (click)="pageChange.emit(totalPages)" [disabled]="currentPage === totalPages">
+        <span class="btn-content">Last »</span>
+      </button>
+    </div>
   </div>
-
-  <!-- Pagination -->
-  <div class="pagination-bar">
-    <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
-      <span class="btn-content">« First</span>
-    </button>
-    <button class="gradient-btn" (click)="pageChange.emit(currentPage - 1)" [disabled]="currentPage === 1">
-      <span class="btn-content">← Prev</span>
-    </button>
-
-    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
-
-    <button class="gradient-btn" (click)="pageChange.emit(currentPage + 1)" [disabled]="currentPage === totalPages">
-      <span class="btn-content">Next →</span>
-    </button>
-    <button class="gradient-btn" (click)="pageChange.emit(totalPages)" [disabled]="currentPage === totalPages">
-      <span class="btn-content">Last »</span>
-    </button>
-  </div>
-</div>
