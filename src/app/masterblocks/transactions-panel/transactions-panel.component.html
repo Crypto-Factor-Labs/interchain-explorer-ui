@@ -30,8 +30,7 @@
         <div class="label">Hash</div>
         <div class="value hash-text">
           <!-- Only emit the hash, so that the full transaction data can be fetched -->
-          <span class="gradient-text clickable" title="{{ tx.tx_hash }}"
-            (click)="$event.stopPropagation(); openTransaction.emit(tx.tx_hash)">
+          <span class="gradient-text clickable" title="{{ tx.tx_hash }}" (click)="onTxHashClick($event, tx.tx_hash)">
             {{ tx.tx_hash | truncateMiddle: 6 }}
           </span>
         </div>
@@ -92,7 +91,7 @@
               <div class="value hash-text" title="{{ ep.hash }}">
                 <!-- Only emit the hash, so that the full transaction data can be fetched -->
                 <span class="gradient-text clickable" title="{{ ep.hash }}"
-                  (click)="$event.stopPropagation(); openExecPart.emit({tx_hash: tx.tx_hash, ep_hash: ep.hash})">
+                  (click)="onEpHashClick($event, tx.tx_hash, ep.hash)">
                   {{ ep.hash | truncateMiddle: 6 }}
                 </span>
               </div>
