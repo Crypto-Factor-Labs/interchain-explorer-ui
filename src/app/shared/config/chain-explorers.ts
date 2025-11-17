@@ -1,6 +1,6 @@
 import { environment } from '../../../environments/environment';
 
-export type ExplorerConfig = { name: string; baseUrl: string };
+export type ExplorerConfig = { name: string; baseUrl: string; prefixWith0x?: boolean };
 
 export const CHAIN_EXPLORERS: Record<number, ExplorerConfig> =
   environment.externalExplorers;

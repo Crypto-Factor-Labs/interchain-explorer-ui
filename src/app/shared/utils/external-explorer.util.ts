@@ -1,9 +1,10 @@
 import { CHAIN_EXPLORERS } from '../config/chain-explorers';
 
 // Normalize to 0x-prefixed lowercase hex (best effort)
-function normalizeHash(hash: string): string {
+function normalizeHash(hash: string, prefixWith0x?: boolean): string {
   const h = (hash || '').trim();
   if (!h) return '';
+  if (prefixWith0x === false) return h;
   return h.startsWith('0x') ? h : `0x${h}`;
 }
 
@@ -14,7 +15,7 @@ export function buildExternalExplorerUrl(chainId: number | null | undefined, txH
   const cfg = CHAIN_EXPLORERS[chainId];
   if (!cfg) return null;
 
-  const hash = normalizeHash(txHash ?? '');
+  const hash = normalizeHash(txHash ?? '', cfg.prefixWith0x);
   if (!hash) return null;
 
   // Example: https://polygonscan.com/tx/0x....

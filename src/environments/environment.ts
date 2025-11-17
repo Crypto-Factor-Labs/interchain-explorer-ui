@@ -4,8 +4,8 @@ export const environment = {
   APP_POLL_FREQ: '60000',
 
   externalExplorers: {
-    1131: { name: 'DeFiMetaChain', baseUrl: ' https://testnet-dmc.mydefichain.com:8441/tx/' },
-    18500: { name: 'PartisiaBlockchain', baseUrl: 'https://browser.testnet.partisiablockchain.com/transactions/' },
-    80002: { name: 'PolygonScan', baseUrl: 'https://amoy.polygonscan.com/tx/' },
-  } as Record<number, { name: string; baseUrl: string }>,
+    1131: { name: 'DeFiMetaChain', baseUrl: ' https://testnet-dmc.mydefichain.com/tx/', prefixWith0x: true },
+    18500: { name: 'PartisiaBlockchain', baseUrl: 'https://browser.testnet.partisiablockchain.com/transactions/', prefixWith0x: false },
+    80002: { name: 'PolygonScan', baseUrl: 'https://amoy.polygonscan.com/tx/', prefixWith0x: true },
+  } as Record<number, { name: string; baseUrl: string; prefixWith0x?: boolean }>,
 };
