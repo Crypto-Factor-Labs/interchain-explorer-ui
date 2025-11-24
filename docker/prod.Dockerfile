@@ -6,7 +6,10 @@ COPY package.json package-lock.json ./
 
 RUN npm ci
 
-COPY . .
+COPY ./angular.json ./
+COPY ./tsconfig.json ./
+COPY ./tsconfig.app.json ./
+COPY ./src ./src
 
 RUN npm run build --prod
 
