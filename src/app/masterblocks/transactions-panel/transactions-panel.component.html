@@ -4,7 +4,7 @@
       <span *ngIf="currentPage === 1">Latest </span>Transactions
     </h2>
     <h2 *ngIf="masterBlockHash">
-      Transactions of M-{{ masterBlockHeight }}
+      Transactions in block M-{{ masterBlockHeight }}
       <span class="hash-text" style="margin-left: 5px">({{ masterBlockHash | truncateMiddle: 8 }})</span>
     </h2>
 
@@ -30,8 +30,7 @@
         <div class="label">Hash</div>
         <div class="value hash-text">
           <!-- Only emit the hash, so that the full transaction data can be fetched -->
-          <span class="gradient-text clickable" title="{{ tx.tx_hash }}"
-            (click)="$event.stopPropagation(); openTransaction.emit(tx.tx_hash)">
+          <span class="gradient-text clickable" title="{{ tx.tx_hash }}" (click)="onTxHashClick($event, tx.tx_hash)">
             {{ tx.tx_hash | truncateMiddle: 6 }}
           </span>
         </div>
@@ -92,7 +91,7 @@
               <div class="value hash-text" title="{{ ep.hash }}">
                 <!-- Only emit the hash, so that the full transaction data can be fetched -->
                 <span class="gradient-text clickable" title="{{ ep.hash }}"
-                  (click)="$event.stopPropagation(); openExecPart.emit({tx_hash: tx.tx_hash, ep_hash: ep.hash})">
+                  (click)="onEpHashClick($event, tx.tx_hash, ep.hash)">
                   {{ ep.hash | truncateMiddle: 6 }}
                 </span>
               </div>
@@ -106,41 +105,33 @@
             </div>
 
             <!-- Progress (4-step micro-tracker) -->
-            <div class="ep-progress" role="group" aria-label="Execution progress">
-              <div class="step" *ngFor="let st of getEpSteps(ep); let stepNr = index" [class.done]="st === 'success'"
-                [class.inprog]="st === 'in_progress'" [class.pending]="st === 'pending' || st === 'skipped'"
-                [class.failed]="st === 'failed' || st === 'revert'"
-                [attr.aria-current]="st === 'in_progress' ? 'step' : null" [attr.title]="getStepTitle(ep, stepNr)">
-                <span class="dot"></span>
-                <span class="conn"><span class="fill"></span></span>
-              </div>
-            </div>
+            <app-ep-progress [chainId]="ep.chainId" [events]="ep.events ?? getEvents(ep)">
+            </app-ep-progress>
 
           </div>
         </div>
       </div>
+
+      <!-- Empty state -->
+      <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
     </div>
 
-    <!-- Empty state -->
-    <div *ngIf="!transactions?.length" class="empty-state">No transactions</div>
+    <!-- Pagination -->
+    <div class="pagination-bar">
+      <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
+        <span class="btn-content">« First</span>
+      </button>
+      <button class="gradient-btn" (click)="pageChange.emit(currentPage - 1)" [disabled]="currentPage === 1">
+        <span class="btn-content">← Prev</span>
+      </button>
+
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+
+      <button class="gradient-btn" (click)="pageChange.emit(currentPage + 1)" [disabled]="currentPage === totalPages">
+        <span class="btn-content">Next →</span>
+      </button>
+      <button class="gradient-btn" (click)="pageChange.emit(totalPages)" [disabled]="currentPage === totalPages">
+        <span class="btn-content">Last »</span>
+      </button>
+    </div>
   </div>
-
-  <!-- Pagination -->
-  <div class="pagination-bar">
-    <button class="gradient-btn" (click)="pageChange.emit(1)" [disabled]="currentPage === 1">
-      <span class="btn-content">« First</span>
-    </button>
-    <button class="gradient-btn" (click)="pageChange.emit(currentPage - 1)" [disabled]="currentPage === 1">
-      <span class="btn-content">← Prev</span>
-    </button>
-
-    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
-
-    <button class="gradient-btn" (click)="pageChange.emit(currentPage + 1)" [disabled]="currentPage === totalPages">
-      <span class="btn-content">Next →</span>
-    </button>
-    <button class="gradient-btn" (click)="pageChange.emit(totalPages)" [disabled]="currentPage === totalPages">
-      <span class="btn-content">Last »</span>
-    </button>
-  </div>
-</div>

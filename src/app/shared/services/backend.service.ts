@@ -76,19 +76,25 @@ export class BackendService {
     return this.http.get<any>(url).pipe(map(this.mapTransactionFull));
   }
 
-  getTransactions(nr: number, skip = 0, includeParts = false, includeEvents = false, masterBlockHash?: string): Observable<TxFetchResult> {
+  getTransactions(nr: number, skip = 0, includeParts = false, includeEvents = false,
+    masterBlockHash?: string, sender?: string): Observable<TxFetchResult> {
     let params = new HttpParams()
       .set('nr', String(nr))
       .set('skip', String(skip))
       .set('includeParts', String(includeParts))
       .set('includeEvents', String(includeEvents));
 
-    if (masterBlockHash) {
+    // Add optional parameters if provided
+    if (masterBlockHash && masterBlockHash.trim()) {
       params = params.set('masterBlockHash', masterBlockHash);
     }
 
-    // Also the `sender` and `operator` parameters can be added if needed
-    // params = params.set('sender', sender).set('operator', operator);
+    if (sender && sender.trim()) {
+      params = params.set('sender', sender.trim());
+    }
+
+    // Also the `operator` parameter can be added if needed
+    // params = params.set('operator', operator);
 
     // Make the GET request with the modified params
     // returns: { total, items: [...] }
@@ -166,6 +172,9 @@ export class BackendService {
     mempoolEpochCommitEvent: dto.mempoolEpochCommitEvent,
     mempoolEpochConsensusProof: dto.mempoolEpochConsensusProof,
     mempoolEpochEVMProof: dto.mempoolEpochEVMProof,
+
+    // Optional: 4-step progress from backend
+    events: Array.isArray(dto.events) && dto.events.length === 4 ? dto.events : undefined,
   });
 
   private mapExecPart = (dto: TxExecutionPartDto): TxExecutionPart => ({
@@ -179,7 +188,6 @@ export class BackendService {
     partialBlockPartIndex: dto.partialBlockPartIndex ?? null,
     // Optional: 4-step progress from backend
     events: Array.isArray(dto.events) && dto.events.length === 4 ? dto.events : undefined,
-
   });
 
   /*

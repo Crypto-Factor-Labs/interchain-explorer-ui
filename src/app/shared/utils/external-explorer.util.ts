@@ -1,0 +1,35 @@
+import { CHAIN_EXPLORERS } from '../config/chain-explorers';
+
+// Normalize to 0x-prefixed lowercase hex (best effort)
+function normalizeHash(hash: string, prefixWith0x?: boolean): string {
+  const h = (hash || '').trim();
+  if (!h) return '';
+  if (prefixWith0x === false) return h;
+  return h.startsWith('0x') ? h : `0x${h}`;
+}
+
+// Build external explorer URL for a tx hash.
+// Returns null if chain is unknown or hash missing.
+export function buildExternalExplorerUrl(chainId: number | null | undefined, txHash: string | null | undefined): string | null {
+  if (chainId == null) return null;
+  const cfg = CHAIN_EXPLORERS[chainId];
+  if (!cfg) return null;
+
+  const hash = normalizeHash(txHash ?? '', cfg.prefixWith0x);
+  if (!hash) return null;
+
+  // Example: https://polygonscan.com/tx/0x....
+  return `${cfg.baseUrl}${hash}`;
+}
+
+// Open external explorer in new tab/window
+export function openExternalTx(chainId: number, txHash: string): void {
+  const url = buildExternalExplorerUrl(chainId, txHash);
+  if (url) window.open(url, '_blank', 'noopener');
+}
+
+// Get human readable name for tooltips; null if unknown
+export function getExplorerName(chainId: number | null | undefined): string | null {
+  const cfg = chainId != null ? CHAIN_EXPLORERS[chainId] : undefined;
+  return cfg ? cfg.name : null;
+}

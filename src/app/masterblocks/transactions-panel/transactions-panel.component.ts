@@ -4,6 +4,8 @@ import { SHARED_IMPORTS } from '../../shared/shared-standalone.js';
 import { Transaction, Tx, TxExecutionPart } from '../../shared/interfaces/transaction.interface.js';
 import { expandCollapse, staggerItems } from '../../shared/utils/animations.js';
 import { scrollExpandedIntoView } from '../../shared/utils/scroll-on-expand.js';
+import { getEvents } from '../../shared/utils/ep-progress';
+import { Router } from '@angular/router';
 
 // --- Progress helper types (local, non-exported) ---
 type EpEventStatus = 'pending' | 'in_progress' | 'success' | 'failed' | 'revert' | 'skipped';
@@ -50,25 +52,28 @@ export class TransactionsPanelComponent {
     scrollExpandedIntoView(this.listRef, event);
   }
 
-  // -------- Progress helpers (for EP 4-step micro-tracker) --------
+  // Expose getEvents util for template
+  public readonly getEvents = getEvents;
 
-  // Narrowing guard: EP has explicit per-event statuses from backend
-  private hasEvents(ep: TxExecutionPart): ep is TxExecutionPart & { events: EpEvent[] } {
-    return Array.isArray((ep as any).events) && (ep as any).events.length === 4;
+  constructor(private router: Router) { }
+
+  // Handle click on Transaction hash
+  onTxHashClick(event: MouseEvent, hash: string) {
+    event.stopPropagation();
+    if (event.ctrlKey || event.metaKey) {  // Ctrl/Cmd → open dialog
+      this.openTransaction.emit(hash);
+    } else {                               // normal click → open full page
+      this.router.navigate(['/tx', hash]);
+    }
   }
 
-  /**
-   * Returns the 4 statuses that drive the micro-tracker UI.
-   */
-  getEpSteps(ep: any) {
-    return ep?.events?.map((e: any) => e.status) ?? ['pending', 'pending', 'pending', 'pending'];
-  }
-
-  getStepTitle(ep: TxExecutionPart, i: number): string {
-    const e = ep.events?.[i];
-    if (!e) return `Step ${i + 1}: pending`;
-    const when = e.timestamp ? new Date(e.timestamp).toLocaleString() : '';
-    const status = e.status.replace('_', ' ');
-    return when ? `${e.name}: ${status} — ${when}` : `${e.name}: ${status}`;
+  // Handle click on ExecutionPart hash
+  onEpHashClick(event: MouseEvent, txHash: string, epHash: string) {
+    event.stopPropagation();
+    if (event.ctrlKey || event.metaKey) {  // Ctrl/Cmd → open dialog
+      this.openExecPart.emit({ tx_hash: txHash, ep_hash: epHash });
+    } else {                               // normal click → open full page
+      this.router.navigate(['/tx', txHash], { queryParams: { ep: epHash } });
+    }
   }
 }

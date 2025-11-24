@@ -6,7 +6,7 @@
       <span style="margin-left: 10pt">Hash</span>
     </div>
     <div class="value value--with-action">
-      <code class="mono">{{ ep.hash }}</code>
+      {{ ep.hash }}
       <app-copy-icon [value]="ep.hash"></app-copy-icon>
     </div>
   </div>
@@ -15,7 +15,7 @@
   <div class="field">
     <div class="label">Tx Hash</div>
     <div class="value value--with-action">
-      <code class="mono">{{ ep.transactionHash }}</code>
+      {{ ep.transactionHash }}
       <app-copy-icon [value]="ep.transactionHash"></app-copy-icon>
 
       <!-- Icon to jump to the Tx-page
@@ -31,6 +31,15 @@
   <div class="field">
     <div class="label">Status</div>
     <div class="value">{{ statusLabel }}</div>
+  </div>
+
+  <!-- Progress (4-step micro-tracker) -->
+  <div class="field">
+    <div class="label">Progress</div>
+    <div class="value" style="margin-left: -22px">
+      <app-ep-progress [chainId]="ep.chainId" [events]="ep.events ?? getEvents(ep)" style="justify-self: start">
+      </app-ep-progress>
+    </div>
   </div>
 
   <!-- Index within transaction -->

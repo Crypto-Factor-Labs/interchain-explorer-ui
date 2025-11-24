@@ -82,6 +82,11 @@ body {
   }
 }
 
+/* Remove the top border from the pagination bar  */
+.pagination-bar--no-top-border {
+  border-top: 0 !important;
+}
+
 /* Dialog title styling */
 .dialog-title {
   display: flex;
@@ -298,6 +303,11 @@ body {
 
 .icon-btn:hover {
   color: $powder-blue;
+}
+
+.icon-btn.disabled {
+  opacity: .5;
+  cursor: default;
 }
 
 /* Base badge */

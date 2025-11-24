@@ -1,0 +1,31 @@
+<div class="page-container" *ngIf="vm$ | async as vm">
+  <ng-container *ngIf="vm.loading">Loading transactions…</ng-container>
+  <div *ngIf="vm.error" class="error-box">Could not load transactions.</div>
+
+  <app-panel *ngIf="!vm.loading" [panelTitle]="'Transactions'">
+    <span *ngIf="vm.sender" panel-title-suffix>
+      of <span class="hash-text">{{ vm.sender }}</span>
+      <span class="count">({{ vm.total }})</span>
+    </span>
+
+    <!-- Transactions List -->
+    <app-txs-list-lite [transactions]="vm.txs" (openTransaction)="onOpenTx($event)">
+    </app-txs-list-lite>
+
+    <!-- Pagination in footer -->
+    <div panel-actions *ngIf="vm.pages > 1">
+      <div class="pagination-bar pagination-bar--no-top-border">
+        <button class="gradient-btn" (click)="gotoPage(1)" [disabled]="vm.page === 1"><span class="btn-content">«
+            First</span></button>
+        <button class="gradient-btn" (click)="gotoPage(vm.page - 1)" [disabled]="vm.page === 1"><span
+            class="btn-content">← Prev</span></button>
+        <span class="page-info">Page {{ vm.page }} of {{ vm.pages }}</span>
+        <button class="gradient-btn" (click)="gotoPage(vm.page + 1)" [disabled]="vm.page === vm.pages"><span
+            class="btn-content">Next →</span></button>
+        <button class="gradient-btn" (click)="gotoPage(vm.pages)" [disabled]="vm.page === vm.pages"><span
+            class="btn-content">Last »</span></button>
+      </div>
+    </div>
+  </app-panel>
+
+</div>

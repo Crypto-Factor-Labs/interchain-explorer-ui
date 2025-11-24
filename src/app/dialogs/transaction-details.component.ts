@@ -15,6 +15,7 @@ import { triStateLabel, triStateClass, triStateIcon } from '../shared/utils/tri-
 export class TransactionDetailsComponent {
   @Input({ required: true }) tx!: Transaction;
   @Input() showExecPartsCount = false;
+  @Input() context: 'dialog' | 'page' = 'page';
   @Output() openTx = new EventEmitter<void>();
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
