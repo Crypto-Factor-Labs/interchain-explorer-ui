@@ -10,8 +10,8 @@
   <app-searchbar></app-searchbar>
 </div>
 
-<!-- Always show the SearchBar and the Statistics -->
-<app-statistics></app-statistics>
+<!-- Only show on Homepage -->
+<app-statistics *ngIf="showStatistics"></app-statistics>
 
 <div class="content-area">
   <router-outlet></router-outlet>
