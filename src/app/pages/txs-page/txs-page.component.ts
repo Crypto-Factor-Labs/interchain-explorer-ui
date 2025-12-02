@@ -6,12 +6,14 @@ import { TxsListLiteComponent } from './txs-list-lite.component';
 import { Observable, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { BackendService } from '../../shared/services/backend.service';
+import { formatChainHash } from '../../shared/utils/external-explorer.util';
 
 type Vm = {
   loading: boolean;
   error: string | null;
-  sender: string | null;  // read from query param (not used yet)
-  txs: readonly any[];    // uses the mapTx() shape
+  sender: string | null;
+  senderDisplay: string | null;
+  txs: readonly any[];  // uses the mapTx() shape
   page: number;
   total: number;
   pages: number;
@@ -39,20 +41,57 @@ export class TxsPageComponent {
       return { sender, page };
     }),
     switchMap(({ sender, page }) => {
-      const s = sender ?? undefined;
+      const senderForFilter = sender ?? undefined;
       const skip = (page - 1) * PAGE_SIZE;
-      return this.backend.getTransactions(PAGE_SIZE, skip, false, false, undefined, s).pipe(
-        map(res => {
-          const total = res.total ?? 0;
-          const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-          return { loading: false, error: null, sender, txs: res.transactions, page, total, pages };
-        }),
-        startWith({ loading: true, error: null, sender, txs: [], page, total: 0, pages: 1 }),
-        catchError(() => of({
-          loading: false, error: 'Failed to load', sender: null,
-          txs: [], page, total: 0, pages: 1
-        }))
-      );
+      return this.backend
+        .getTransactions(PAGE_SIZE, skip, false, false, undefined, senderForFilter)
+        .pipe(
+          map(res => {
+            const total = res.total ?? 0;
+            const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+            const txs = res.transactions ?? [];
+            const chainId = txs.length > 0 ? txs[0]?.chainId ?? null : null;
+
+            const senderDisplay =
+              sender && chainId != null
+                ? formatChainHash(chainId, sender)
+                : sender;
+
+            return {
+              loading: false,
+              error: null,
+              sender,
+              senderDisplay,
+              txs,
+              page,
+              total,
+              pages,
+            };
+          }),
+          startWith({
+            loading: true,
+            error: null,
+            sender,
+            senderDisplay: sender,
+            txs: [],
+            page,
+            total: 0,
+            pages: 1,
+          }),
+          catchError(() =>
+            of({
+              loading: false,
+              error: 'Failed to load',
+              sender: null,
+              senderDisplay: null,
+              txs: [],
+              page,
+              total: 0,
+              pages: 1,
+            })
+          )
+        );
     })
   );
 
@@ -63,4 +102,6 @@ export class TxsPageComponent {
     const q = { ...this.route.snapshot.queryParams, page };
     this.router.navigate([], { relativeTo: this.route, queryParams: q, queryParamsHandling: 'merge' });
   };
+
+
 }

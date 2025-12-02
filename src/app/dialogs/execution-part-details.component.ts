@@ -26,18 +26,6 @@ export class ExecutionPartDetailsComponent {
 
   get isRevert() { return !!this.ep?.isRevert; }
 
-  // TEMPORARY: naive status derivation, to be replaced later by 'dots' (?)
-  get statusLabel(): string {
-    const ep = this.ep;
-    if (!ep) return '—';
-    // naive derivation — adjust later when you share exact event/result rules
-    if ((ep as any).targetChainExecutionEvent) return 'Executed';
-    if ((ep as any).targetChainPublishEvent) return 'Published';
-    if ((ep as any).targetChainSchedulingEvent) return 'Scheduled';
-    if ((ep as any).mempoolEpochCommitEvent) return 'Committed';
-    return '—';
-  }
-
   get showOpenTxIcon(): boolean {
     return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
   }

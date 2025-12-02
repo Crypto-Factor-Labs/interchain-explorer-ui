@@ -29,7 +29,13 @@
 <!-- Sender -->
 <div class="field">
   <div class="label">Sender</div>
-  <div class="value">{{ tx.sourceSender }}</div>
+  <div class="value value--with-action">
+    <span class="clickable" [routerLink]="['/txs']" [queryParams]="{ sender: tx.sourceSender }"
+      title="Show all transactions from this sender {{ tx.sourceSender }}">
+      {{ senderDisplay }} <!-- hash formatted according to source chain  -->
+    </span>
+    <app-copy-icon [value]="senderDisplay"></app-copy-icon>
+  </div>
 </div>
 
 <!-- StateValidator -->

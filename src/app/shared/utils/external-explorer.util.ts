@@ -8,9 +8,22 @@ function normalizeHash(hash: string, prefixWith0x?: boolean): string {
   return h.startsWith('0x') ? h : `0x${h}`;
 }
 
+// Generic formatter for chain-specific hashes (incl. senders)
+export function formatChainHash(
+  chainId: number | null | undefined,
+  hash: string | null | undefined
+): string {
+  const cfg = chainId != null ? CHAIN_EXPLORERS[chainId] : undefined;
+  const prefixWith0x = cfg?.prefixWith0x;
+  return normalizeHash(hash ?? '', prefixWith0x);
+}
+
 // Build external explorer URL for a tx hash.
 // Returns null if chain is unknown or hash missing.
-export function buildExternalExplorerUrl(chainId: number | null | undefined, txHash: string | null | undefined): string | null {
+export function buildExternalExplorerUrl(
+  chainId: number | null | undefined,
+  txHash: string | null | undefined
+): string | null {
   if (chainId == null) return null;
   const cfg = CHAIN_EXPLORERS[chainId];
   if (!cfg) return null;
