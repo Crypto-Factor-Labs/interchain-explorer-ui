@@ -11,8 +11,10 @@
     </app-open-tx-page-icon>
 
     <!-- page: show external explorer link -->
+    <!-- Removed, becaause the Tx is an IC-txn, there is no external link
     <app-tx-external-link *ngIf="context === 'page'" [chainId]="tx.sourceChainId" [txHash]="tx.transactionHash">
     </app-tx-external-link>
+    -->
   </div>
 </div>
 
@@ -21,22 +23,6 @@
   <div class="label">State</div>
   <div class="value no-mono">
     <span class="badge-state">{{ tx.state | txStateWord }}</span>
-  </div>
-</div>
-
-<!-- Result -->
-<div class="field">
-  <div class="label">Result</div>
-  <div class="value no-mono">
-    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
-      {{ triStateLabel(tx.result) }}
-    </span>
-    <!-- Icons need improvement
-    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
-      <i class="fa-solid" [ngClass]="triStateIcon(tx.result)"></i>
-      {{ triStateLabel(tx.result) }}
-    </span>
-    -->
   </div>
 </div>
 
