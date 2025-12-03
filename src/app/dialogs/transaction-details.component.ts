@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
 import { triStateLabel, triStateClass, triStateIcon } from '../shared/utils/tri-state';
-import { formatChainHash } from '../shared/utils/external-explorer.util';
+import { formatChainHash, getExplorerName } from '../shared/utils/external-explorer.util';
 
 @Component({
   selector: 'app-transaction-details',
@@ -18,6 +18,7 @@ export class TransactionDetailsComponent {
   @Input() showExecPartsCount = false;
   @Input() context: 'dialog' | 'page' = 'page';
   @Output() openTx = new EventEmitter<void>();
+  @Output() openMasterBlock = new EventEmitter<string>();
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
 
@@ -36,7 +37,16 @@ export class TransactionDetailsComponent {
     this.dialogRef?.close(); // closes if we're in a dialog; no-op on the page
   }
 
+  onOpenMasterBlock(): void {
+    if (!this.tx?.includedInMasterBlock) return;
+    this.openMasterBlock.emit(this.tx.includedInMasterBlock);
+  }
+
   get senderDisplay(): string {
     return formatChainHash(this.tx?.sourceChainId, this.tx?.sourceSender);
+  }
+
+  get sourceChainName(): string | null {
+    return getExplorerName(this.tx?.sourceChainId ?? null);
   }
 }

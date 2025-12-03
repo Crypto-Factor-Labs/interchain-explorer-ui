@@ -1,5 +1,12 @@
 @import '../shared/cf_color_palette.scss';
 
+/* Heading above the EPs */
+.section-heading {
+  margin-top: 6pt;
+  margin-bottom: 3pt;
+  color: $byzantine-blue;
+}
+
 /* not used (at the moment?) */
 .link {
   text-decoration: underline;

@@ -30,8 +30,8 @@
 <div class="field">
   <div class="label">Sender</div>
   <div class="value value--with-action">
-    <span class="clickable" [routerLink]="['/txs']" [queryParams]="{ sender: tx.sourceSender }"
-      title="Show all transactions from this sender {{ tx.sourceSender }}">
+    <span class="clickable clickable--tight" [routerLink]="['/txs']" [queryParams]="{ sender: tx.sourceSender }"
+      title="Show all transactions from this sender">
       {{ senderDisplay }} <!-- hash formatted according to source chain  -->
     </span>
     <app-copy-icon [value]="senderDisplay"></app-copy-icon>
@@ -52,29 +52,41 @@
 <!-- Source Chain -->
 <div class="field">
   <div class="label">Source Chain</div>
-  <div class="value">
-    {{ tx.sourceChainId }}
-    <span class="inline-label">| &nbsp;Epoch</span>
-    {{ tx.sourceChainMempoolEpoch }}
-  </div>
+  <div class="value">{{ tx.sourceChainId }} — {{ sourceChainName }}</div>
 </div>
 
-<!-- MasterBlock linking -->
-<div class="field" *ngIf="tx.masterBlockHeight">
-  <div class="label">MB Height</div>
+<!-- MasterBlock Info -->
+<h4 class="section-heading">
+  MasterBlock Info
+</h4>
+
+<!-- Height -->
+<div class="field">
+  <div class="label">Height</div>
   <div class="value">{{ tx.masterBlockHeight }}</div>
 </div>
-<div class="field" *ngIf="hasMB">
-  <div class="label">MB Hash</div>
-  <div class="value value--with-action">{{ tx.includedInMasterBlock }}
+
+<!-- Hash -->
+<div class="field">
+  <div class="label">Hash</div>
+  <div class="value value--with-action">
+    <span class="clickable clickable--tight" title="Show MasterBlock details" (click)="onOpenMasterBlock()">
+      {{ tx.includedInMasterBlock }}
+    </span>
     <app-copy-icon [value]="tx.includedInMasterBlock"> </app-copy-icon>
   </div>
 </div>
 
 <!-- Index within MB -->
-<div class="field" *ngIf="tx.masterBlockTxIndex !== null && tx.masterBlockTxIndex !== undefined">
-  <div class="label">MB Tx Index</div>
+<div class="field">
+  <div class="label">Tx Index</div>
   <div class="value">{{ tx.masterBlockTxIndex }}</div>
+</div>
+
+<!-- Epoch -->
+<div class="field">
+  <div class="label">Epoch</div>
+  <div class="value"> {{ tx.sourceChainMempoolEpoch }} </div>
 </div>
 
 <!-- ExecutionParts -->

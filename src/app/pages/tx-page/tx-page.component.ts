@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { map, switchMap, catchError, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -32,7 +32,11 @@ export class TransactionPageComponent {
     )
   );
 
-  constructor(private route: ActivatedRoute, private backend: BackendService) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private backend: BackendService,
+  ) { }
 
   // Track opened ExecutionParts by hash
   opened = new Set<string>();
@@ -52,4 +56,9 @@ export class TransactionPageComponent {
     return this.opened.has(hash);
   }
 
+  onOpenMasterBlock(hash: string) {
+    this.router.navigate([
+      { outlets: { modal: ['mblock', hash] } }
+    ]);
+  }
 }
