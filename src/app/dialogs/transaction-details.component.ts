@@ -29,7 +29,7 @@ export class TransactionDetailsComponent {
   get hash(): string { return this.tx.transactionHash; }
   get hasMB(): boolean { return !!this.tx.includedInMasterBlock; }
 
-  get showOpenTxIcon(): boolean {
+  get inDialogMode(): boolean {
     return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
   }
 

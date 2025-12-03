@@ -21,13 +21,19 @@ export class ExecutionPartDetailsComponent {
   @Input({ required: true }) ep!: EP;
   @Output() openTx = new EventEmitter<void>();
   @Output() openExternalTx = new EventEmitter<string>();
+  @Output() openPartialBlock = new EventEmitter<string>();
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
 
   get isRevert() { return !!this.ep?.isRevert; }
 
-  get showOpenTxIcon(): boolean {
+  get inDialogMode(): boolean {
     return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
+  }
+
+  onOpenPartialBlock(): void {
+    if (!this.ep?.includedInPartialBlock) return;
+    this.openPartialBlock.emit(this.ep.includedInPartialBlock);
   }
 
   // Functions to the progress of the Execution Parts

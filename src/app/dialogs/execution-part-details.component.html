@@ -11,17 +11,16 @@
     </div>
   </div>
 
-  <!-- Tx hash -->
-  <div class="field">
+  <!-- Tx hash – only shown in Tx-dialog -->
+  <div class="field" *ngIf="inDialogMode">
     <div class="label">Tx Hash</div>
     <div class="value value--with-action">
       {{ ep.transactionHash }}
       <app-copy-icon [value]="ep.transactionHash"></app-copy-icon>
 
-      <!-- Icon to jump to the Tx-page
-     The icon is only shown in the Tx-dialog, not on the Tx-page -->
-      <a *ngIf="showOpenTxIcon" [routerLink]="['/tx', ep.transactionHash]" [queryParams]="{ ep: ep.hash }"
-        class="icon-btn" title="Open transaction page" aria-label="Open transaction page" (click)="openTx.emit()"
+      <!-- Icon to jump to the Tx-page -->
+      <a [routerLink]="['/tx', ep.transactionHash]" [queryParams]="{ ep: ep.hash }" class="icon-btn"
+        title="Open transaction page" aria-label="Open transaction page" (click)="openTx.emit()"
         style="margin-left: -3pt; display:inline-flex; align-items:center;">
         <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
       </a>
@@ -61,23 +60,14 @@
     <div class="value">{{ ep.senderAddress | asDash }}</div>
   </div>
 
-  <!-- Partial block -->
+  <!-- Partial Block -->
   <div class="field">
     <div class="label">Partial Block</div>
-
     <div class="value value--with-action">
-      {{ ep.partialBlockHeight | asDash }}
-
-      <ng-container *ngIf="ep.partialBlockPartIndex !== undefined">
-        <span class="inline-label">|</span>
-        <span>#{{ ep.partialBlockPartIndex }}</span>
-      </ng-container>
-
-      <ng-container *ngIf="ep.includedInPartialBlock as pbHash">
-        <span class="inline-label">|</span>
-        <span>{{ pbHash }}</span>
-        <app-copy-icon [value]="pbHash"></app-copy-icon>
-      </ng-container>
+      <span class="clickable clickable--tight" title="Show PartialBlock details" (click)="onOpenPartialBlock()">
+        {{ ep.includedInPartialBlock }}
+      </span>
+      <app-copy-icon [value]="ep.includedInPartialBlock"> </app-copy-icon>
     </div>
   </div>
 

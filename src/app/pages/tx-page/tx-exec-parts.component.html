@@ -31,7 +31,8 @@
 
     <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)"
       [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
-      <app-execution-part-details [ep]="ep"></app-execution-part-details>
+      <app-execution-part-details [ep]="ep" (openPartialBlock)="onOpenPartialBlock($event)">
+      </app-execution-part-details>
     </div>
   </section>
 
@@ -51,7 +52,8 @@
 
     <div class="ep-body" [id]="'ep-' + rep.hash" *ngIf="isOpen(rep.hash)"
       [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
-      <app-execution-part-details [ep]="rep"></app-execution-part-details>
+      <app-execution-part-details [ep]="rep" (openPartialBlock)="onOpenPartialBlock($event)">
+      </app-execution-part-details>
     </div>
   </section>
 </ng-container>

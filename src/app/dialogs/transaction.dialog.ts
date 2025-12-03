@@ -26,6 +26,8 @@ export class TransactionDialogComponent {
   }
 
   onOpenMasterBlock(hash: string) {
-    this.router.navigate([{ outlets: { modal: ['mblock', hash] } }]);
+    this.router.navigate([
+      { outlets: { modal: ['mblock', hash] } }
+    ]);
   }
 }

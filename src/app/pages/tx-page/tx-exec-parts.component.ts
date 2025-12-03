@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import type { ExecutionPart } from '../../shared/interfaces/transaction.interface';
 import { SHARED_IMPORTS } from '../../shared/shared-standalone';
 import { ExecutionPartDetailsComponent } from '../../dialogs/execution-part-details.component';
@@ -20,6 +21,10 @@ export class TxExecutionPartsComponent {
   private _revertEp: ExecutionPart | null = null;
   private _initialEpHash: string | null = null;
   private _initialApplied = false;
+
+  constructor(
+    private router: Router,
+  ) { }
 
   @Input({ required: true })
   set epList(epList: ExecutionPart[] | null | undefined) {
@@ -69,5 +74,11 @@ export class TxExecutionPartsComponent {
 
   logoSrc(chainId: number): string {
     return getChainImage(chainId);
+  }
+
+  onOpenPartialBlock(hash: string) {
+    this.router.navigate([
+      { outlets: { modal: ['pblock', hash] } }
+    ]);
   }
 }
