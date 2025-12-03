@@ -2,7 +2,7 @@
   <!-- Hash with copy button -->
   <div class="field">
     <div class="label">
-      <span *ngIf="isRevert" class="badge-revert" aria-label="Revert">Revert</span>
+      <span *ngIf="isRevert && inDialogMode" class="badge-revert" aria-label="Revert">Revert</span>
       <span style="margin-left: 10pt">Hash</span>
     </div>
     <div class="value value--with-action">
@@ -36,28 +36,13 @@
     </div>
   </div>
 
-  <!-- Index within transaction -->
+  <!-- Executing contract (Operator) -->
   <div class="field">
-    <div class="label">Index in Tx</div>
-    <div class="value">{{ ep.transactionExecutionPartIndex | asDash }}</div>
-  </div>
-
-  <!-- Chain -->
-  <div class="field">
-    <div class="label">Chain ID</div>
-    <div class="value">{{ ep.chainId }}</div>
-  </div>
-
-  <!-- Operator -->
-  <div class="field">
-    <div class="label">Operator</div>
-    <div class="value">{{ ep.operatorAddress | asDash }}</div>
-  </div>
-
-  <!-- Sender -->
-  <div class="field">
-    <div class="label">Sender</div>
-    <div class="value">{{ ep.senderAddress | asDash }}</div>
+    <div class="label">Executing contract</div>
+    <div class="value value--with-action">
+      <code class="mono">{{ ep.operatorAddress }}</code>
+      <app-copy-icon [value]="ep.operatorAddress"></app-copy-icon>
+    </div>
   </div>
 
   <!-- Partial Block -->
