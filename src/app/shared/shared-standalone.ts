@@ -9,7 +9,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { TruncateMiddlePipe } from './pipes/truncate-middle.pipe';
 import { CopyIconComponent } from '../shared/utils/copy-icon.component';
 import { OpenTxPageIconComponent } from '../shared/utils/open-tx-page-icon.component';
-import { TxExternalLinkComponent } from '../shared/utils/tx-external-link.component';
+import { ExternalLinkComponent } from './utils/external-link.component';
 import { EpProgressComponent } from '../shared/utils/ep-progress.component';
 
 export const SHARED_IMPORTS = [
@@ -24,6 +24,6 @@ export const SHARED_IMPORTS = [
   TruncateMiddlePipe,
   CopyIconComponent,
   OpenTxPageIconComponent,
-  TxExternalLinkComponent,
+  ExternalLinkComponent,
   EpProgressComponent,
 ];

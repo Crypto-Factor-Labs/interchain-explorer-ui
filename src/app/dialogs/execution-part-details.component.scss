@@ -1,2 +1,8 @@
-// Nothing specific here (yet?)
-// Just ensuring the file is present to avoid build warnings.
+.details-grid {
+  .field {
+    .label {
+      text-align: right; // keep right-aligned
+      padding-left: 10pt; // spacing before the longest label
+    }
+  }
+}

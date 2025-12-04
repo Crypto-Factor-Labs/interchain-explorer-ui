@@ -36,12 +36,14 @@
     </div>
   </div>
 
-  <!-- Executing contract (Operator) -->
+  <!-- Executing Contract (Operator) -->
   <div class="field">
-    <div class="label">Executing contract</div>
+    <div class="label">Executing Contract</div>
     <div class="value value--with-action">
-      <code class="mono">{{ ep.operatorAddress }}</code>
-      <app-copy-icon [value]="ep.operatorAddress"></app-copy-icon>
+      <code class="mono">{{ operatorAddressDisplay }}</code>
+      <app-copy-icon [value]="operatorAddressDisplay"></app-copy-icon>
+      <app-external-link [chainId]="ep.chainId" [address]="ep.operatorAddress" style="margin-left:-1pt">
+      </app-external-link>
     </div>
   </div>
 
@@ -56,12 +58,31 @@
     </div>
   </div>
 
-  <!-- Optional: Execution signature (useful for debugging) -->
   <div class="field">
     <div class="label">Exec Signature</div>
-    <div class="value" style="word-break: break-all;">
-      {{ ep.executionSignature | asDash }}
+    <div class="value">
+      <!-- Only collapsible when we actually have a signature -->
+      <ng-container *ngIf="ep.executionSignature; else noSignature">
+        <span class="clickable mono" (click)="toggleSignature()" title="Click to toggle full signature"
+          style="word-break: break-all;">
+          <!-- Collapsed: truncated -->
+          <ng-container *ngIf="!showFullSignature; else fullSig">
+            {{ ep.executionSignature | truncateMiddle: 16 }}
+          </ng-container>
+
+          <!-- Expanded: full value -->
+          <ng-template #fullSig>
+            {{ ep.executionSignature }}
+          </ng-template>
+        </span>
+      </ng-container>
+
+      <!-- Fallback when there is no signature -->
+      <ng-template #noSignature>
+        <span class="mono">
+          {{ ep.executionSignature | asDash }}
+        </span>
+      </ng-template>
     </div>
   </div>
-
 </div>

@@ -6,7 +6,7 @@ import { TxsListLiteComponent } from './txs-list-lite.component';
 import { Observable, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { BackendService } from '../../shared/services/backend.service';
-import { formatChainHash } from '../../shared/utils/external-explorer.util';
+import { formatChainAddress } from '../../shared/utils/external-explorer.util';
 
 type Vm = {
   loading: boolean;
@@ -55,7 +55,7 @@ export class TxsPageComponent {
 
             const senderDisplay =
               sender && chainId != null
-                ? formatChainHash(chainId, sender)
+                ? formatChainAddress(chainId, sender)
                 : sender;
 
             return {

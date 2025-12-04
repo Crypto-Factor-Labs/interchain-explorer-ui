@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
 import { triStateLabel, triStateClass, triStateIcon } from '../shared/utils/tri-state';
-import { formatChainHash, getExplorerName } from '../shared/utils/external-explorer.util';
+import { formatChainAddress, getExplorerName } from '../shared/utils/external-explorer.util';
 
 @Component({
   selector: 'app-transaction-details',
@@ -43,7 +43,7 @@ export class TransactionDetailsComponent {
   }
 
   get senderDisplay(): string {
-    return formatChainHash(this.tx?.sourceChainId, this.tx?.sourceSender);
+    return formatChainAddress(this.tx?.sourceChainId, this.tx?.sourceSender);
   }
 
   get sourceChainName(): string | null {

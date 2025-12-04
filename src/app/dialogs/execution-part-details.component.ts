@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { ExecutionPart as CoreEP } from '../shared/interfaces/transaction.interface';
 import { getEvents, getSteps, getStepTitle, hasStepTx, getStepTxHash } from '../shared/utils/ep-progress';
-import { openExternalTx } from '../shared/utils/external-explorer.util';
+import { formatChainAddress, openExternalTx } from '../shared/utils/external-explorer.util';
 
 // Allow optional isRevert without touching the core model
 type EP = CoreEP & { isRevert?: boolean };
@@ -47,4 +47,15 @@ export class ExecutionPartDetailsComponent {
     const txHash = getStepTxHash(events, i);
     if (txHash) openExternalTx(chainId, txHash);
   };
+
+  get operatorAddressDisplay(): string {
+    return formatChainAddress(this.ep?.chainId ?? null, this.ep?.operatorAddress ?? '');
+  }
+
+  // Signature toggle
+  showFullSignature = false;
+
+  toggleSignature(): void {
+    this.showFullSignature = !this.showFullSignature;
+  }
 }

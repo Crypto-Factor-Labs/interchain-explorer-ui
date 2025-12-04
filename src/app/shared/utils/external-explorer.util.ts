@@ -1,26 +1,53 @@
 import { CHAIN_EXPLORERS } from '../config/chain-explorers';
 
 // Normalize to 0x-prefixed lowercase hex (best effort)
-function normalizeHash(hash: string, prefixWith0x?: boolean): string {
-  const h = (hash || '').trim();
-  if (!h) return '';
-  if (prefixWith0x === false) return h;
-  return h.startsWith('0x') ? h : `0x${h}`;
+function normalizeHex(value: string, prefixWith0x?: boolean): string {
+  const v = (value || '').trim();
+  if (!v) return '';
+  if (prefixWith0x === false) return v;
+  return v.startsWith('0x') ? v : `0x${v}`;
 }
 
-// Generic formatter for chain-specific hashes (incl. senders)
-export function formatChainHash(
+// Generic formatter for chain-specific hex values (hashes, addresses, ...)
+export function formatChainHex(
   chainId: number | null | undefined,
-  hash: string | null | undefined
+  value: string | null | undefined
 ): string {
   const cfg = chainId != null ? CHAIN_EXPLORERS[chainId] : undefined;
   const prefixWith0x = cfg?.prefixWith0x;
-  return normalizeHash(hash ?? '', prefixWith0x);
+  return normalizeHex(value ?? '', prefixWith0x);
 }
 
-// Build external explorer URL for a tx hash.
+// Address-specific formatter (applies “drop first 2 chars” rule)
+export function formatChainAddress(
+  chainId: number | null | undefined,
+  address: string | null | undefined
+): string {
+  const cfg = chainId != null ? CHAIN_EXPLORERS[chainId] : undefined;
+  let raw = (address ?? '').trim();
+  if (!raw) return '';
+
+  if (cfg?.prefixWith0x && raw.length > 2) {
+    raw = raw.slice(2);
+  }
+
+  return normalizeHex(raw, cfg?.prefixWith0x);
+}
+
+// Join baseUrl + path safely (avoid double/missing slashes)
+function joinUrl(base: string, path: string): string {
+  if (base.endsWith('/') && path.startsWith('/')) {
+    return base + path.slice(1);
+  }
+  if (!base.endsWith('/') && !path.startsWith('/')) {
+    return `${base}/${path}`;
+  }
+  return base + path;
+}
+
+// Build external explorer URL for a Tx hash.
 // Returns null if chain is unknown or hash missing.
-export function buildExternalExplorerUrl(
+export function buildExternalTxUrl(
   chainId: number | null | undefined,
   txHash: string | null | undefined
 ): string | null {
@@ -28,16 +55,39 @@ export function buildExternalExplorerUrl(
   const cfg = CHAIN_EXPLORERS[chainId];
   if (!cfg) return null;
 
-  const hash = normalizeHash(txHash ?? '', cfg.prefixWith0x);
+  const hash = normalizeHex(txHash ?? '', cfg.prefixWith0x);
   if (!hash) return null;
 
   // Example: https://polygonscan.com/tx/0x....
-  return `${cfg.baseUrl}${hash}`;
+  return joinUrl(cfg.baseUrl, cfg.txPath) + hash;
 }
 
-// Open external explorer in new tab/window
+// Build external explorer URL for an address.
+// Returns null if chain is unknown or address missing.
+export function buildExternalAddressUrl(
+  chainId: number | null | undefined,
+  address: string | null | undefined
+): string | null {
+  if (chainId == null) return null;
+  const cfg = CHAIN_EXPLORERS[chainId];
+  if (!cfg) return null;
+
+  const addr = formatChainAddress(chainId, address);
+  if (!addr) return null;
+
+  // Example: https://polygonscan.com/address/0x....
+  return joinUrl(cfg.baseUrl, cfg.addressPath) + addr;
+}
+
+// Open external explorer in new tab/window (for tx)
 export function openExternalTx(chainId: number, txHash: string): void {
-  const url = buildExternalExplorerUrl(chainId, txHash);
+  const url = buildExternalTxUrl(chainId, txHash);
+  if (url) window.open(url, '_blank', 'noopener');
+}
+
+// Open external explorer in new tab/window (for address)
+export function openExternalAddress(chainId: number, address: string): void {
+  const url = buildExternalAddressUrl(chainId, address);
   if (url) window.open(url, '_blank', 'noopener');
 }
 
