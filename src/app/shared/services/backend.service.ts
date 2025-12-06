@@ -140,7 +140,9 @@ export class BackendService {
 
     // optional events (pass through if present)
     sourceChainPushEvent: dto.sourceChainPushEvent,
+    sourceChainPushTxHash: dto.sourceChainPushTxHash,
     stateValidationEvent: dto.stateValidationEvent,
+    stateValidationTxHash: dto.stateValidationTxHash,
 
     result: dto.result,
     encodableType: dto.encodableType,

@@ -38,17 +38,6 @@
   </div>
 </div>
 
-<!-- StateValidator -->
-<div class="field">
-  <div class="label">State Validator</div>
-  <div class="value value--with-action">
-    <span>{{ tx.stateValidator }}</span>
-    <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
-      {{ triStateLabel(tx.stateValidationResult) }}
-    </span>
-  </div>
-</div>
-
 <!-- Source Chain -->
 <div class="field">
   <div class="label">Source Chain</div>
@@ -83,10 +72,57 @@
   <div class="value">{{ tx.masterBlockTxIndex }}</div>
 </div>
 
+<!-- Advanced -->
+<h4 class="section-heading">
+  Advanced
+</h4>
+
 <!-- Epoch -->
 <div class="field">
   <div class="label">Epoch</div>
   <div class="value"> {{ tx.sourceChainMempoolEpoch }} </div>
+</div>
+
+<!-- Push Event -->
+<div class="field">
+  <div class="label">Push Event</div>
+  <div class="value value--with-action">
+    {{ tx.sourceChainPushTxHash | asDash }}
+
+    <!-- Only show copy + external link when a hash exists -->
+    <ng-container *ngIf="tx.sourceChainPushTxHash as pushHash">
+      <app-copy-icon [value]="pushHash"></app-copy-icon>
+      <app-external-link [chainId]="tx.sourceChainId" [txHash]="pushHash">
+      </app-external-link>
+    </ng-container>
+  </div>
+</div>
+
+<!-- StateValidation Event -->
+<div class="field">
+  <div class="label">State Validation Event</div>
+  <div class="value value--with-action">
+    {{ tx.stateValidationTxHash | asDash }}
+
+    <!-- Only show copy + external link when a hash exists -->
+    <!-- Always link to validationChainId (PBC) -->
+    <ng-container *ngIf="tx.stateValidationTxHash as validationHash">
+      <app-copy-icon [value]="validationHash"></app-copy-icon>
+      <app-external-link [chainId]="validationChainId" [txHash]="validationHash">
+      </app-external-link>
+    </ng-container>
+  </div>
+</div>
+
+<!-- StateValidator -->
+<div class="field">
+  <div class="label">State Validator</div>
+  <div class="value value--with-action">
+    <span>{{ tx.stateValidator }}</span>
+    <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
+      {{ triStateLabel(tx.stateValidationResult) }}
+    </span>
+  </div>
 </div>
 
 <!-- ExecutionParts -->

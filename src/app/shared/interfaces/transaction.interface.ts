@@ -103,7 +103,10 @@ export interface Transaction {
 
   // Events for linking/inspection
   sourceChainPushEvent?: ChainEvent;
+  sourceChainPushTxHash?: string;
   stateValidationEvent?: ChainEventWithResult;
+  stateValidationTxHash?: string;
+
 
   // Overall tx result/status
   result: TriState;

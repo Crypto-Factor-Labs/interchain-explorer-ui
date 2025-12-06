@@ -5,6 +5,7 @@ import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
 import { triStateLabel, triStateClass, triStateIcon } from '../shared/utils/tri-state';
 import { formatChainAddress, getExplorerName } from '../shared/utils/external-explorer.util';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-transaction-details',
@@ -22,6 +23,7 @@ export class TransactionDetailsComponent {
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
 
+  readonly validationChainId = environment.stateValidationChainId;
   triStateLabel = triStateLabel;
   triStateClass = triStateClass;
   triStateIcon = triStateIcon;
