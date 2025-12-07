@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import type { ExecutionPart } from '../../shared/interfaces/transaction.interface';
 import { SHARED_IMPORTS } from '../../shared/shared-standalone';
 import { ExecutionPartDetailsComponent } from '../../dialogs/execution-part-details.component';
@@ -21,30 +22,35 @@ export class TxExecutionPartsComponent {
   private _initialEpHash: string | null = null;
   private _initialApplied = false;
 
+  constructor(private router: Router) { }
+
   @Input({ required: true })
   set epList(epList: ExecutionPart[] | null | undefined) {
     this._epList = epList ?? [];
     this.tryOpenInitialEp();
   }
-  get epList() { return this._epList; }
+  get epList(): ExecutionPart[] {
+    return this._epList;
+  }
 
   @Input()
   set revertEp(revertEp: ExecutionPart | null | undefined) {
     this._revertEp = revertEp ?? null;
     this.tryOpenInitialEp();
   }
-  get revertEp() { return this._revertEp; }
+  get revertEp(): ExecutionPart | null {
+    return this._revertEp;
+  }
 
   @Input()
   set initialOpenEpHash(hash: string | null | undefined) {
-    this._initialEpHash = (hash ?? null);
+    this._initialEpHash = hash ?? null;
     this.tryOpenInitialEp();
   }
 
   opened = new Set<string>();
 
   private tryOpenInitialEp() {
-    // Nothing to do yet?
     if (this._initialApplied || !this._initialEpHash || this._epList.length === 0) return;
 
     const targetHash = this._initialEpHash.trim();
@@ -59,8 +65,29 @@ export class TxExecutionPartsComponent {
 
   toggleEP(hash: string) {
     if (!hash) return;
-    this.opened.has(hash) ? this.opened.delete(hash) : this.opened.add(hash);
+
+    const isOpen = this.opened.has(hash);
+
+    if (isOpen) {
+      // Collapsing: just close
+      this.opened.delete(hash);
+    } else {
+      // Opening: add to set, then scroll into view
+      this.opened.add(hash);
+
+      setTimeout(() => {
+        const el = document.getElementById('ep-' + hash);
+        if (el) {
+          el.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',  // or 'start' if you prefer it at the top
+            inline: 'nearest',
+          });
+        }
+      }, 50); // a small delay gives Angular time to render the expanded body
+    }
   }
+
   isOpen(hash: string) {
     return this.opened.has(hash);
   }
@@ -69,5 +96,9 @@ export class TxExecutionPartsComponent {
 
   logoSrc(chainId: number): string {
     return getChainImage(chainId);
+  }
+
+  onOpenPartialBlock(hash: string) {
+    this.router.navigate([{ outlets: { modal: ['pblock', hash] } }]);
   }
 }

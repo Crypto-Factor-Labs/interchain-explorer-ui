@@ -1,4 +1,4 @@
-import { getExplorerName, buildExternalExplorerUrl } from '../../shared/utils/external-explorer.util';
+import { getExplorerName } from '../../shared/utils/external-explorer.util';
 import { ChainEventDto, ChainEventStatus, ChainEvents } from '../../shared/interfaces/chain-events.interface';
 
 type ChainEventsLike = ReadonlyArray<ChainEventDto> | ChainEvents | null | undefined;

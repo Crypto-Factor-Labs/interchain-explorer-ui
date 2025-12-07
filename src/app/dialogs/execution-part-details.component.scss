@@ -1,2 +1,24 @@
-// Nothing specific here (yet?)
-// Just ensuring the file is present to avoid build warnings.
+.details-grid {
+  padding-bottom: 10px;
+  padding-right: 10px;
+
+  .field {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr); // label + rest for value
+    column-gap: 12px;
+
+    .label {
+      text-align: right;
+      white-space: nowrap; // prevent wrapping of long labels
+    }
+  }
+
+  .value--exec-signature .exec-signature {
+    word-break: break-all;
+    transition: font-size 0.15s ease;
+  }
+
+  .value--exec-signature .exec-signature.exec-signature--expanded {
+    font-size: 0.9rem; // slightly smaller when expanded
+  }
+}

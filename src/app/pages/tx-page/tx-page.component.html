@@ -5,8 +5,8 @@
 
   <app-panel *ngIf="vm.tx as tx" panelTitle="Transaction" [logoSrc]="getChainImage(tx.sourceChainId)"
     [logoAlt]="'Chain ' + tx.sourceChainId">
-    <app-transaction-details [tx]="tx"></app-transaction-details>
-    <app-tx-execution-parts [epList]="tx?.executionParts" [revertEp]="tx?.revertExecutionPart"
+    <app-transaction-details [tx]="tx" (openMasterBlock)="onOpenMasterBlock($event)"></app-transaction-details>
+    <app-tx-execution-parts [epList]="tx.executionParts | filterExecPartsByState: tx.state"
       [initialOpenEpHash]="initialOpenEpHash">
     </app-tx-execution-parts>
   </app-panel>

@@ -11,8 +11,10 @@
     </app-open-tx-page-icon>
 
     <!-- page: show external explorer link -->
-    <app-tx-external-link *ngIf="context === 'page'" [chainId]="tx.sourceChainId" [txHash]="tx.transactionHash">
-    </app-tx-external-link>
+    <!-- Removed, because the Tx is an IC-txn, there is no external link
+    <app-external-link *ngIf="context === 'page'" [chainId]="tx.sourceChainId" [txHash]="tx.transactionHash">
+    </app-external-link>
+    -->
   </div>
 </div>
 
@@ -24,66 +26,122 @@
   </div>
 </div>
 
-<!-- Result -->
-<div class="field">
-  <div class="label">Result</div>
-  <div class="value no-mono">
-    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
-      {{ triStateLabel(tx.result) }}
-    </span>
-    <!-- Icons need improvement
-    <span class="badge-result" [ngClass]="triStateClass(tx.result)">
-      <i class="fa-solid" [ngClass]="triStateIcon(tx.result)"></i>
-      {{ triStateLabel(tx.result) }}
-    </span>
-    -->
-  </div>
-</div>
-
 <!-- Sender -->
 <div class="field">
   <div class="label">Sender</div>
-  <div class="value">{{ tx.sourceSender }}</div>
-</div>
-
-<!-- StateValidator -->
-<div class="field">
-  <div class="label">State Validator</div>
   <div class="value value--with-action">
-    <span>{{ tx.stateValidator }}</span>
-    <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
-      {{ triStateLabel(tx.stateValidationResult) }}
+    <span class="clickable clickable--tight" [routerLink]="['/txs']" [queryParams]="{ sender: tx.sourceSender }"
+      title="Show all transactions from this sender">
+      {{ senderDisplay }} <!-- hash formatted according to source chain  -->
     </span>
+    <app-copy-icon [value]="senderDisplay"></app-copy-icon>
   </div>
 </div>
 
 <!-- Source Chain -->
 <div class="field">
   <div class="label">Source Chain</div>
-  <div class="value">
-    {{ tx.sourceChainId }}
-    <span class="inline-label">| &nbsp;Epoch</span>
-    {{ tx.sourceChainMempoolEpoch }}
-  </div>
+  <div class="value">{{ tx.sourceChainId }} — {{ sourceChainName }}</div>
 </div>
 
-<!-- MasterBlock linking -->
-<div class="field" *ngIf="tx.masterBlockHeight">
-  <div class="label">MB Height</div>
+<!-- MasterBlock Info -->
+<div class="field section-heading">
+  <div class="label">MasterBlock Info</div>
+  <div class="value"></div>
+</div>
+
+<!-- Height -->
+<div class="field">
+  <div class="label">Height</div>
   <div class="value">{{ tx.masterBlockHeight }}</div>
 </div>
-<div class="field" *ngIf="hasMB">
-  <div class="label">MB Hash</div>
-  <div class="value value--with-action">{{ tx.includedInMasterBlock }}
+
+<!-- Hash -->
+<div class="field">
+  <div class="label">Hash</div>
+  <div class="value value--with-action">
+    <span class="clickable clickable--tight" title="Show MasterBlock details" (click)="onOpenMasterBlock()">
+      {{ tx.includedInMasterBlock }}
+    </span>
     <app-copy-icon [value]="tx.includedInMasterBlock"> </app-copy-icon>
   </div>
 </div>
 
 <!-- Index within MB -->
-<div class="field" *ngIf="tx.masterBlockTxIndex !== null && tx.masterBlockTxIndex !== undefined">
-  <div class="label">MB Tx Index</div>
+<div class="field">
+  <div class="label">Tx Index</div>
   <div class="value">{{ tx.masterBlockTxIndex }}</div>
 </div>
+
+<!-- Advanced (collapsible) -->
+<div class="field section-heading">
+  <div class="label">
+    <span class="left" role="button" tabindex="0" (click)="toggleAdvanced()" (keydown.enter)="toggleAdvanced()"
+      (keydown.space)="toggleAdvanced()" [attr.aria-expanded]="showAdvanced" aria-controls="advanced-section">
+      <span class="heading-text">Advanced</span>
+
+      <!-- Same chevron button pattern as EPs -->
+      <button type="button" class="icon-btn chevron-btn" (click)="toggleAdvanced(); $event.stopPropagation()"
+        [attr.aria-expanded]="showAdvanced" aria-label="Toggle Advanced section" title="Expand/collapse">
+        <i class="fa-solid fa-chevron-down chevron" [class.chevron--open]="showAdvanced"></i>
+      </button>
+    </span>
+  </div>
+  <div class="value"></div>
+</div>
+
+<ng-container *ngIf="showAdvanced">
+  <!-- Epoch -->
+  <div class="field">
+    <div class="label">Epoch</div>
+    <div class="value">{{ tx.sourceChainMempoolEpoch }}</div>
+  </div>
+
+  <!-- Fee per Unit -->
+  <div class="field">
+    <div class="label">Fee per Unit</div>
+    <div class="value"> {{ tx.feePerUnit | cfrFee }}</div>
+  </div>
+
+  <!-- Push Event -->
+  <div class="field">
+    <div class="label">Push Event</div>
+    <div class="value value--with-action">
+      {{ tx.sourceChainPushTxHash | asDash }}
+      <ng-container *ngIf="tx.sourceChainPushTxHash as pushHash">
+        <app-copy-icon [value]="pushHash"></app-copy-icon>
+        <app-external-link [chainId]="tx.sourceChainId" [txHash]="pushHash"></app-external-link>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- State Validation Event -->
+  <div class="field">
+    <div class="label">State Validation Event</div>
+    <div class="value value--with-action">
+      {{ tx.stateValidationTxHash | asDash }}
+      <ng-container *ngIf="tx.stateValidationTxHash as validationHash">
+        <app-copy-icon [value]="validationHash"></app-copy-icon>
+        <app-external-link [chainId]="validationChainId" [txHash]="validationHash"></app-external-link>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- StateValidator -->
+  <div class="field">
+    <div class="label">State Validator</div>
+    <div class="value value--with-action">
+      <span>{{ tx.stateValidator }}</span>
+      <!--
+      <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
+        {{ triStateLabel(tx.stateValidationResult) }}
+      </span>
+      -->
+      <app-copy-icon [value]="tx.stateValidator"></app-copy-icon>
+      <app-external-link [chainId]="validationChainId" [custom]="'/contracts/' + tx.stateValidator"></app-external-link>
+    </div>
+  </div>
+</ng-container>
 
 <!-- ExecutionParts -->
 <div class="field" *ngIf="showExecPartsCount">

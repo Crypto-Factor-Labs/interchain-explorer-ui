@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import { ExecutionPart as CoreEP } from '../shared/interfaces/transaction.interface';
 import { getEvents, getSteps, getStepTitle, hasStepTx, getStepTxHash } from '../shared/utils/ep-progress';
-import { openExternalTx } from '../shared/utils/external-explorer.util';
+import { formatChainAddress, openExternalTx } from '../shared/utils/external-explorer.util';
 
 // Allow optional isRevert without touching the core model
 type EP = CoreEP & { isRevert?: boolean };
@@ -21,25 +21,19 @@ export class ExecutionPartDetailsComponent {
   @Input({ required: true }) ep!: EP;
   @Output() openTx = new EventEmitter<void>();
   @Output() openExternalTx = new EventEmitter<string>();
+  @Output() openPartialBlock = new EventEmitter<string>();
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
 
   get isRevert() { return !!this.ep?.isRevert; }
 
-  // TEMPORARY: naive status derivation, to be replaced later by 'dots' (?)
-  get statusLabel(): string {
-    const ep = this.ep;
-    if (!ep) return '—';
-    // naive derivation — adjust later when you share exact event/result rules
-    if ((ep as any).targetChainExecutionEvent) return 'Executed';
-    if ((ep as any).targetChainPublishEvent) return 'Published';
-    if ((ep as any).targetChainSchedulingEvent) return 'Scheduled';
-    if ((ep as any).mempoolEpochCommitEvent) return 'Committed';
-    return '—';
+  get inDialogMode(): boolean {
+    return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
   }
 
-  get showOpenTxIcon(): boolean {
-    return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
+  onOpenPartialBlock(): void {
+    if (!this.ep?.includedInPartialBlock) return;
+    this.openPartialBlock.emit(this.ep.includedInPartialBlock);
   }
 
   // Functions to the progress of the Execution Parts
@@ -53,4 +47,15 @@ export class ExecutionPartDetailsComponent {
     const txHash = getStepTxHash(events, i);
     if (txHash) openExternalTx(chainId, txHash);
   };
+
+  get operatorAddressDisplay(): string {
+    return formatChainAddress(this.ep?.chainId ?? null, this.ep?.operatorAddress ?? '');
+  }
+
+  // Signature toggle
+  showFullSignature = false;
+
+  toggleSignature(): void {
+    this.showFullSignature = !this.showFullSignature;
+  }
 }
