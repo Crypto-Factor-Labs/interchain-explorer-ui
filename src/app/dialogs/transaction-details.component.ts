@@ -28,6 +28,12 @@ export class TransactionDetailsComponent {
   triStateClass = triStateClass;
   triStateIcon = triStateIcon;
 
+  showAdvanced = false;
+
+  toggleAdvanced(): void {
+    this.showAdvanced = !this.showAdvanced;
+  }
+
   get hash(): string { return this.tx.transactionHash; }
   get hasMB(): boolean { return !!this.tx.includedInMasterBlock; }
 

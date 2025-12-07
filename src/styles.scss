@@ -9,11 +9,13 @@
 body {
   background-color: $charcoal;
   font-family: 'Roboto', sans-serif;
+  overflow-y: scroll; // always show scrollbar, even when not needed
 }
 
 // No margins for the body, so the title-panel is fully stretched
 html,
 body {
+  height: 100%;
   margin: 0;
 }
 

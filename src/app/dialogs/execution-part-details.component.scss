@@ -12,4 +12,13 @@
       white-space: nowrap; // prevent wrapping of long labels
     }
   }
+
+  .value--exec-signature .exec-signature {
+    word-break: break-all;
+    transition: font-size 0.15s ease;
+  }
+
+  .value--exec-signature .exec-signature.exec-signature--expanded {
+    font-size: 0.9rem; // slightly smaller when expanded
+  }
 }

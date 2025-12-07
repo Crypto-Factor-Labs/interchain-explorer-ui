@@ -65,7 +65,27 @@ export class TxExecutionPartsComponent {
 
   toggleEP(hash: string) {
     if (!hash) return;
-    this.opened.has(hash) ? this.opened.delete(hash) : this.opened.add(hash);
+
+    const isOpen = this.opened.has(hash);
+
+    if (isOpen) {
+      // Collapsing: just close
+      this.opened.delete(hash);
+    } else {
+      // Opening: add to set, then scroll into view
+      this.opened.add(hash);
+
+      setTimeout(() => {
+        const el = document.getElementById('ep-' + hash);
+        if (el) {
+          el.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',  // or 'start' if you prefer it at the top
+            inline: 'nearest',
+          });
+        }
+      }, 50); // a small delay gives Angular time to render the expanded body
+    }
   }
 
   isOpen(hash: string) {

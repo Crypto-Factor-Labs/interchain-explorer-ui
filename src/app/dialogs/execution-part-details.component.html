@@ -60,11 +60,11 @@
 
   <div class="field">
     <div class="label">Execution Signature</div>
-    <div class="value" style="padding-right: 5pt">
+    <div class="value value--exec-signature">
       <!-- Only collapsible when we actually have a signature -->
       <ng-container *ngIf="ep.executionSignature; else noSignature">
-        <span class="clickable mono" (click)="toggleSignature()" title="Click to toggle full signature"
-          style="word-break: break-all;">
+        <span class="clickable mono exec-signature" [class.exec-signature--expanded]="showFullSignature"
+          (click)="toggleSignature()" title="Click to toggle full signature">
           <!-- Collapsed: truncated -->
           <ng-container *ngIf="!showFullSignature; else fullSig">
             {{ ep.executionSignature | truncateMiddle: 16 }}
@@ -85,4 +85,5 @@
       </ng-template>
     </div>
   </div>
+
 </div>
