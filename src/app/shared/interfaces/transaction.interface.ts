@@ -97,6 +97,7 @@ export interface Transaction {
   revertExecutionPart?: ExecutionPart;
 
   state: number; // validation state
+  feePerUnit: string;  // decimal string
   includedInMasterBlock: string;
   masterBlockHeight: string; // decimal string
   masterBlockTxIndex: number;

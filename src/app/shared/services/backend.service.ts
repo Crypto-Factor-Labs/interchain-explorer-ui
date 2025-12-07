@@ -133,6 +133,7 @@ export class BackendService {
 
     state: dto.state,
     includedInMasterBlock: dto.includedInMasterBlock ?? '',
+    feePerUnit: dto.feePerUnit,
     masterBlockHeight:
       hexToDec(dto.masterBlockHeight) ??
       (typeof dto.masterBlockHeight === 'number' ? String(dto.masterBlockHeight) : dto.masterBlockHeight ?? null),
