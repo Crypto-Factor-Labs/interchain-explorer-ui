@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { buildExternalTxUrl, buildExternalAddressUrl, getExplorerName, } from './external-explorer.util';
+import { buildExternalTxUrl, buildExternalAddressUrl, buildExternalCustomUrl, getExplorerName, } from './external-explorer.util';
 
 @Component({
   selector: 'app-external-link',
@@ -14,9 +14,13 @@ export class ExternalLinkComponent {
   // TX mode
   @Input() txHash?: string;   // Tx mode
   @Input() address?: string;  // Address mode
+  @Input() custom?: string;   // Custom mode
 
-  // Tx wins if both are provided
   get url(): string | null {
+    // Custom wins if provided
+    if (this.custom) {
+      return buildExternalCustomUrl(this.chainId, this.custom);
+    }
     if (this.txHash) {
       return buildExternalTxUrl(this.chainId, this.txHash);
     }

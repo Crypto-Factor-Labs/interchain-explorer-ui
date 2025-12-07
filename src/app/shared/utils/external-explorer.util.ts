@@ -79,6 +79,26 @@ export function buildExternalAddressUrl(
   return joinUrl(cfg.baseUrl, cfg.addressPath) + addr;
 }
 
+export function buildExternalCustomUrl(
+  chainId: number | null | undefined,
+  custom: string | null | undefined
+): string | null {
+  if (chainId == null) return null;
+  const cfg = CHAIN_EXPLORERS[chainId];
+  if (!cfg) return null;
+
+  const raw = (custom ?? '').trim();
+  if (!raw) return null;
+
+  // Allow full URLs to be passed straight through
+  if (raw.startsWith('http://') || raw.startsWith('https://')) {
+    return raw;
+  }
+
+  // Otherwise treat as path relative to baseUrl
+  return joinUrl(cfg.baseUrl, raw);
+}
+
 // Open external explorer in new tab/window (for tx)
 export function openExternalTx(chainId: number, txHash: string): void {
   const url = buildExternalTxUrl(chainId, txHash);

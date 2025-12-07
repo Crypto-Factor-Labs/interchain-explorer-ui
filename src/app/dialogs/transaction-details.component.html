@@ -100,7 +100,7 @@
   <!-- Fee per Unit -->
   <div class="field">
     <div class="label">Fee per Unit</div>
-    <div class="value">{{ tx.feePerUnit | asDash }}</div>
+    <div class="value"> {{ tx.feePerUnit | cfrFee }}</div>
   </div>
 
   <!-- Push Event -->
@@ -132,9 +132,13 @@
     <div class="label">State Validator</div>
     <div class="value value--with-action">
       <span>{{ tx.stateValidator }}</span>
+      <!--
       <span class="badge-result" [ngClass]="triStateClass(tx.stateValidationResult)">
         {{ triStateLabel(tx.stateValidationResult) }}
       </span>
+      -->
+      <app-copy-icon [value]="tx.stateValidator"></app-copy-icon>
+      <app-external-link [chainId]="validationChainId" [custom]="'/contracts/' + tx.stateValidator"></app-external-link>
     </div>
   </div>
 </ng-container>

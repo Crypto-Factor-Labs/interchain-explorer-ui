@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { AsDashPipe } from './pipes/as-dash.pipe';
 import { BNHexToDecPipe } from './pipes/bn-hex-to-dec.pipe';
+import { CfrFeePipe } from './pipes/cfr-fee.pipe';
 import { FilterExecPartsByStatePipe } from './pipes/filter-exec-parts-by-state.pipe';
 import { TxStateWordPipe } from './pipes/state-to-word.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
@@ -18,6 +19,7 @@ export const SHARED_IMPORTS = [
   CdkCopyToClipboard,
   AsDashPipe,
   BNHexToDecPipe,
+  CfrFeePipe,
   FilterExecPartsByStatePipe,
   TxStateWordPipe,
   TimeAgoPipe,
