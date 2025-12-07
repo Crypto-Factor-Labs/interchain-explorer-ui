@@ -1,10 +1,23 @@
 @import '../shared/cf_color_palette.scss';
 
+.field {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr); // label + rest for value
+  column-gap: 12px;
+}
+
+.field .label {
+  text-align: right;
+  white-space: nowrap;
+}
+
 /* Heading above the EPs */
-.section-heading {
+.field.section-heading .label {
+  font-weight: bold;
+  font-size: 1rem;
+  color: $byzantine-blue;
   margin-top: 6pt;
   margin-bottom: 3pt;
-  color: $byzantine-blue;
 }
 
 /* not used (at the moment?) */

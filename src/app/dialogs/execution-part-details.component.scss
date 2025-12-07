@@ -1,8 +1,15 @@
 .details-grid {
+  padding-bottom: 10px;
+  padding-right: 10px;
+
   .field {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr); // label + rest for value
+    column-gap: 12px;
+
     .label {
-      text-align: right; // keep right-aligned
-      padding-left: 10pt; // spacing before the longest label
+      text-align: right;
+      white-space: nowrap; // prevent wrapping of long labels
     }
   }
 }
