@@ -1,4 +1,5 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogShellComponent } from '../shared/ui/dialog-shell.component';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
@@ -14,11 +15,19 @@ import { getChainImage } from '../shared/utils/common.utils';
 })
 export class TransactionDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public tx: Transaction,
-    public dialogRef: MatDialogRef<TransactionDialogComponent>
+    @Inject(MAT_DIALOG_DATA)
+    public tx: Transaction,
+    public dialogRef: MatDialogRef<TransactionDialogComponent>,
+    private router: Router,
   ) { }
 
   get logoSrc(): string {
     return getChainImage(this.tx.sourceChainId);
+  }
+
+  onOpenMasterBlock(hash: string) {
+    this.router.navigate([
+      { outlets: { modal: ['mblock', hash] } }
+    ]);
   }
 }

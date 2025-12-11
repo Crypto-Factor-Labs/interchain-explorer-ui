@@ -4,6 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../shared/shared-standalone';
 import type { Transaction } from '../shared/interfaces/transaction.interface';
 import { triStateLabel, triStateClass, triStateIcon } from '../shared/utils/tri-state';
+import { formatChainAddress, getExplorerName } from '../shared/utils/external-explorer.util';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-transaction-details',
@@ -17,17 +19,25 @@ export class TransactionDetailsComponent {
   @Input() showExecPartsCount = false;
   @Input() context: 'dialog' | 'page' = 'page';
   @Output() openTx = new EventEmitter<void>();
+  @Output() openMasterBlock = new EventEmitter<string>();
 
   constructor(@Optional() private dialogRef?: MatDialogRef<unknown>) { }
 
+  readonly validationChainId = environment.stateValidationChainId;
   triStateLabel = triStateLabel;
   triStateClass = triStateClass;
   triStateIcon = triStateIcon;
 
+  showAdvanced = false;
+
+  toggleAdvanced(): void {
+    this.showAdvanced = !this.showAdvanced;
+  }
+
   get hash(): string { return this.tx.transactionHash; }
   get hasMB(): boolean { return !!this.tx.includedInMasterBlock; }
 
-  get showOpenTxIcon(): boolean {
+  get inDialogMode(): boolean {
     return !!this.dialogRef; // true in Tx-dialog, false on Tx-page
   }
 
@@ -35,4 +45,16 @@ export class TransactionDetailsComponent {
     this.dialogRef?.close(); // closes if we're in a dialog; no-op on the page
   }
 
+  onOpenMasterBlock(): void {
+    if (!this.tx?.includedInMasterBlock) return;
+    this.openMasterBlock.emit(this.tx.includedInMasterBlock);
+  }
+
+  get senderDisplay(): string {
+    return formatChainAddress(this.tx?.sourceChainId, this.tx?.sourceSender);
+  }
+
+  get sourceChainName(): string | null {
+    return getExplorerName(this.tx?.sourceChainId ?? null);
+  }
 }

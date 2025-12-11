@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { map, switchMap, catchError, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -10,11 +10,13 @@ import { TransactionDetailsComponent } from '../../dialogs/transaction-details.c
 import { TxExecutionPartsComponent } from './tx-exec-parts.component';
 import { PanelComponent } from '../../shared/ui/panel.component';
 import { getChainImage } from '../../shared/utils/common.utils';
+import { SHARED_IMPORTS } from '../../shared/shared-standalone';
 
 @Component({
   selector: 'app-tx-page',
   standalone: true,
-  imports: [CommonModule, RouterModule, PanelComponent, TransactionDetailsComponent, TxExecutionPartsComponent],
+  imports: [CommonModule, RouterModule, PanelComponent,
+    TransactionDetailsComponent, TxExecutionPartsComponent, ...SHARED_IMPORTS],
   templateUrl: './tx-page.component.html',
   styleUrls: ['./tx-page.component.scss'],
 })
@@ -32,7 +34,11 @@ export class TransactionPageComponent {
     )
   );
 
-  constructor(private route: ActivatedRoute, private backend: BackendService) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private backend: BackendService,
+  ) { }
 
   // Track opened ExecutionParts by hash
   opened = new Set<string>();
@@ -52,4 +58,9 @@ export class TransactionPageComponent {
     return this.opened.has(hash);
   }
 
+  onOpenMasterBlock(hash: string) {
+    this.router.navigate([
+      { outlets: { modal: ['mblock', hash] } }
+    ]);
+  }
 }

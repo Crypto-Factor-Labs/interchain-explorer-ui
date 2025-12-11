@@ -1,5 +1,48 @@
 @import '../shared/cf_color_palette.scss';
 
+.field {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr); // label + rest for value
+  column-gap: 12px;
+}
+
+.field .label {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Heading above the EPs */
+.field.section-heading .label {
+  font-weight: bold;
+  font-size: 1rem;
+  color: $byzantine-blue;
+  margin-top: 6pt;
+  margin-bottom: 3pt;
+}
+
+.field.section-heading .label .left {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.field.section-heading .heading-text {
+  font-weight: 600;
+}
+
+.field.section-heading .chevron-btn .chevron {
+  font-size: 0.9em;
+  opacity: 0.9;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  transform-origin: center;
+}
+
+.field.section-heading .chevron-btn .chevron.chevron--open {
+  transform: rotate(180deg);
+  opacity: 1; // slightly stronger when open
+}
+
 /* not used (at the moment?) */
 .link {
   text-decoration: underline;

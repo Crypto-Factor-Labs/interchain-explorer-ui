@@ -4,7 +4,7 @@
 
   <app-panel *ngIf="!vm.loading" [panelTitle]="'Transactions'">
     <span *ngIf="vm.sender" panel-title-suffix>
-      of <span class="hash-text">{{ vm.sender }}</span>
+      of <span class="hash-text">{{ vm.senderDisplay || vm.sender }}</span>
       <span class="count">({{ vm.total }})</span>
     </span>
 

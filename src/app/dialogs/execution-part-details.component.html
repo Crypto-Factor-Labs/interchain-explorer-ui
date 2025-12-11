@@ -2,7 +2,7 @@
   <!-- Hash with copy button -->
   <div class="field">
     <div class="label">
-      <span *ngIf="isRevert" class="badge-revert" aria-label="Revert">Revert</span>
+      <span *ngIf="isRevert && inDialogMode" class="badge-revert" aria-label="Revert">Revert</span>
       <span style="margin-left: 10pt">Hash</span>
     </div>
     <div class="value value--with-action">
@@ -11,26 +11,20 @@
     </div>
   </div>
 
-  <!-- Tx hash -->
-  <div class="field">
+  <!-- Tx hash – only shown in Tx-dialog -->
+  <div class="field" *ngIf="inDialogMode">
     <div class="label">Tx Hash</div>
     <div class="value value--with-action">
       {{ ep.transactionHash }}
       <app-copy-icon [value]="ep.transactionHash"></app-copy-icon>
 
-      <!-- Icon to jump to the Tx-page
-     The icon is only shown in the Tx-dialog, not on the Tx-page -->
-      <a *ngIf="showOpenTxIcon" [routerLink]="['/tx', ep.transactionHash]" [queryParams]="{ ep: ep.hash }"
-        class="icon-btn" title="Open transaction page" aria-label="Open transaction page" (click)="openTx.emit()"
+      <!-- Icon to jump to the Tx-page -->
+      <a [routerLink]="['/tx', ep.transactionHash]" [queryParams]="{ ep: ep.hash }" class="icon-btn"
+        title="Open transaction page" aria-label="Open transaction page" (click)="openTx.emit()"
         style="margin-left: -3pt; display:inline-flex; align-items:center;">
         <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
       </a>
     </div>
-  </div>
-
-  <div class="field">
-    <div class="label">Status</div>
-    <div class="value">{{ statusLabel }}</div>
   </div>
 
   <!-- Progress (4-step micro-tracker) -->
@@ -42,55 +36,53 @@
     </div>
   </div>
 
-  <!-- Index within transaction -->
-  <div class="field">
-    <div class="label">Index in Tx</div>
-    <div class="value">{{ ep.transactionExecutionPartIndex | asDash }}</div>
-  </div>
-
-  <!-- Chain -->
-  <div class="field">
-    <div class="label">Chain ID</div>
-    <div class="value">{{ ep.chainId }}</div>
-  </div>
-
-  <!-- Operator -->
-  <div class="field">
-    <div class="label">Operator</div>
-    <div class="value">{{ ep.operatorAddress | asDash }}</div>
-  </div>
-
-  <!-- Sender -->
-  <div class="field">
-    <div class="label">Sender</div>
-    <div class="value">{{ ep.senderAddress | asDash }}</div>
-  </div>
-
-  <!-- Partial block -->
+  <!-- Partial Block -->
   <div class="field">
     <div class="label">Partial Block</div>
-
     <div class="value value--with-action">
-      {{ ep.partialBlockHeight | asDash }}
-
-      <ng-container *ngIf="ep.partialBlockPartIndex !== undefined">
-        <span class="inline-label">|</span>
-        <span>#{{ ep.partialBlockPartIndex }}</span>
-      </ng-container>
-
-      <ng-container *ngIf="ep.includedInPartialBlock as pbHash">
-        <span class="inline-label">|</span>
-        <span>{{ pbHash }}</span>
-        <app-copy-icon [value]="pbHash"></app-copy-icon>
-      </ng-container>
+      <span class="clickable clickable--tight" title="Show PartialBlock details" (click)="onOpenPartialBlock()">
+        {{ ep.includedInPartialBlock }}
+      </span>
+      <app-copy-icon [value]="ep.includedInPartialBlock"> </app-copy-icon>
     </div>
   </div>
 
-  <!-- Optional: Execution signature (useful for debugging) -->
+  <!-- Executing Contract (Operator) -->
   <div class="field">
-    <div class="label">Exec Signature</div>
-    <div class="value" style="word-break: break-all;">
-      {{ ep.executionSignature | asDash }}
+    <div class="label">Executing Contract</div>
+    <div class="value value--with-action">
+      <code class="mono">{{ operatorAddressDisplay }}</code>
+      <app-copy-icon [value]="operatorAddressDisplay"></app-copy-icon>
+      <app-external-link [chainId]="ep.chainId" [address]="ep.operatorAddress" style="margin-left:-1pt">
+      </app-external-link>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="label">Execution Signature</div>
+    <div class="value value--exec-signature">
+      <!-- Only collapsible when we actually have a signature -->
+      <ng-container *ngIf="ep.executionSignature; else noSignature">
+        <span class="clickable mono exec-signature" [class.exec-signature--expanded]="showFullSignature"
+          (click)="toggleSignature()" title="Click to toggle full signature">
+          <!-- Collapsed: truncated -->
+          <ng-container *ngIf="!showFullSignature; else fullSig">
+            {{ ep.executionSignature | truncateMiddle: 16 }}
+          </ng-container>
+
+          <!-- Expanded: full value -->
+          <ng-template #fullSig>
+            {{ ep.executionSignature }}
+          </ng-template>
+        </span>
+      </ng-container>
+
+      <!-- Fallback when there is no signature -->
+      <ng-template #noSignature>
+        <span class="mono">
+          {{ ep.executionSignature | asDash }}
+        </span>
+      </ng-template>
     </div>
   </div>
 

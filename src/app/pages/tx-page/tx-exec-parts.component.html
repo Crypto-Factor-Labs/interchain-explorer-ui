@@ -1,6 +1,5 @@
 <h3 class="ep-heading">
   ExecutionParts
-  <span *ngIf="epList?.length" class="ep-count">({{ epList?.length }})</span>
 </h3>
 
 <!-- Only render sections when we actually have EPs -->
@@ -11,7 +10,7 @@
       <span class="left" role="button" tabindex="0" (click)="toggleEP(ep.hash)" (keydown.enter)="toggleEP(ep.hash)"
         (keydown.space)="toggleEP(ep.hash)" [attr.aria-expanded]="isOpen(ep.hash)"
         [attr.aria-controls]="'ep-' + ep.hash">
-        <img class="chain-logo" [src]="logoSrc(ep.chainId)" [alt]="'Chain ' + ep.chainId" />
+        <img *ngIf="ep.chainId != null" class="chain-logo" [src]="logoSrc(ep.chainId)" [alt]="'Chain ' + ep.chainId" />
         <span class="value">#{{ ep.transactionExecutionPartIndex }}</span>
 
         <span class="value value--with-action" title="{{ ep.hash }}">
@@ -31,7 +30,8 @@
 
     <div class="ep-body" [id]="'ep-' + ep.hash" *ngIf="isOpen(ep.hash)"
       [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
-      <app-execution-part-details [ep]="ep"></app-execution-part-details>
+      <app-execution-part-details [ep]="ep" (openPartialBlock)="onOpenPartialBlock($event)">
+      </app-execution-part-details>
     </div>
   </section>
 
@@ -51,7 +51,8 @@
 
     <div class="ep-body" [id]="'ep-' + rep.hash" *ngIf="isOpen(rep.hash)"
       [@expandCollapse]="{ value: '', params: { enter: '220ms', leave: '180ms' } }">
-      <app-execution-part-details [ep]="rep"></app-execution-part-details>
+      <app-execution-part-details [ep]="rep" (openPartialBlock)="onOpenPartialBlock($event)">
+      </app-execution-part-details>
     </div>
   </section>
 </ng-container>

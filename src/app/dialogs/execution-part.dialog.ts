@@ -1,5 +1,5 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogShellComponent } from '../shared/ui/dialog-shell.component';
 import { ExecutionPartDetailsComponent } from './execution-part-details.component';
@@ -16,10 +16,17 @@ import { getChainImage } from '../shared/utils/common.utils';
 export class ExecutionPartDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public ep: ExecutionPart,
-    public dialogRef: MatDialogRef<ExecutionPartDialogComponent>
+    public dialogRef: MatDialogRef<ExecutionPartDialogComponent>,
+    private router: Router,
   ) { }
 
   get logoSrc(): string {
     return getChainImage(this.ep.chainId);
+  }
+
+  onOpenPartialBlock(hash: string) {
+    this.router.navigate([
+      { outlets: { modal: ['pblock', hash] } }
+    ]);
   }
 }
