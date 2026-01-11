@@ -18,6 +18,16 @@
   </div>
 </div>
 
+<!-- Timestamp
+<div class="field">
+  <div class="label">Timestamp</div>
+  <div class="value no-mono" [title]="tx.timestamp">
+    {{ tx.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}
+    <span class="inline-label">ago</span>{{ tx.timestamp | timeAgo }}
+  </div>
+</div>
+ -->
+
 <!-- State -->
 <div class="field">
   <div class="label">State</div>
@@ -41,7 +51,7 @@
 <!-- Source Chain -->
 <div class="field">
   <div class="label">Source Chain</div>
-  <div class="value">{{ tx.sourceChainId }} — {{ sourceChainName }}</div>
+  <div class="value">{{ sourceChainName }}</div>
 </div>
 
 <!-- MasterBlock Info -->
