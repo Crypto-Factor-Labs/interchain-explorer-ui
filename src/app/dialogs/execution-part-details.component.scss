@@ -1,6 +1,6 @@
 .details-grid {
   padding-bottom: 10px;
-  padding-right: 10px;
+  padding-right: 15px;
 
   .field {
     display: grid;
@@ -15,7 +15,6 @@
 
   .value--exec-signature .exec-signature {
     word-break: break-all;
-    transition: font-size 0.15s ease;
   }
 
   .value--exec-signature .exec-signature.exec-signature--expanded {
